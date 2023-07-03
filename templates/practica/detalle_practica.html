@@ -1,0 +1,148 @@
+{% extends maestra %}
+{% block titulo %}DETALLE PRÁCTICA {% endblock %}
+{% block subtitul %}DETALLE PRÁCTICA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+ <link rel="stylesheet" href="{{url_for('static',filename='styles/listarDetallePractica.css') }}">
+
+{% endblock %}
+{% block contenido %}
+
+<section>
+<div class="">
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp gestSelect">
+      <a href="{{url_for('practicas')}}">Practica</a>
+    </label>
+  </div>
+
+  <div id="cont1"class="container">
+    <div  class="row">
+      <div class="col-md-6">
+        <!-- Contenido de la primera columna -->
+        <h3>DATOS DE LA PRÁCTICA:</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Contenido de la primera columna -->
+            <span class="d-block">Fecha Inicio:</span>
+            <span class="d-block">Fecha Fin:</span>
+            <span class="d-block">Horas Practica:</span>
+            <span class="d-block">Estado:</span>
+            <span class="d-block">Modalidad:</span>
+            <span class="d-block">Semestre de inicio:</span>
+            <span class="d-block">Semestre final:</span>
+          </div>
+          <div class="col-md-6">
+            <!-- Contenido de la segunda columna -->
+            <input readonly value="{{detalle[0] }}"></input>
+            <input readonly value="{{detalle[1] }}" ></input>
+            <input readonly value="{{detalle[2] }}"></input>
+            <input readonly value="{{detalle[3] }}"></input>
+            <input readonly value="{{detalle[4] }}"></input>
+            <input readonly value="{{detalle[5] }}"></input>
+            <input readonly value="{{detalle[6] }}"></input>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <!-- Contenido de la primera columna -->
+        <h3>DATOS DEL ESTUDIANTE:</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <span class="d-block">Codigo Estudiante:</span>
+            <span class="d-block">Apellidos:</span>
+            <span class="d-block">Nombres:</span>
+            <span class="d-block">DNI:</span>
+            <span class="d-block">Plan de estudio:</span>
+          </div>
+          <div class="col-md-6">
+            <!-- Contenido de la segunda columna -->
+            <input readonly value="{{detalle[7] }}"></input>
+            <input readonly value="{{detalle[8] }}"></input>
+            <input readonly value="{{detalle[9] }}"></input>
+            <input readonly value="{{detalle[10] }}"></input>
+            <input readonly value="{{detalle[11] }}"></input>
+          </div>
+        </div>
+        <h3>DATOS DE LA EMPRESA:</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <span class="d-block">Empresa:</span>
+            <span class="d-block">RUC:</span>
+            <span class="d-block">Jefe Inmediato:</span>
+          </div>
+          <div class="col-md-6">
+            <!-- Contenido de la segunda columna -->
+            <input readonly value="{{detalle[12] }}"></input>
+            <input readonly value="{{detalle[13] }}"></input>
+            <input readonly value="{{detalle[14] }}"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id ="cont2">
+    <h5 id="tith5">Listado de Informes de la Práctica Pre-Profesional:</h5>
+    <div class="table p-5">
+      <table class="table table-light table-hover border" id="tabla">
+        <thead>
+          <tr class="container text-center">
+            <th scope="col align-items-center">Informe</th>
+            <th scope="col align-items-center">Fecha Entrega</th>
+            <th scope="col align-items-center">Estado</th>
+            <th scope="col align-items-center">Editar</th>
+            <th scope="col align-items-center">Ver</th>
+            <th scope="col align-items-center" id="estado1">Descargar</th>
+          </tr>
+        </thead>
+        <tbody id="tabla">
+
+          <tr class="container text-center" >
+            <td scope="row align-items-center" id="fecha1"></td>
+            <td scope="row align-items-center" id="fecha2"></td>
+            <td scope="row align-items-center" id="estado"></td>
+            <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
+                data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
+                  src="{{url_for('static', filename='lapiz-rojo.png')}}" alt=""></button></td>
+            <td scope="row align-items-center">
+              <button style="border: none;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
+                  src="{{url_for('static', filename='icons8-documento-regular-30.png')}}" alt=""></button>
+
+            </td>
+            <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
+                data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
+                  src="{{url_for('static', filename='descargar.png')}}" alt=""></button></td>
+
+            <td  scope="row align-items-center">
+                <input type="hidden" name="id" value="1">
+
+            </td>
+
+
+          </tbody>
+      </table>
+    </div>
+  </div>
+  <div id ="cont3">
+    <p>Seguimientos de la Práctica Pre Profesional:</p>
+    <a href="{{url_for('seguimiento_practica', id=detalle[15])}}"><button type="button" class="btn btn-success">Mostrar</button></a>
+  </div>
+  <div id="cont4">
+    <br>
+  </div>
+
+  </div>
+
+</section>
+{% endblock %}
+{%block scripts %}
+
+
+
+
+{% endblock %}
+
+
+

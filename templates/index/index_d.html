@@ -1,0 +1,89 @@
+{% extends maestra %}
+{% block titulo %}Inicio{% endblock %}
+{% block subtitul %}Inicio{% endblock %}
+{% block recursos %}
+
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_d')}}">Inicio</a>
+    </label>
+  </div>
+  <div class="container text-center" style="margin-top: 10%;">
+    <div style="display: flex; margin-top: 50px;">
+      <div class="card mb-3" style="max-width: 540px; margin-right: 15%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="https://www.ucsf.edu.ar/wp-content/uploads/2023/01/CURSO-DE-INVESTIGACION-DISENO-Y-RECOLECCION-DE-DATOS-MEDIANTE-ENCUESTAS-WEB.jpg"
+              class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Desarrollo Estudiantil</h5>
+              <p class="card-text">Cuestionario sobre el desarrollo de investigación formativa universitaria</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="https://img.freepik.com/vector-gratis/pagar-saldo-adeudado-ilustracion-concepto-abstracto-realizacion-pagos-credito-pago-dinero-adeudado-banco-saldo-adeudado-consolidacion-gestion-deudas-factura-contribuyente_335657-1236.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Servicios academicos</h5>
+              <p class="card-text">Cambios en los procesos de solicitud y pago de servicios académicos.</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; margin-top: 50px;">
+      <div class="card mb-3" style="max-width: 540px; margin-right: 15%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="https://www.ucsf.edu.ar/wp-content/uploads/2023/01/CURSO-DE-INVESTIGACION-DISENO-Y-RECOLECCION-DE-DATOS-MEDIANTE-ENCUESTAS-WEB.jpg"
+              class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Desarrollo Estudiantil</h5>
+              <p class="card-text">Cuestionario sobre el desarrollo de investigación formativa universitaria</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="https://img.freepik.com/vector-gratis/pagar-saldo-adeudado-ilustracion-concepto-abstracto-realizacion-pagos-credito-pago-dinero-adeudado-banco-saldo-adeudado-consolidacion-gestion-deudas-factura-contribuyente_335657-1236.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Servicios academicos</h5>
+              <p class="card-text">Cambios en los procesos de solicitud y pago de servicios académicos.</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+  </div>
+</section>
+{% endblock %}
+
+
+

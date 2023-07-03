@@ -1,0 +1,52 @@
+{% extends maestra %}
+{% block titulo %} Registrar facultad {% endblock %}
+{% block subtitul %} Registrar facultad {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaFacultad.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('facultades')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('facultades')}}">Listar</a>
+    </label>
+    <label class="btnOpSeleccionado">
+      <a href="{{url_for('agregar_facultad')}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="formulario">
+      <form action="{{url_for('guardar_facultad')}}" method="post">
+        <div class="nombreSemestre">
+          <label for="">Nombre:</label>
+          <input id="" type="text" name="nombre" required>
+        </div>
+        <div class="descripe">
+          <label for="">Descripcion:</label>
+          <input id="" type="text" name="descripcion" required>
+        </div>
+        
+        <div class="checke">
+          <label for="">Estado:</label>
+          <input id="checkEstado" type="checkbox" checked="true" value="V" onclick="checkValue()">
+          <input type="hidden" value="V" id="estado" name="estado">
+        </div>
+        
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('facultades')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

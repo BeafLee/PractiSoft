@@ -1,0 +1,33 @@
+{% extends maestra %}
+{% block titulo %}  Usuario {% endblock %}
+{% block subtitul %} Usuario {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/perfil.css')}}">
+{% endblock %}
+{% block contenido %}
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+  </div>
+  <div class="nuevoSeguimiento">
+    <div class="formulario">
+        <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Usuario</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{usuario[1]}}" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="" class="">Contraseña</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" value="{{usuario[2]}}" disabled>
+            </div>
+            <div class="btnsEditar">
+              <a href="{{url_for('perfileditar')}}"><button type="button" class="btn btn-success">Editar</button></a>
+            </div>
+          </form>
+      </div>    
+  </div>
+</section>
+{% endblock %}

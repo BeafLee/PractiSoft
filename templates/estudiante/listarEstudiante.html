@@ -1,0 +1,109 @@
+{% extends maestra %}
+{% block titulo %}Gestionar estudiantes {% endblock %}
+{% block subtitul %}Gestionar estudiantes {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarEstudiante.css') }}">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+
+{% endblock %}
+{% block contenido %}
+
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOpSeleccionado">
+      <a href="{{url_for('estudiantes')}}">Listar</a>
+    </label>
+    
+  </div>
+
+  <div class="tabla" id="contenido-dinamico">
+    <table id="tabla" class="display">
+      <thead>
+        <tr class="headTable">
+          <th>Código</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          
+          
+          <th>DNI</th>
+          <th>Correo</th>
+          
+          <th>Teléfono</th>
+          
+          
+          <th>Estado</th>
+          <th>Plan Estudio</th>
+          <th>Ciudad</th>
+          
+          <th>Operación</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for estudiante in estudiantes %}
+        <tr>
+          <td style="text-align: center;">{{estudiante[1]}}</td> <!-- el centrado modificarlo y ponerlo en el css -->
+          <td class="">{{estudiante[2]}}</td>
+          <td class="">{{estudiante[3]}}</td>
+          
+        
+          <td class="">{{estudiante[6]}}</td>
+          <td class="">{{estudiante[7]}}</td>
+        
+          <td class="">{{estudiante[9]}}</td>
+          
+         
+          <td class="">{{estudiante[12]}}</td>
+          <td class="">{{estudiante[13]}}</td>
+          
+          <td class="">{{estudiante[15]}}</td>
+         
+          <td class="darBaja">
+              {%if estudiante[12] == "Apto"%}
+              <a href="{{url_for('darbaja_estudiante', id=estudiante[0])}}" ><i class="bi bi-arrow-down-circle-fill"></i></a>
+              {%else%}
+              <a href="{{url_for('daralta_estudiante', id=estudiante[0])}}"><i class="bi bi-arrow-up-circle-fill"></i></a>
+              {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- <div class="indice">
+    <div class="btnIndice">
+      <button id="inicio">&lt;&lt;</button>
+      <button id="atras">&lt;</button>
+      <p id="contador" value="1">1</p>
+      <button id="adelante">&gt;</button>
+      <button id="final">&gt;&gt;</button>
+    </div>
+    <div class="sltIndice">
+      <select name="mostrar" id="mostrar">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="30">30</option>
+      </select>
+    </div>
+  </div> -->
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/estudiante.js') }}"></script>
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/paginacion.js') }}"></script>
+
+
+{% endblock %}

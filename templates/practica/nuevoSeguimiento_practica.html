@@ -1,0 +1,70 @@
+{% extends maestra %}
+{% block titulo %} REGISTRAR SEGUIMIENTO PRACTICA {% endblock %}
+{% block subtitul %} REGISTRAR SEGUIMIENTO PRACTICA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSeguimiento.css')}}">
+{% endblock %}
+{% block contenido %}
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{ url_for('seguimiento_practica', id=seguimiento_practica[4])}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('agregar_seguimiento_practica', idSeguimiento=seguimiento_practica[4])}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSeguimiento">
+    <div class="formulario">
+      <form action="{{url_for('guardar_seguimiento_practica')}}" method="post">
+        <h1 class="datos">DATOS DEL SEGUIMIENTO</h1>
+        <div class="nombreSemestre">
+          <label for="">Código:</label>
+          <input id="" type="text" name="" value="{{seguimiento_practica[0]}}" disabled>
+        </div>
+        <div class="nombreSemestre">
+          <label for="">Estudiante:</label>
+          <input id="" type="text" name="" value="{{seguimiento_practica[1]}}" disabled>
+        </div>
+        <div class="nombreSemestre">
+            <label for="">RUC:</label>
+            <input id="" type="text" name="" value="{{seguimiento_practica[2]}}" disabled>
+          </div>
+          <div class="nombreSemestre">
+            <label for="">Empresa:</label>
+            <input id="" type="text" name="" value="{{seguimiento_practica[3]}}" disabled>
+          </div>
+          <div class="nombreSemestre">
+              <label for="">Tipo:</label>
+                <select id="" class="combo" name="tipo">
+                  <option value="P">Presencial</option>
+                  <option value="V">Virtual</option>
+                </select>
+            </div>
+            <div class="nombreSemestre">
+              <label for="">Fecha:</label>
+              <input id="" type="date" name="fechaCreacion" value="" required>
+            </div>
+            <div class="nombreSemestre">
+              <label for="">Hora:</label>
+              <input id="" type="time" name="horaCreacion" value="" required>
+            </div>
+            <div class="observacion">
+                <label for="">Observaciones:</label>
+                <textarea class="textarea" type="text" name="observacion" value="" required></textarea>
+                <input id="" type="hidden" name="idPractica" value="{{seguimiento_practica[4]}}">
+            </div>
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('seguimiento_practica', id=seguimiento_practica[4])}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

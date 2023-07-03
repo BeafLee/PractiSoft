@@ -1,0 +1,74 @@
+{% extends maestra %}
+{% block titulo %}Reportes básicos{% endblock %}
+{% block subtitul %}Reportes básicos{% endblock %}
+{% block recursos %}
+
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+  </div>
+
+  <div class="tabla" id="contenido-dinamico">
+    <table id="tabla" class="table text-center">
+      <tr class="headTable">
+        <th colspan="3">REPORTE</th>
+      </tr>
+      <tr class="headTable">
+        <th colspan="3">Cantidad de practicas por linea de desarrollo</th>
+      </tr>
+      <tr class="headTable" id="cabe1">
+        <th>Semestre inicio</th>
+        <th>Linea de desarrollo</th>
+        <th>Cantidad</th>
+      </tr>
+
+      {% for reporte1 in reportes1 %}
+      <tr id="reporte1" style="text-align: center;">
+        <td class="semestre">{{reporte1[0]}}</td>
+        <td class="lineaDesarrollo" >{{reporte1[1]}}</td>
+        <td class="cantidad">{{reporte1[2]}}</td>
+      </tr>
+      {% endfor %}
+      <tr class="headTable">
+        <th colspan="3">
+          Cantidad de practicas segun estado y semestre
+        </th>
+      </tr>
+
+      <tr class="headTable" id="cabe2">
+        <th>Semestre inicio - Semestre Fin</th>
+        <th>Estado</th>
+        <th>Cantidad</th>
+      </tr>
+        {% for reporte2 in reportes2 %}
+        <tr  id="reporte2" style="text-align: center;">
+          <td class="seme">{{reporte2[0]}}</td>
+          <td class="est" >{{reporte2[1]}}</td>
+          <td class="cant">{{reporte2[2]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+</section>
+<script>
+  function mostrar1(){
+    document.getElementById('cabe1').style.display = 'block';
+  }
+  function mostrar2(){
+    document.getElementById('cabe2').style.display = 'block';
+  }
+</script>
+{% endblock %}
+
+
+

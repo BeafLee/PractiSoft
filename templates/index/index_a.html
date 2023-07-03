@@ -1,0 +1,46 @@
+{% extends maestra %}
+{% block titulo %}Inicio{% endblock %}
+{% block subtitul %}Inicio{% endblock %}
+{% block recursos %}
+
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+  </div>
+  
+  <div class="container text-center">
+    <div class="row">
+      <div class="col order-last">
+        <div class="card border-light mb-3" style="max-width: 18rem;">
+          <div class="card-header">Header</div>
+          <div class="card-body">
+            <h5 class="card-title">Light card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        Second in DOM, unordered
+      </div>
+      <div class="col order-first">
+        Third in DOM, ordered first
+      </div>
+    </div>
+  </div>
+
+  admin
+  
+ 
+</section>
+{% endblock %}
+
+
+

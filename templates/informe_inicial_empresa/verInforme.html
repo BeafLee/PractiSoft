@@ -1,0 +1,108 @@
+
+{% extends maestra %}
+{% block titulo %} REGISTRAR INFORME INICIAL EMPRESA {% endblock %}
+{% block subtitul %} REGISTRAR INFORME INICIAL EMPRESA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoIIE.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(document).on('click', '.btnMas', function() {
+      var newRow = $('<div class="d-flex mb-2"><input class="form-control" type="text" name="labor" placeholder="Labor" disabled><button class="btnMas gen btn btn-primary mx-3" type="button">+</button><button class="btnMenos gen btn btn-outline-danger" type="button">-</button></div>');
+      $(this).parent().after(newRow);
+    });
+    $(document).on('click', '.btnMenos', function() {
+      $(this).parent().remove();
+    });
+  });
+</script>
+<script src="{{ url_for('static', filename='assets/js/generar_documento.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+<div class="">
+  <div class="container mt-5">
+    <form action="{{url_for('actualizar_iie')}}" method="post" enctype="multipart/form-data">
+      <h3>Datos de la institución</h3>
+      <input type="hidden" name="idInforme" value="{{iie[0]}}">
+      <input type="hidden" name="idPractica" value="{{info[6]}}">
+      <div class="row d-flex align-items-end">
+        <div class="form-group col">
+          <label for="razonSocial">Nombre de la Empresa/Institución:</label>
+          <input type="text" class="form-control" id="razonSocial" name="razonSocial" value ="{{info[0]}}" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="nombreJI">Presona de la empresa/institución responsable de la práctica:</label>
+          <input type="text" class="form-control" id="nombreJI" name="nombreJI" value ="{{info[1]}}" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="cargoJI">Cargo que ocupa:</label>
+          <input type="text" class="form-control" id="cargoJI" name="cargoJI" value ="{{info[2]}}" disabled>
+        </div>
+      </div>
+      <hr>
+      <div class="row d-flex align-items-end">
+        <div class="form-group col">
+          <label for="nomEstudiante">Nombres y apellidos y del estudiante:</label>
+          <input type="text" class="form-control" id="nomEstudiante" name="nomEstudiante" value ="{{info[3]}}" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="fechaIP">Fecha de inicio de la práctica:</label>
+          <input type="date" class="form-control" id="fechaIP" name="fechaIP" value ="{{info[4]}}" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="fechaFP">Fecha de término de la práctica:</label>
+          <input type="date" class="form-control" id="fechaFP" name="fechaFP" value ="{{info[5]}}" disabled>
+        </div>
+      </div>
+      <hr>
+      <div class="d-flex align-items-end justify-content-between">
+        <div class="form-group col me-5">
+          <label for="organigramaImg">Aceptación por parte de la Empresa/Institución para la realización de la práctica y compromiso para atender al estudiante durante toda la ejecución</label><br>
+          <input type="file" class="form-control" id="aceptArch" name="aceptArch" accept=".docx, .pdf" value="{{iie[1]}}" disabled placeholder="Subir el archivo con la aceptación y compromiso en formato jpn, png o jpeg">
+        </div>
+        <div class="form-group col">
+          <label for="fechaE">Fecha de entrega:</label>
+          <input type="date" class="form-control" id="fechaE" name="fechaE" value="{{iie[2]}}" disabled>
+        </div>
+      </div>
+      <hr>
+      <div class="row d-flex">
+        <label for="">Labores:</label>
+        <div class="d-flex justify-content-start mb-2">
+          <input class="form-control" id="primero" type="text" name="labor" placeholder="Labor" value="{{labores[0]}}" disabled>
+          <button class="btnMas btn btn-primary ms-3 me-5" type="button" disabled>+</button>
+        </div>
+        {% if bandera %}
+          {% for labor in labores[1:] %}
+          <div class="d-flex mb-2"><input class="form-control" type="text" name="labor" placeholder="Labor" value="{{labor}}" disabled>
+            <button class="btnMas gen btn btn-primary mx-3" type="button" disabled>+</button>
+            <button class="btnMenos gen btn btn-outline-danger" type="button" disabled>-</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between">
+        <div class="form-group me-5 col">
+          <label for="firma">Firma del responsable</label><br>
+          <input type="file" class="form-control" id="firma" name="firma" accept=".jpn, .png, .jpeg" disabled placeholder="Subir el archivo con la firma del responsable en formato jpn, png o jpeg">
+        </div>
+        <div class="form-group col">
+          <label for="sello">Sello de la empresa/institución</label><br>
+          <input type="file" class="form-control" id="sello" name="sello" accept=".jpn, .png, .jpeg" value="{{iie[5]}}" disabled placeholder="Subir el archivo con el en formato jpn, png o jpeg">
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <div class="text-center py-5">
+          <a href="{{url_for('detalle_practica',id=info[6])}}" class="btn btn-danger">Volver</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/empresa.js') }}"></script>
+{% endblock %}

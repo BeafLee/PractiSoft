@@ -1,0 +1,53 @@
+{% extends maestra %}
+{% block titulo %} Editar facultad {% endblock %}
+{% block subtitul %} Editar facultad {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaFacultad.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('facultades')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('facultades')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="#">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="formulario">
+      <form action="{{url_for('actualizar_facultad')}}" method="post">
+        <input type="hidden" name="id" value="{{facultad[0]}}">
+        <div class="nombreSemestre">
+          <label for="">Nombre:</label>
+          <input id="nombre" type="text" name="nombre"  value="{{facultad[1]}}">
+        </div>
+        <div class="">
+          <div class="descripe">
+            <label for="">Descripcion:</label>
+            <input id="descripcion" type="text" name="descripcion"  value="{{facultad[2]}}">
+          </div>
+          <div class="checke">
+          <label for="">Estado:</label>
+          <input id="checkEstado" type="checkbox" {%if (opt): %}checked{%endif%} value="{{facultad[3]}}"
+            onclick="checkValue()">
+          <input type="hidden" value="{{facultad[3]}}" id="estado" name="estado">
+        </div>
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('facultades')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

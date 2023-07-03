@@ -1,0 +1,51 @@
+{% extends maestra %}
+{% block titulo %} Agregar Facultad {% endblock %}
+{% block subtitul %} Agregar Facultad {% endblock %}
+{% block contenido %}
+<section class="">
+    <div>
+        <ul class="nav nav-underline border-bottom">
+          <li class="nav-item">
+            <a style="margin-left: 50px;  color: red !important;" class="nav-link" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav2" href="{{url_for('facultades')}}">Listar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active"  id="nav2" href="#">Nuevo</a>
+          </li>
+        </ul>
+    </div>
+    <div class="container-fluid d-flex justify-content-center p-5">
+        <form action="{{url_for('guardar_facultad')}}" class="formulario" method="post">
+            <div class="d-flex flex-column align-items-center container-fluid p-5">
+                <div class="d-flex col-12 align-items-center mb-2 justify-content-center p-3">
+                    <div class="col">
+                        <labelfor="name" class="form-label">Nombre de facultad:</label>
+                    </div>
+                    <div class="col">
+                        <input type="name" class="form-control" name="nombreFa">
+                    </div>
+                </div>
+                <div class="d-flex col justify-content-end mb-3 p-3">
+                    <label for="textarea">Descripción</label>
+                    <textarea id="textarea" rows="5" name="descripcion"></textarea>
+                </div>
+                <div class="col-12 p-3 ">
+                    <select  id="estado" name="estado">
+                        <option>No vigente</option>
+                        <option>Vigente</option>
+                    </select>
+                </div>
+                <div id="buttons" class="mt-3 d-flex">
+                    
+                    <a href="{{url_for('facultades')}}"><button type="button"
+                            class="btn btn-danger ">Cancelar</button></a>
+
+                            <button type="submit" class="btn btn-success ms-3">Registrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

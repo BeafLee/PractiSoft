@@ -1,0 +1,82 @@
+{% extends maestra %}
+{% block titulo %}Inicio{% endblock %}
+{% block subtitul %}Inicio{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/maestra.css') }}">
+{% endblock %}
+{% block contenido %}
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_e')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('practicas')}}">Practica</a>
+    </label>
+  </div>
+  <div class="container text-center" style="margin-top: 40px;">
+    <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="http://www.usat.edu.pe/web/wp-content/uploads/2023/06/rsu-semana.jpg" class="d-block w-100"
+            alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://storage.googleapis.com/usat/webusat/idiomas/inglesidiomas.jpg" class="d-block w-100"
+            alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="http://www.tuproyectodevida.pe/wp-content/uploads/2023/04/QLMPTH1200x630se.png"
+            class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <div style="display: flex; margin-top: 50px;">
+      <div class="card mb-3" style="max-width: 540px; margin-right: 15%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="https://www.ucsf.edu.ar/wp-content/uploads/2023/01/CURSO-DE-INVESTIGACION-DISENO-Y-RECOLECCION-DE-DATOS-MEDIANTE-ENCUESTAS-WEB.jpg"
+              class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Desarrollo Estudiantil</h5>
+              <p class="card-text">Cuestionario sobre el desarrollo de investigación formativa universitaria</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="https://img.freepik.com/vector-gratis/pagar-saldo-adeudado-ilustracion-concepto-abstracto-realizacion-pagos-credito-pago-dinero-adeudado-banco-saldo-adeudado-consolidacion-gestion-deudas-factura-contribuyente_335657-1236.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Servicios academicos</h5>
+              <p class="card-text">Cambios en los procesos de solicitud y pago de servicios académicos.</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</section>
+{% endblock %}

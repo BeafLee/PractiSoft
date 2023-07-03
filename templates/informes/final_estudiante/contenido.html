@@ -1,0 +1,59 @@
+<p style="text-align: center;"><strong>INTRODUCCI&Oacute;N</strong></p>
+<p style="padding-left: 40px; text-align: justify;">{{context.introduccion}}</p>
+<ol>
+    <li><strong>Descripci&oacute;n de la instituci&oacute;n</strong>
+        <ul style="list-style-type: disc;">
+            <li><strong>Datos de la Instituci&oacute;n</strong>
+                <ul style="list-style-type: circle;">
+                    <li><strong>Raz&oacute;n social</strong><br />{{context.razon_social}}</li>
+                    <li><strong>Direcci&oacute;n</strong><br />{{context.direccion}}</li>
+                    <li><strong>Giro de la Instituci&oacute;n</strong><br />{{context.giro_institucion}}</li>
+                    <li><strong>Representante legal de la Instituci&oacute;n</strong><br />{{context.representante_legal}}</li>
+                    <li><strong>Cantidad de trabajadores</strong><br />{{context.cantidad_trabajadores}}</li>
+                </ul>
+            </li>
+            <li><strong>Visi&oacute;n</strong><br />{{context.vision}}</li>
+            <li><strong>Misi&oacute;n</strong><br />{{context.mision}}</li>
+            <li><strong>Infraestructura</strong>
+                <ul style="list-style-type: circle;">
+                    <li><strong>Infraestructura f&iacute;sica</strong><br />{{context.infra_fisica}}</li>
+                    <li><strong>Infraestructura tecnol&oacute;gica</strong><br />{{context.infra_tecno}}</li>
+                </ul>
+            </li>
+            <li><strong>Organigrama</strong><br /><br><img
+                    src="{{context.organigrama}}" alt="organigrama"
+                    width="600" /></li>
+        </ul>
+    </li>
+    <li><strong>Labores desarrolladas por el estudiante</strong>
+        <ul style="list-style-type: disc;">
+            <li><strong>Descripci&oacute;n del &aacute;rea de trabajo y relaciones laborales</strong><br />{{context.desc_area}}
+            </li>
+            <li><strong>Descripci&oacute;n de las labores realizadas</strong><br />{{context.desc_labores}}</li>
+        </ul>
+    </li>
+    <li><strong>Conclusiones</strong>
+        <ul style="list-style-type: disc;">
+            {% for conclusion in context.conclusiones %}
+            <li>{{conclusion}}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li><strong>Recomendaciones</strong>
+        <ul style="list-style-type: disc;">
+            {% for recomendacion in context.recomendaciones %}
+            <li>{{recomendacion}}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li><strong>Bibliograf&iacute;a</strong>
+        <ul style="list-style-type: disc;">
+            <li>{{context.bibliografia}}</li>
+        </ul>
+    </li>
+    <li><strong>Anexos</strong>
+        <!-- <ul style="list-style-type: disc;">
+            <li>{{anexos}}</li>
+        </ul> -->
+    </li>
+</ol>

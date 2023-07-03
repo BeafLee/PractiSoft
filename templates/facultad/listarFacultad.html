@@ -1,0 +1,90 @@
+{% extends maestra %}
+{% block titulo %}Gestionar facultades {% endblock %}
+{% block subtitul %}Gestionar facultades {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+
+{% endblock %}
+{% block contenido %}
+
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOpSeleccionado">
+      <a href="{{url_for('facultades')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('agregar_facultad')}}">Nuevo</a>
+    </label>
+  </div>
+
+  <div class="tabla" id="contenido-dinamico">
+    <table id="tabla" class="display">
+      <thead>
+        <tr class="headTable">
+          <th>Facultad</th>
+          <th>Descripcion</th>
+          <th>Estado</th>
+          <th>Editar</th>
+          <th>Eliminar</th>
+          <th>Operación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for facultad in facultades %}
+        <tr>
+          <td class="nombre" style="text-align: center;">{{facultad[1]}}</td> 
+          <td class="descripcion">{{facultad[2]}}</td>
+         
+          <td class="estado">{{facultad[3]}}</td>
+          <td class="editar"><a href="{{url_for('editar_facultad', id=facultad[0])}}"><i class="bi bi-pencil-fill"></i></a></td>
+          <td class="eliminar"><a href="{{url_for('eliminar_facultad', id=facultad[0])}}"><i class="bi bi-trash-fill"></i></a></td>
+          <td class="darBaja">
+              {%if facultad[3] == "Vigente"%}
+              <a href="{{url_for('darbaja_facultad', id=facultad[0])}}" ><i class="bi bi-arrow-down-circle-fill"></i></a>
+              {%else%}
+              <a href="{{url_for('daralta_facultad', id=facultad[0])}}"><i class="bi bi-arrow-up-circle-fill"></i></a>
+              {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- <div class="indice">
+    <div class="btnIndice">
+      <button id="inicio">&lt;&lt;</button>
+      <button id="atras">&lt;</button>
+      <p id="contador" value="1">1</p>
+      <button id="adelante">&gt;</button>
+      <button id="final">&gt;&gt;</button>
+    </div>
+    <div class="sltIndice">
+      <select name="mostrar" id="mostrar">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="30">30</option>
+      </select>
+    </div>
+  </div> -->
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/paginacion.js') }}"></script>
+
+
+{% endblock %}

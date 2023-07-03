@@ -1,0 +1,57 @@
+{% extends maestra %}
+{% block titulo %} Ver Seguimiento Práctica {% endblock %}
+{% block subtitul %} Ver Seguimiento Práctica {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/verSeguimiento.css')}}">
+{% endblock %}
+{% block contenido %}
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{ url_for('practicas')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{ url_for('seguimiento_practica', id=seguimiento_practica[6])}}">Listar</a>
+    </label>
+  </div>
+  <div class="verseguimiento">
+    <div class="formulario">
+      <form>
+        <h1 class="datos">DATOS DEL SEGUIMIENTO</h1>
+        <div class="obv">
+          <label for="">Estudiante:</label>
+          <input id="" type="text" name="apellidos" value="{{seguimiento_practica[0]}}" disabled>
+        </div>
+        <div class="obv">
+            <label for="">Empresa:</label>
+            <input id="" type="text" name="razonSocial" value="{{seguimiento_practica[1]}}" disabled>
+        </div>
+        <div class="obv">
+              <label for="">Tipo:</label>
+              <input id="" type="text" name="tipo" value="{{seguimiento_practica[2]}}" disabled>
+        </div>
+        <div class="obv">
+              <label for="">Fecha:</label>
+              <input id="" type="date" name="fechaCreacion" value="{{seguimiento_practica[3]}}" disabled>
+        </div>
+        <div class="obv">
+              <label for="">Hora:</label>
+              <input id="" type="text" name="horaCreacion" value="{{seguimiento_practica[4]}}" disabled>
+        </div>
+        <div class="observacion">
+                <label for="">Observaciones:</label>
+                <textarea class="textarea" id="observacion" name="observacion" disabled>{{seguimiento_practica[5]}}</textarea>
+                <!-- <textarea ><input id="" type="" name="observacion" value="{{seguimiento_practica[5]}}" disabled></textarea> -->
+        </div>
+        <div class="btnsNuevo">
+          <button id="btnCancelar">
+            <a href="{{ url_for('seguimiento_practica', id=seguimiento_practica[6]) }}">Cerrar</a>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

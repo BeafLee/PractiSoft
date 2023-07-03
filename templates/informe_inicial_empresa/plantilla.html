@@ -1,0 +1,57 @@
+<p style="text-align: center;"><strong>INFORME INICIAL SOBRE PR&Aacute;CTICAS PRE PROFESIONALES</strong></p>
+<p style="text-align: center;"><strong>(ELABORADO POR LA EMPRESA/INSTITUCI&Oacute;N)</strong></p>
+<p style="text-align: center;"><strong>&nbsp;</strong></p>
+<ol>
+<li><strong>Nombre de la Empresa/Instituci&oacute;n</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[0]}}</p>
+<ol start="2">
+<li><strong>Persona de la Empresa/Instituci&oacute;n responsable de la pr&aacute;ctica</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[1]}}</p>
+<ol start="3">
+<li><strong>Cargo que ocupa</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[2]}}</p>
+<ol start="4">
+<li><strong>Nombres y apellidos y del estudiante</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[3]}}</p>
+<ol start="5">
+<li><strong>Fecha de inicio de la pr&aacute;ctica</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[4]}}</p>
+<ol start="6">
+<li><strong>Fecha de t&eacute;rmino de la pr&aacute;ctica</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoP[5]}}</p>
+<ol start="7">
+<li><strong>Aceptaci&oacute;n por parte de la Empresa/Instituci&oacute;n para la realizaci&oacute;n de la pr&aacute;ctica y compromiso para atender al estudiante durante toda la ejecuci&oacute;n</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoI[1]}}</p>
+<ol start="8">
+<li><strong>Labores del practicante</strong></li>
+</ol>
+<table style="border-collapse: collapse; padding: 5px; width: 100%; border: 1px solid black;">
+<tbody>
+<tr>
+<td style="width: 100%; text-align: center; padding: 5px; border: 1px solid black">Labores</td>
+</tr>
+{% for info in lab %}
+<tr>
+<td style="width: 100%; text-align: left; padding: 5px; border: 1px solid black">{{info}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<ol start="9">
+<li><strong>Fecha, firma del responsable y sello de la Empresa/Instituci&oacute;n</strong></li>
+</ol>
+<p style="padding-left: 40px;">{{infoI[4]}}</p>
+<p style="padding-left: 40px;">{{infoI[5]}}</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<p style="text-align: center;"><strong>{{infoP[1]}}</strong></p>
+<p style="text-align: center;"><strong>{{infoP[2]}}</strong></p>

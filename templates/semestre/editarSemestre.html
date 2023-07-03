@@ -1,0 +1,56 @@
+{% extends maestra %}
+{% block titulo %} Editar semestre {% endblock %}
+{% block subtitul %} Editar semestre {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('semestres')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('semestres')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('agregar_semestre')}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="formulario">
+      <form action="{{url_for('actualizar_semestre')}}" method="post">
+        <input type="hidden" name="idSemestre" value="{{semestre[0]}}" required>
+        <div class="nombreSemestre">
+          <label for="">Nombre de semestre:</label>
+          <input id="" type="text" name="nombreSe" value="{{semestre[1]}}" required>
+        </div>
+        <div class="nombreSemestre">
+          <label for="">Fecha inicio:</label>
+          <input id="" type="date" name="fechaI" value="{{semestre[2]}}" required>
+        </div>
+        <div class="nombreSemestre">
+          <label for="">Fecha fin:</label>
+          <input id="" type="date" name="fechaF" value="{{semestre[3]}}" required>
+        </div>
+        <div class="nombreSemestre">
+          <label for="">Vigencia:</label>
+          <input id="checkEstado" type="checkbox" {%if (opt): %}checked{%endif%} value="{{semestre[4]}}"
+            onclick="checkValue()">
+          <input type="hidden" value="{{semestre[4]}}" id="estado" name="estado">
+        </div>
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('semestres')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

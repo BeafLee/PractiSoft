@@ -1,0 +1,92 @@
+{% extends maestra %}
+{% block titulo %} EDITAR EMPRESA {% endblock %}
+{% block subtitul %} EDITAR EMPRESA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaEmpresa.css') }}">
+
+{% endblock %}
+{% block contenido %}
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('empresas')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('empresas')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="#">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevaEmpresa">
+    <div class="formulario">
+      <input type="hidden" name="idEmpresa" value="{{empresa[0]}}">
+      <div class="cont1">
+        <div class="frmNombreEm">
+          <label for="">Razón Social:</label>
+          <input id="" type="text" name="razonSocial"  value="{{empresa[1]}}" disabled>
+        </div>
+        <div class="frmRuc">
+          <label for="">RUC:</label>
+          <input id="" type="text" name="ruc"  value="{{empresa[3]}}" disabled>
+        </div>
+      </div>
+      <div class="frmDireccion">
+        <label for="">Dirección:</label>
+        <input id="" type="text" name="direccion"  value="{{empresa[2]}}" disabled>
+      </div>
+      <div class="cont2">
+        <div class="frmTelefono">
+          <label for="">Teléfono:</label>
+          <input id="" type="text" name="telefono"  value="{{empresa[4]}}" disabled>
+        </div>
+        <div class="frmTelefono2">
+          <label for="">Teléfono 2:</label>
+          <input id="" type="text" name="telefono2"  value="{{empresa[5]}}" disabled>
+        </div>
+      </div>
+      <div class="frmCorreo">
+        <label for="">Correo:</label>
+        <input id="" type="text" name="correo"  value="{{empresa[6]}}"disabled>
+      </div>
+      <div class="cont3">
+        <div class="frmPais">
+          <label for="">País:</label>
+          <select name="pais" id="pais" onchange="habilitarCombos(this)" disabled>
+            <option selected>{{info[0]}}</option>
+          </select>
+        </div>
+        <div class="frmDepartamento">
+          <label for="">Departamento:</label>
+          <select name="departamento" id="departamento" disabled>
+            <option selected>{{info[1]}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="cont4">
+        <div class="frmProvincia">
+          <label for="">Provincia:</label>
+          <select name="provincia" id="provincia" disabled>
+            <option value="value1" selected>{{info[2]}}</option>
+          </select>
+        </div>
+        <div class="frmDistrito">
+          <label for="">Distrito:</label>
+          <select name="distrito" id="distrito" disabled>
+            <option value="value1" selected>{{info[3]}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="btnsNuevaEmpresa">
+        <button id="btnCancelar">
+          <a href="{{url_for('empresas')}}">Volver</a>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/empresa.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends maestra %}
+{% block titulo %}
+    {%if data[0]=="Crear"%}
+        Registrar informe final - estudiante
+    {%elif data[0]=="Editar"%}
+        Editar informe final - estudiante
+    {%else%}
+        Informe final - estudiante
+    {%endif%}
+{% endblock %}
+{% block subtitul %}
+    {%if data[0]=="Crear"%}
+        Registrar informe final - estudiante
+    {%elif data[0]=="Editar"%}
+        Editar informe final - estudiante
+    {%else%}
+        Informe final - estudiante
+    {%endif%}
+{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+    <div class="container mt-2">
+        <h1>Descripción de la institución</h1>
+        {%if data[0]=="Crear"%}
+        <form action="{{url_for('guardar_informeFinalEstudiante')}}" method="post" enctype="multipart/form-data">
+        {%elif data[0]=="Editar"%}
+        <form action="{{url_for('actualizar_informeFinalEstudiante')}}" method="post" enctype="multipart/form-data">
+        {%else%}
+        <form action="{{url_for('actualizar_informeFinalEstudiante')}}" method="post" enctype="multipart/form-data">
+        {%endif%}
+            <input type="text" hidden name="idInforme" value="{{data[1]}}">
+            <input type="text" hidden name="idPractica" value="{{data[1]}}">
+            
+            
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="introduccion">
+                        <h3>Introducción</h3>
+                    </label>
+                    <textarea class="form-control" id="introduccion" name="introduccion" required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear"
+                        %}{{data[4][14]}}{%endif%}</textarea>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <h3>Datos de la institución</h3>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="razonSocial">Razón Social:</label>
+                        <input type="text" class="form-control" id="razonSocial" name="razonSocial" disabled
+                            value="{{data[2]}}">
+                    </div>
+                    <div class="form-group col">
+                        <label for="direccion">Dirección:</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" disabled
+                            value="{{data[3]}}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="giro">Giro de la Institución:</label>
+                        <input type="text" class="form-control" id="giro" name="giro"
+                            placeholder="Rubro a la que se dedica la institución" required {%if data[0]!="Crear"
+                            %}value="{{data[4][0]}}" {%endif%} {%if data[0]=="Ver"%}disabled{%endif%}>
+                    </div>
+                    <div class="form-group col">
+                        <label for="representante">Representante legal de la Institución:</label>
+                        <input type="text" class="form-control" id="representante" name="representante"
+                            placeholder="Grado. Nombres y apellidos" required {%if data[0]!="Crear"
+                            %}value="{{data[4][1]}}" {%endif%} {%if data[0]=="Ver"%}disabled{%endif%}>
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="cantTrabajadores">Cantidad de trabajadores:</label>
+                        <input type="number" class="form-control" id="cantTrabajadores" name="cantTrabajadores" required
+                            {%if data[0]!="Crear" %}value="{{data[4][2]}}"{%endif%} {%if data[0]=="Ver"%}disabled{%endif%}>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="my-1 col">
+                    <div class="form-group">
+                        <label for="vision">
+                            <h3>Visión</h3>
+                        </label>
+                        <textarea class="form-control" id="vision" name="vision" required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear"
+                            %}{{data[4][3]}}{%endif%}</textarea>
+                    </div>
+                </div>
+
+                <div class="my-1 col">
+                    <div class="form-group">
+                        <label for="mision">
+                            <h3>Misión</h3>
+                        </label>
+                        <textarea class="form-control" id="mision" name="mision" required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear"
+                            %}{{data[4][4]}}{%endif%}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <h3>Infraestructura</h3>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="infraFisica">Infraestrucutra física</label>
+                        <textarea class="form-control" id="infraFisica" name="infraFisica"
+                            required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear" %}{{data[4][5]}}{%endif%}</textarea>
+                    </div>
+                    <div class="col">
+                        <label for="infraTecno">Infraestrucutra tecnológica</label>
+                        <textarea class="form-control" id="infraTecno" name="infraTecno" required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear"
+                            %}{{data[4][6]}}{%endif%}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="organigramaImg">
+                        <h3>Organigrama</h3>
+                    </label>
+                    <br>
+                    <div class="row ">
+                        <input type="file" class="form-control col mx-3" id="organigramaImg" name="organigramaImg"
+                            accept="image/jpeg, image/png" required
+                            placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg" {%if data[0]=="Ver"%}disabled{%endif%}>
+                        {%if data[0]!="Crear"%}
+                        <a href="visualizar/{{data[4][7]}}/{{data[1]}}" class="btn btn-info col-2 me-3"  target="_blank"><i class="bi bi-eye-fill"
+                                style="color: black;"> Visualizar</i></a>
+                        {%endif%}
+                    </div>
+
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <h3>Labores desarrolladas por el estudiante</h3>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="descAreaTrabajo">Descripción del área de trabajo y relaciones laborales</label>
+                        <textarea class="form-control" id="descAreaTrabajo" name="descAreaTrabajo"
+                            placeholder="Descripción y detalle"
+                            required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear" %}{{data[4][8]}}{%endif%}</textarea>
+                    </div>
+                    <div class="col">
+                        <label for="descLabores">Descripción de las labores realizadas</label>
+                        <textarea class="form-control" id="descLabores" name="descLabores"
+                            placeholder="Descripción y detalle"
+                            required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear" %}{{data[4][9]}}{%endif%}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group" id="conclusiones-inputs">
+                    <label for="conclusiones">
+                        <h3>Conclusiones:</h3>
+                    </label>
+                    {%if data[0]!="Crear" %}
+                        {% for conclusion in data[4][10] %}
+                            <div class="input-group mb-1">
+                                <input type="text" class="form-control" name="conclusiones" value="{{conclusion}}" {%if data[0]=="Ver"%}disabled{%endif%}>
+                                {%if data[0]!="Ver"%}
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                                </div>
+                                {%endif%}
+                            </div>
+                        {% endfor %}
+                    {%else%}
+                    <div class="input-group mb-1">
+                        <input type="text" class="form-control" name="conclusiones">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+                {%if data[0]!="Ver"%}
+                <div class="mt-2">
+                    <button class="btn btn-primary" type="button" id="add-conclusion">Agregar</button>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+                {%endif%}
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group" id="recomendaciones-inputs">
+                    <label for="recomendaciones">
+                        <h3>Recomendaciones:</h3>
+                    </label>
+                    {%if data[0]!="Crear"%} 
+                    {% for recomendacion in data[4][11] %}
+                    <div class="input-group mb-1">
+                        <input type="text" class="form-control" name="recomendaciones" value="{{recomendacion}}" {%if data[0]=="Ver"%}disabled{%endif%}>
+                        {%if data[0]!="Ver"%}
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                        </div>
+                        {%endif%}
+                    </div>
+                    {% endfor %}
+                    {%else%}
+                    <div class="input-group mb-1">
+                        <input type="text" class="form-control" name="recomendaciones" >
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+                {%if data[0]!="Ver"%}
+                <div class="mt-2">
+                    <button class="btn btn-primary" type="button" id="add-recomendacion">Agregar</button>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+                {%endif%}
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="bibliografia">
+                        <h3>Bibliografía</h3>
+                    </label>
+                    <textarea class="form-control" id="bibliografia" name="bibliografia"
+                        required {%if data[0]=="Ver"%}disabled{%endif%}>{%if data[0]!="Crear" %}{{data[4][12]}}{%endif%}</textarea>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="anexosPdf">
+                        <h3>Anexos</h3>
+                    </label>
+                    <br>
+                    <div class="row ">
+                        <input type="file" class="form-control col mx-3" id="anexosPdf" name="anexosPdf"
+                            accept="application/pdf" required {%if data[0]=="Ver"%}disabled{%endif%}>
+                        {%if data[0]!="Crear"%}
+                        <a href="descargar_pdf/{{data[4][13]}}/{{data[1]}}" class="btn btn-info col-2 me-3"><i class="bi bi-eye-fill"
+                                style="color: black;"> Visualizar</i></a>
+                        {%endif%}
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+            <div class="text-center pb-5">
+                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                {%if data[0]!="Ver"%}
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="submit" class="btn btn-outline-success">Guardar y Enviar</button>
+                {%endif%}
+            </div>
+
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-conclusion').click(function () {
+            var inputGroup = '<div class="input-group mb-1">' +
+                '<input type="text" class="form-control" name="conclusiones">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#conclusiones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-recomendacion').click(function () {
+            var inputGroup = '<div class="input-group mb-1">' +
+                '<input type="text" class="form-control" name="recomendaciones">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#recomendaciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+{% endblock %}

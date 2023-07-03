@@ -1,0 +1,26 @@
+
+insert into TIPO_USUARIO(idTipoU,estado,nombPerfil)values(1,'V','E');
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('JuanCP','123456',1);
+insert into FACULTAD(nombre,estado,descripcion)values('Ingenieria','V','Facultad de Ingenierias');
+insert into ESCUELA(nombre,estado,descripcion,idFacultad)values('Sistemas','V','Ingenieria de Sistemas y computacion',1);
+insert into PLAN_ESTUDIO(nombre,estado,idEscuela)values('2017','V',1);
+
+insert into LINEA_DESARROLLO(descripcion, estado) values('linea de desarrollo de prueba','V');
+
+-----
+insert into EMPRESA(idEmpresa,correo,direccion,idCiudad,razonSocial,ruc,telefono, cantTrabajadores, vision, mision) VALUES(1,'correo@mail.com', 'luisgonzales' ,1, 'TECNO NORT', '12345678901','123456789',25,'Vision de la empresa TECNO NORT', 'Mision de la empresa TECNO NORT');
+
+
+insert into ESTUDIANTE(apellidos,cicloActual,codigo,correo1,correo2,direccion,dni, idCiudad,idPlanEs,idUsuario,nombres,semestreInicio,telefono1,telefono2) values ('Cajan Polo','II','201VP00019','cajanjuan1@gmail.com','cajanpolojuanalberto@gmail.com','urb. El Ingeniero1','71491708',1,1,1,'Juan Alberto','2020-1','912267158','123456789');
+
+insert into SEMESTRE(nombreSe, estado, fechaI, fechaF) values('2023-1', 'V','20-03-2023', '15-07-2023');
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','A');
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('admin','admin',2);
+insert into JEFE_INMEDIATO(idJefe,apellidos,cargo, correo,correo2,idEmpresa,nombre,telefono, telefono2,turnoHorario, idUsuario) values(1,'Burgos', 'Admi','correo1@gmail.com','correo2@gmail.com', 1,'Luis','123456789','987654321','Tarde', 2);
+
+
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','D'); 
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('Chung','carlos',3);
+insert into PERSONAL(idPersonal,apellidos,CIUDADid,correo1,correo2,direccion, ESCUELAid,estado, idUsuario,nombres, numDoc,celular1,celular2,tipoDoc) values(1,'Chung',1,'correo1@gmail.com', 'correo2@gmail.com','direccion desconocida',1,'V',3,'Carlos','12345678','123456789','987654321','D');
+
+insert into PRACTICA(idPractica,estado,fechaInicio,fechaFin,fechaLimite,horasPractica, idAlumno,idJefe,idLinea, idPersonal,idSemestreIn,idSemestreFi,modalidad) values(1,'V','2023-03-28','2023-07-10','2023-07-20',280,1,1,1,1,1,1,'P');

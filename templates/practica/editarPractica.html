@@ -1,0 +1,176 @@
+{% extends maestra %}
+{% block titulo %}AGREGAR PRÁCTICA {% endblock %}
+{% block subtitul %}AGREGAR PRÁCTICA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaPractica.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="#">Listar</a>
+    </label>
+    <label class="btnOp gestSelect">
+      <a href="#" class="gestSelect">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevaPractica">
+    <div class="formulario">
+      <form action="{{url_for('guardar_practica')}}" method="post">
+
+
+        <div>
+          <h2>DATOS DEL ESTUDIANTE</h2>
+          <br>
+          <div class="wrapper">
+
+            <label for="">Código de estudiante:</label>
+            <input readonly value="{{estudiante[1] }}"></input>
+            <label for="">DNI:</label>
+            <input readonly value="{{estudiante[2] }}"></input>
+
+
+          </div>
+          <br>
+          <div class="wrapper">
+            <label for="">Nombre Completo:</label>
+            <input readonly value="{{estudiante[3] }}"></input>
+            <label for="">Plan de Estudios:</label>
+            <input readonly value="{{estudiante[4] }}"></input>
+
+          </div>
+
+
+        </div>
+
+        <br>
+        <div>
+          <h2>DATOS DE LA EMPRESA</h2>
+          <br>
+          <div class="wrapper2">
+
+            <label for="">Empresa</label>
+            <div class="col">
+                <select id="empresa" class="dropdown" name="emp">
+                <option >Empresas</option>
+                {% for empresa in empresa %}
+                <option value="{{ empresa[0] }}">{{ empresa[0] }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+
+          </div>
+          <br>
+          <div class="wrapper">
+
+            <label for="">RUC:</label>
+            <input readonly id="ruc" name="ruc"></input>
+            <label for="">Jefe Inmediato:</label>
+            <input readonly id="jefe" name="jefe"></input>
+
+
+          </div>
+
+        </div>
+
+
+
+        <br>
+        <div>
+          <h2>DATOS DEL SEMESTRE</h2>
+
+          <br>
+          <div class="wrapper">
+
+            <label for="">Semestre de Inicio:</label>
+            <input readonly value="{{semestreA[0] }}" name="semI"></input>
+            <label for="">Semestre Final:</label>
+            <div class="col">
+              <select id="" class="dropdown" name="semF">
+                {% for semestreF in semestreF %}
+                <option value="{{ semestreF[0] }}">{{ semestreF[0] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+          </div>
+
+        </div>
+        <br>
+        <div>
+          <h2>DATOS DE LA PRÁCTICA</h2>
+          <br>
+          <div class="wrapper">
+
+            <label for="">Linea de desarrollo::</label>
+            <div class="col">
+              <select id="" class="dropdown" name="linDes">
+                {% for linea in linea %}
+                <option value="{{ linea[1] }}">{{ linea[1] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <label for="">Modalidad:</label>
+            <div class="col">
+              <select id="" class="dropdown" name="mod">
+                <option value="P">Presencial</option>
+                <option value="R">Remoto</option>
+                <option value="S">Semi presencial</option>
+              </select>
+            </div>
+
+
+          </div>
+          <br>
+          <div class="wrapper">
+            <label for="">Fecha Inicio:</label>
+            <input id="" type="date" name="feI">
+            <label for="">Fecha Fin:</label>
+            <input id="" type="date" name="feF">
+
+          </div>
+          <br>
+          <div class="wrapper">
+            <label for="">Horas Prácticas:</label>
+            <input id="" type="number" name="hPrac">
+            <label for="">Fecha Limite:</label>
+            <input id="" type="date" name="feLim">
+
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="btnsNuevaPractica">
+          <button id="btnCancelar">
+            <a href="{{url_for('semestres')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">
+
+            Guardar
+
+          </button>
+          <button id="btnRegistrar" type="submit">
+
+            Guardar y Enviar
+
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/practica.js') }}"></script>
+{% endblock %}

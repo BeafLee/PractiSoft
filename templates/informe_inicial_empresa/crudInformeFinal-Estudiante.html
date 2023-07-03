@@ -1,0 +1,252 @@
+{% extends maestra %}
+{% block titulo %}Registrar informe final - estudiante{% endblock %}
+{% block subtitul %}Registrar informe final - estudiante{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+    <div class="container mt-2">
+        <h1>Descripción de la institución</h1>
+        <form class="">
+            <div class="my-1">
+                <br>
+                <h3>Datos de la institución</h3>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="razonSocial">Razón Social:</label>
+                        <input type="text" class="form-control" id="razonSocial" name="razonSocial" disabled>
+                    </div>
+                    <div class="form-group col">
+                        <label for="direccion">Dirección:</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" disabled>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="giro">Giro de la Institución:</label>
+                        <input type="text" class="form-control" id="giro" name="giro"
+                            placeholder="Rubro a la que se dedica la institución" required>
+                    </div>
+                    <div class="form-group col">
+                        <label for="representante">Representante legal de la Institución:</label>
+                        <input type="text" class="form-control" id="representante" name="representante"
+                            placeholder="Grado. Nombres y apellidos" required>
+                    </div>
+                    <div class="form-group col">
+                        <label for="cantTrabajadores">Cantidad de trabajadores:</label>
+                        <input type="number" class="form-control" id="cantTrabajadores" name="cantTrabajadores"
+                            required>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="my-1 col">
+                    <div class="form-group">
+                        <label for="vision">
+                            <h3>Visión</h3>
+                        </label>
+                        <textarea class="form-control" id="vision" name="vision" required></textarea>
+                    </div>
+                </div>
+
+                <div class="my-1 col">
+                    <div class="form-group">
+                        <label for="mision">
+                            <h3>Misión</h3>
+                        </label>
+                        <textarea class="form-control" id="mision" name="mision" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <h3>Infraestructura</h3>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="infraFisica">Infraestrucutra física</label>
+                        <textarea class="form-control" id="infraFisica" name="infraFisica" required></textarea>
+                    </div>
+                    <div class="col">
+                        <label for="infraTecno">Infraestrucutra tecnológica</label>
+                        <textarea class="form-control" id="infraTecno" name="infraTecno" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="organigramaImg">
+                        <h3>Organigrama</h3>
+                    </label><br>
+                    <input type="file" class="form-control" id="organigramaImg" name="organigramaImg[]"
+                        accept="image/jpeg, image/png" required placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <h3>Labores desarrolladas por el estudiante</h3>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="descAreaTrabajo">Descripción del área de trabajo y relaciones laborales</label>
+                        <textarea class="form-control" id="descAreaTrabajo" name="descAreaTrabajo"
+                            placeholder="Descripción y detalle" required></textarea>
+                    </div>
+                    <div class="col">
+                        <label for="descLabores">Descripción de las labores realizadas</label>
+                        <textarea class="form-control" id="descLabores" name="descLabores"
+                            placeholder="Descripción y detalle" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group" id="concluciones-inputs">
+                    <label for="concluciones">
+                        <h3>Conclusiones:</h3>
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="concluciones[]">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button class="btn btn-primary" type="button" id="add-conclucion">Agregar</button>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group" id="recomendaciones-inputs">
+                    <label for="recomendaciones">
+                        <h3>Recomendaciones:</h3>
+                    </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="recomendaciones[]">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button class="btn btn-primary" type="button" id="add-recomendacion">Agregar</button>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="vision">
+                        <h3>Bibliografía</h3>
+                    </label>
+                    <textarea class="form-control" id="vision" name="vision" required></textarea>
+                </div>
+            </div>
+
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="anexosImg">
+                        <h3>Anexos</h3>
+                    </label><br>
+                    <input type="file" class="form-control" id="anexosImg" name="anexosImg[]"
+                        accept="image/jpeg, image/png" required>
+                </div>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="imagenes">Imágenes:</label>
+                <input type="file" class="form-control-file" id="imagenes" name="imagenes[]" multiple
+                    accept="image/jpeg, image/png">
+                <input type="file" class="form-control-file" id="imagenes" name="imagenes[]" multiple>
+            </div>
+
+            <div class="form-group" id="dynamic-inputs">
+                <label for="valores">Valores:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valores[]">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <button class="btn btn-primary" type="button" id="add-input">Agregar Valor</button>
+                <button class="btn btn-success" type="submit">Guardar</button>
+            </div> -->
+
+            <br>
+            <div class="text-center pb-5">
+                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="submit" class="btn btn-outline-success">Guardar y Enviar</button>
+            </div>
+
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-conclucion').click(function () {
+            var inputGroup = '<div class="input-group mt-1">' +
+                '<input type="text" class="form-control" name="concluciones[]">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#concluciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-recomendacion').click(function () {
+            var inputGroup = '<div class="input-group mt-1">' +
+                '<input type="text" class="form-control" name="recomendaciones[]">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#recomendaciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+{% endblock %}
