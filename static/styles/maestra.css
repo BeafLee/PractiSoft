@@ -1,0 +1,140 @@
+/* GENERALES */
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'K2D', sans-serif;
+}
+body{
+    height: 100vh;
+    min-height: 100vh;
+}
+.navSec{
+    display: flex;
+}
+
+i {
+    color: red;
+}
+
+/* HEADER */
+
+header{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    display: flex;
+    justify-content: space-between;
+}
+#logo{
+    max-height: 100px;
+}
+.titulo{
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+#iconoUsuario{
+    height: 50px;
+    border-radius: 50%;
+}
+.usuario{
+    padding: 10px;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nomUsuario {
+    color: white;
+    width: 130px;
+    background-color: red;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.nomUsuario a p{
+    color: white;
+}
+
+/* NAV */
+
+nav{
+    border-right: 2px solid rgb(198, 198, 198);
+    width: 300px;
+    /*height: calc(100vh - 106px); */
+    min-height: 100vh;
+}
+.barraOp{
+    height: 35px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+    background-color: red;
+    font-size: 25px;
+}
+.opGestion,.opReporte{
+    display: flex;
+    align-items: center;
+    justify-content: space-around !important;
+}
+
+.contGestion{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: 16px;
+}
+.contGestion > li{
+    display: flex;
+    justify-content: end;
+    text-decoration: none !important;
+}
+li{
+    padding: 3px;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+
+/* SECTION */
+
+section{
+    background-image: url("../fondo.jpg");
+    /*height: calc(100vh - 106px); */
+    min-height: 100vh;
+    width: 100%;
+}
+
+    /* BARRA GESTIÓN */
+
+.barraGest{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 53px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+    border-bottom: 2px solid rgb(198, 198, 198);
+}
+.btnOp a{
+    color: rgb(199, 199, 199);
+}
+.btnOp{
+    margin-left: 150px;
+}
+.btnOp a:hover{
+    color: black;
+    border-bottom: 4px solid red;
+}
+
+.btnOpSeleccionado {
+    margin-left: 150px;
+    color: black;
+    border-bottom: 4px solid red;
+}
+

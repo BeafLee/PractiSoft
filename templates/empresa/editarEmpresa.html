@@ -1,0 +1,133 @@
+{% extends maestra %}
+{% block titulo %} EDITAR EMPRESA {% endblock %}
+{% block subtitul %} EDITAR EMPRESA {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaEmpresa.css') }}">
+
+{% endblock %}
+{% block contenido %}
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('empresas')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('empresas')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="#">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevaEmpresa">
+    <div class="formulario">
+      <form action="{{url_for('actualizar_empresa')}}" method="post">
+        <input type="hidden" name="idEmpresa" value="{{empresa[0]}}">
+        <div class="cont1">
+          <div class="frmNombreEm">
+            <label for="">Razón Social:</label>
+            <input id="" type="text" name="razonSocial"  value="{{empresa[1]}}" required>
+          </div>
+          <div class="frmRuc">
+            <label for="">RUC:</label>
+            <input id="" type="text" name="ruc"  value="{{empresa[3]}}" maxlength="11" oninput="validarRuc(this)" required>
+          </div>
+        </div>
+        <div class="frmDireccion">
+          <label for="">Dirección:</label>
+          <input id="" type="text" name="direccion"  value="{{empresa[2]}}" required>
+        </div>
+        <div class="cont2">
+          <div class="frmTelefono">
+            <label for="">Teléfono 1:</label>
+            <input id="" type="text" name="telefono"  value="{{empresa[4]}}" oninput="validarNumero(this)" required>
+          </div>
+          <div class="frmTelefono2">
+            <label for="">Teléfono 2:</label>
+            <input id="" type="text" name="telefono2"  value="{{empresa[5]}}" oninput="validarNumero(this)">
+          </div>
+        </div>
+        <div class="frmCorreo">
+          <label for="">Correo:</label>
+          <input id="" type="text" name="correo"  value="{{empresa[6]}}" oninput="validarCorreo(this)" required>
+        </div>
+        <div class="cont3">
+          <div class="frmPais">
+            <label for="">País:</label>
+            <select name="pais" id="pais" onchange="habilitarCombos(this)" required>
+              <option value="">Elija un país</option>
+              {% for pais in paises %}
+                {% if pais[1] == info[0] %}
+                <option value="{{pais[0]}}" selected>{{pais[1]}}</option>
+                {% else %}
+                <option value="{{pais[0]}}">{{pais[1]}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="frmDepartamento">
+            <label for="">Departamento:</label>
+            <select name="departamento" id="departamento" {{disable}}>
+              <option value="">Elija un departamento</option>
+              {% for de in dep %}
+                {% if bandera %}
+                  {% if de[0] == info[1] %}
+                  <option value="{{de[0]}}" selected>{{de[0]}}</option>
+                  {% else %}
+                  <option value="{{de[0]}}">{{de[0]}}</option>
+                  {% endif %}
+                {% else %}
+                <option value="{{de[0]}}">{{de[0]}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="cont4">
+          <div class="frmProvincia">
+            <label for="">Provincia:</label>
+            <select name="provincia" id="provincia" {{disable}}>
+              <option value="value1" >Elija una provincia</option>
+              {% for pro in prov %}
+                {% if bandera %}
+                  {% if pro[0] == info[2] %}
+                  <option value="{{pro[0]}}" selected>{{pro[0]}}</option>
+                  {% else %}
+                  <option value="{{pro[0]}}">{{pro[0]}}</option>
+                  {% endif %}
+                {% else %}
+                <option value="{{pro[0]}}">{{pro[0]}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="frmDistrito">
+            <label for="">Distrito:</label>
+            <select name="distrito" id="distrito" {{disable}}>
+              <option value="value1" >Elija un distrito</option>
+              {% for di in dis %}
+                {% if bandera %}
+                  {% if di[0] == info[4] %}
+                  <option value="{{di[0]}}" selected>{{di[1]}}</option>
+                  {% else %}
+                  <option value="{{di[0]}}">{{di[1]}}</option>
+                  {% endif %}
+                {% else %}
+                <option value="{{di[0]}}">{{di[1]}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="btnsNuevaEmpresa">
+          <button id="btnCancelar">
+            <a href="{{url_for('empresas')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/empresa.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends maestra %}
+{% block titulo %}  Editar Usuario {% endblock %}
+{% block subtitul %} Editar Usuario {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/perfil.css')}}">
+{% endblock %}
+{% block contenido %}
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('perfil')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+  </div>
+  <div class="nuevoSeguimiento">
+    <div class="formulario">
+        <form action="{{url_for('actualizar_perfil')}}" method="post">
+          <div class="mb-3">
+            <input type="hidden" name="idUsuario" value="{{usuario[0]}}">
+            <label for="nomUsuario" class="form-label">Usuario</label>
+            <input value="{{usuario[1]}}" required type="text" class="form-control" placeholder="usuario" name="nomUsuario" id="nomUsuario">
+          </div>
+          <div class="mb-3">
+            <label for="contraseña">Contraseña:</label>
+            <input value="{{usuario[2]}}" required type="text" class="form-control" placeholder="contraseña" name="contraseña" id="contraseña">
+            <input type="hidden" name="idTipoU" value="{{usuario[3]}}">
+          </div>
+          <div class="btnsLogin">
+            <button class="btn btn-danger btn-custom"><a class="pedro" href="{{url_for('perfil')}}">Cancelar</a></button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+          </div>
+          </form>
+      </div>    
+  </div>
+</section>
+{% endblock %}

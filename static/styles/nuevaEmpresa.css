@@ -1,0 +1,257 @@
+/* GENERALES */
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'K2D', sans-serif;
+  }
+  body{
+    height: 100vh;
+  
+  }
+  .navSec{
+    display: flex;
+  }
+  input, textarea,select,option{
+    font-size: 18px;
+    padding-left: 7px;
+  }
+  
+  /* HEADER */
+  
+  header{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    display: flex;
+    justify-content: space-between;
+  }
+  #logo{
+    max-height: 100px;
+  }
+  .titulo{
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+  }
+  #iconoUsuario{
+    height: 50px;
+    border-radius: 50%;
+  }
+  .usuario{
+    padding: 10px;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nomUsuario{
+    color: white;
+    background-color: red;
+    padding: 8px;
+    border-radius: 10px;
+  }
+  
+  /* NAV */
+  
+  nav{
+    border-right: 2px solid rgb(198, 198, 198);
+    width: 300px;
+    height: calc(100vh - 106px);
+  }
+  .barraOp{
+    height: 35px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+    background-color: red;
+    font-size: 25px;
+  }
+  .opGestion{
+    display: flex;
+    align-items: center;
+    justify-content: space-around !important;
+  }
+  #iconoGestion{
+    height: 30px;
+  }
+  .contGestion{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: 16px;
+  }
+  .contGestion > li{
+    display: flex;
+    justify-content: end;
+    text-decoration: none !important;
+  }
+  li{
+    padding: 3px;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  
+  /* SECTION */
+  
+  section{
+    background-image: url("../fondo.jpg");
+    height: calc(100vh - 106px);
+    width: 100%;
+  }
+  
+    /* BARRA GESTIÓN */
+  
+  .barraGest{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 53px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+    border-bottom: 2px solid rgb(198, 198, 198);
+  }
+  .btnOp a{
+    color: rgb(199, 199, 199);
+  }
+  .btnOp{
+    margin-left: 150px;
+  }
+  .btnOp a:hover{
+    color: black;
+    border-bottom: 4px solid red;
+  }
+  
+  /* FORMULARIO */
+  
+  .nuevaEmpresa{
+    background-color: rgb(201, 201, 201);
+    border-radius: 20px;
+    width: 858px;
+    height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 50px;
+    font-size: 25px;
+  }
+  .formulario{
+    display: flex;
+    flex-direction: column;
+  }
+  .cont1, .cont2, .cont3, .frmDireccion, .frmCorreo, .frmVision, .frmMision{
+    margin-bottom: 20px;
+  }
+  
+    /* CONT1 */
+  
+  .cont1{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .frmNombreEm, .frmRuc{
+    display: flex;
+  }
+  .frmNombreEm input, .frmRuc input{
+    width: 200px;
+    margin-left: 10px;
+    border-radius: 10px;
+  }
+  .frmNombreEm input{
+    margin-left: 58px;
+  }
+  
+    /* DIRECCION */
+  
+  .frmDireccion{
+    display: flex;
+    justify-content: space-between;
+  }
+  .frmDireccion input{
+    width: 548px;
+    border-radius: 10px;
+  }
+  
+    /* CONT2 */
+  
+  .cont2{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .frmTelefono, .frmTelefono2{
+    display: flex;
+  }
+  .frmTelefono input, .frmTelefono2 input{
+    font-size: 20px;
+    width: 150px;
+    margin-left: 35px;
+    border-radius: 10px;
+  }
+  .frmTelefono input{
+    margin-left: 110px;
+  }
+  
+    /* CORREO */
+  
+  .frmCorreo{
+    display: flex;
+    justify-content: space-between;
+  }
+  .frmCorreo input{
+    width: 548px;
+    border-radius: 10px;
+  }
+  
+    /* CONT3 */
+  
+  .cont3,.cont4{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cont4{
+    margin-bottom: 30px;
+  }
+  .frmPais select,.frmDepartamento select,.frmProvincia select,.frmDistrito select{
+    width: 220px;
+    height: 35px;
+    margin-left: 5px;
+    border-radius: 10px;
+  }
+  .frmPais label{
+    margin-right: 55px;
+  }
+  .frmDistrito label{
+    margin-right: 73px;
+  }
+  
+    /* BOTONES */
+  
+  .btnsNuevaEmpresa{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .btnsNuevaEmpresa button{
+    height: 60px;
+    width: 150px;
+    font-size: 24px;
+    color: white;
+    border-radius: 10px;
+  }
+  #btnCancelar a{
+    color: white;
+  }
+  #btnCancelar{
+    background-color: red;
+  }
+  #btnRegistrar{
+    background-color: green;
+    margin-left: 50px;
+  }

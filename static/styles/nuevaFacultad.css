@@ -1,0 +1,247 @@
+/* GENERALES */
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'K2D', sans-serif;
+  }
+  body{
+    height: 100vh;
+  
+  }
+  .navSec{
+    display: flex;
+  }
+  
+  /* HEADER */
+  
+  header{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    display: flex;
+    justify-content: space-between;
+  }
+  #logo{
+    max-height: 100px;
+  }
+  .titulo{
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+  }
+  #iconoUsuario{
+    height: 50px;
+    border-radius: 50%;
+  }
+  .usuario{
+    padding: 10px;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nomUsuario{
+    color: white;
+    background-color: red;
+    padding: 8px;
+    border-radius: 10px;
+  }
+  
+  /* NAV */
+  
+  nav{
+    border-right: 2px solid rgb(198, 198, 198);
+    width: 300px;
+    height: calc(100vh - 106px);
+  }
+  .barraOp{
+    height: 35px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+    background-color: red;
+    font-size: 25px;
+  }
+  .opGestion{
+    display: flex;
+    align-items: center;
+    justify-content: space-around !important;
+  }
+  #iconoGestion{
+    height: 30px;
+  }
+  .contGestion{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: 16px;
+  }
+  .contGestion > li{
+    display: flex;
+    justify-content: end;
+    text-decoration: none !important;
+  }
+  li{
+    padding: 3px;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  
+  /* SECTION */
+  
+  section{
+    background-image: url("../fondo.jpg");
+    height: calc(100vh - 106px);
+    width: 100%;
+  }
+  
+    /* BARRA GESTIÓN */
+  
+  .barraGest{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 53px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+    border-bottom: 2px solid rgb(198, 198, 198);
+  
+  }
+  .btnOp a{
+    color: rgb(199, 199, 199);
+  }
+  .btnOp{
+    margin-left: 150px;
+  }
+  .btnOp a:hover{
+    color: black;
+    border-bottom: 4px solid red;
+  }
+  
+  /* FORMULARIO */
+  
+  .nuevoSemestre{
+    background-color: rgb(201, 201, 201);
+    border-radius: 20px;
+    width: 810px;
+    height: 550px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 80px;
+    font-size: 28px;
+  }
+  .formulario{
+    display: flex;
+    flex-direction: column;
+  }
+  
+    /* NOMBRE */
+  
+    .descripe input{
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      height: 100px;
+      width: 675px;
+      border-radius: 10px;
+      font-size: 20px;
+      padding: 5px;
+    }
+  
+  .nombreSemestre{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .nombreSemestre input{
+    height: 32px;
+    width: 420px;
+    margin-left: 18px;
+    border-radius: 10px;
+    font-size: 26px;
+    padding: 5px;
+  }
+  
+  .checke{
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+  
+  .checke input{
+    height: 32px;
+    width: 70px;
+    margin-left: 1px;
+    border-radius: 10px;
+    font-size: 26px;
+    padding: 5px;
+  }
+  
+    /* FECHAS */
+  
+  .fechas{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+  }
+  .fechas > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .fechas label{
+    background-color: red;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+  }
+  .fechas input{
+    width: 150px;
+    height: 28px;
+    font-size: 18px;
+    padding: 2px;
+    border-radius: 10px;
+  }
+  
+  /* VIGENCIA */
+  
+  .vigente{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .vigente input{
+    margin-top: 5px;
+    margin-left: 20px;
+    scale: 2;
+  }
+  
+  /* BOTONES */
+  
+  .btnsNuevoSemestre{
+    display: flex;
+    justify-content: center;
+  }
+  .btnsNuevoSemestre button{
+    height: 60px;
+    width: 150px;
+    font-size: 24px;
+    color: white;
+    border-radius: 10px;
+  }
+  #btnCancelar{
+    background-color: red;
+  }
+  #btnRegistrar{
+    background-color: green;
+    margin-left: 50px;
+  }

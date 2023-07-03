@@ -1,0 +1,90 @@
+
+/* FORMULARIO */
+
+.nuevoIIE{
+  background-color: rgb(201, 201, 201);
+  border-radius: 20px;
+  width: 858px;
+  margin: auto;
+  margin-top: 50px;
+  padding: 50px;
+  font-size: 25px;
+}
+.formulario{
+  display: flex;
+  flex-direction: column;
+}
+.fechaEntrega, .frmAceptacion, .labor{
+  margin-bottom: 20px;
+}
+
+  /* FECHA ENTREGA */
+
+.fechaEntrega label{
+  margin-right: 130px;
+}
+
+  /* ACEPTACION */
+.frmAceptacion{
+  display: flex;
+
+}
+.frmAceptacion label{
+  margin-right: 31px;
+}
+.frmAceptacion textarea{
+  resize: none;
+  padding: 5px;
+  font-size: 18px;
+}
+
+  /* LABORES */
+.frmLabores label{
+  margin-bottom: 10px;
+}
+
+.frmLabores input{
+  width: 610px;
+  margin-right: 20px;
+}
+.frmLabores button{
+  width: 37.5px;
+  margin-right: 10px;
+}
+#primero{
+  margin-left: 0px;
+}
+.labor .gen{
+  margin-left: 6px;
+}
+
+  /* BOTONES */
+
+.cont1{
+  display: flex;
+  justify-content: center;
+}
+
+.btnsNuevoInforme{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 450px;
+}
+.btnsNuevoInforme button{
+  height: 60px;
+  font-size: 24px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: white;
+  border-radius: 10px;
+}
+#btnCancelar a{
+  color: white;
+}
+#btnCancelar{
+  background-color: red;
+}
+#btnGuardar, #btnEnviar{
+  background-color: green;
+}

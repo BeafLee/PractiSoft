@@ -1,0 +1,69 @@
+/* FORMULARIO */
+
+.nuevoSemestre{
+    background-color: rgb(201, 201, 201);
+    border-radius: 20px;
+    width: 80%;
+    height: 70%;
+    margin: auto;
+    margin-top: 5%;
+    padding: 5%;
+    font-size: 25px;
+  }
+  .formulario{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+  }
+  
+  
+    /* NOMBRE */
+  
+  .nombreSemestre{
+    align-items: center;
+    margin-bottom: 2%;
+  }
+  
+  .nombreSemestre label{
+    width: 40%;
+    text-align: left;
+    
+  }
+  
+  .nombreSemestre input{
+    height: 28px;
+    width: 55%;
+    border-radius: 10px;
+  }
+  /* VIGENCIA */
+  
+  #checkEstado{
+    width: initial;
+    scale: 2;
+    margin-left: 1%;
+    background-color: aqua;
+  }
+  
+  
+  /* BOTONES */
+  
+  .btnsNuevoSemestre{
+    margin-top: 4%;
+    display: flex;
+    justify-content: center;
+  }
+  .btnsNuevoSemestre button, .btnsNuevoSemestre a{
+    height: 60px;
+    width: 150px;
+    font-size: 24px;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+  }
+  #btnCancelar{
+    background-color: red;
+  }
+  #btnRegistrar{
+    background-color: green;
+    margin-left: 50px;
+  }

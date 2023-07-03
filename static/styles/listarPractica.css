@@ -1,0 +1,15 @@
+#tabla td {
+    font-size: 18px; /* Tamaño de fuente más pequeño */
+  }
+  #tabla {
+    width: 95%; /* Ancho total de la tabla */
+    table-layout: fixed; /* Fijar el ancho de las columnas */
+  }
+  
+  #tabla th,
+  #tabla td {
+    width: auto; /* Ancho automático de las celdas */
+    padding: 10px; /* Espaciado interno de las celdas */
+  }
+  
+  

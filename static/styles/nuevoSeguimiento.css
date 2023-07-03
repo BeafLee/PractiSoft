@@ -1,0 +1,129 @@
+/* FORMULARIO */
+
+section{
+    height: 710px;
+}
+ 
+.nuevoSeguimiento{
+  background-color: rgb(201, 201, 201);
+  border-radius: 20px;
+  width: 610px;
+  height: 610px;
+  margin: auto;
+  margin-top: 2%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 3%;
+  font-size: 15px;
+}
+  
+  .etiqueta {
+    text-align: center;
+  }
+  
+  .combo{
+    float: right;
+    margin-right: 30px;
+    border-radius: 10px;
+    width: 55%;
+  }
+  
+  .formulario{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+  }
+  
+  
+  /**/
+  
+  .datos{
+    margin-bottom: 20px;
+  }
+  
+  /* NOMBRE */
+  
+  .obv{
+    align-items: center;
+    margin-bottom: 3%;
+    font-size: 18px;
+  }
+  
+  .obv input{
+    height: 28px;
+    width: 55%;
+    border-radius: 10px;
+    float: right;
+    margin-right: 30px;
+    overflow: auto;
+    word-wrap: break-word;
+  }
+  
+  .nombreSemestre{
+    align-items: center;
+    margin-bottom: 3%;
+    font-size: 18px;
+  }
+  
+  .nombreSemestre input{
+    width: 55%;
+    border-radius: 10px;
+    float: right;
+    font-size: 18px;
+    margin-right: 30px;
+  }
+  
+  .observacion{
+    font-size: 18px;
+  }
+  
+  .textarea{
+  height: 100px;
+  width: 55%;
+  border-radius: 10px;
+  float: right;
+  font-size: 18px;
+  margin-right: 30px;
+  resize: none;
+} 
+  /* BOTONES */
+  
+
+  
+  .btnsNuevo button, .btnsNuevo a{
+    height: 50px;
+    width: 150px;
+    font-size: 22px;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+  }
+  
+  
+  .btnsNuevoSemestre{
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .btnsNuevoSemestre button, .btnsNuevoSemestre a{
+    height: 50px;
+    width: 150px;
+    font-size: 22px;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+  }
+  
+  #btnCancelar a{
+    color: white;
+  }
+  
+  #btnCancelar{
+    background-color: red;
+  }
+  
+  #btnRegistrar{
+    background-color: green;
+    margin-left: 50px;
+  }

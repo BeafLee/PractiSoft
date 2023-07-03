@@ -1,0 +1,147 @@
+
+#cont1 {
+    background-color: lightgrey;
+    margin: 2%;
+    margin-left: 9%;
+    padding: 3%;
+    border-radius: 10%;
+    width: 80%;
+    display: inline-block;
+}
+
+#cont2 {
+
+    margin-bottom: -50px;
+}
+
+#cont3 {
+    background-color: lightgrey;
+    border-radius: 50px;
+    justify-content: center;
+    align-items: center;
+    width: 38%;
+    float: right;
+    margin-right: 4%;
+
+}
+
+#cont3 p,
+#cont3 button {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#cont3 button{
+    margin-left: 40px;
+}
+#cont4{
+    margin-top: 5%;
+}
+#tith5 {
+    margin-left: 4%;
+    font-weight: bold;
+    margin-bottom: -3%;
+
+}
+
+.row span {
+    margin-bottom: 10%;
+}
+
+.row h3 {
+    margin-bottom: 5%;
+    font-weight: bold;
+}
+
+.user {
+    margin-right: 30px;
+}
+
+
+.content-usuario {
+    display: flex;
+    margin-right: 0px;
+}
+
+.nombreUsuario {
+    text-align: center;
+    margin-top: 5px;
+}
+
+
+.nav-link {
+    display: flex;
+}
+
+p {
+    margin-left: 20px;
+    text-align: center;
+    margin-bottom: 5px;
+    color: black;
+}
+
+#nav2 {
+    color: #E33439;
+    margin-left: 50px;
+}
+
+table {
+    border-radius: 5vh;
+}
+
+footer {
+    background-color: black;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+#barra {
+    height: 43px !important;
+}
+
+.formulario {
+    max-width: 800px;
+    background: rgb(236, 236, 236);
+    border-radius: 5vh;
+}
+
+.sec {
+    height: 80vh;
+}
+
+nav {
+    height: 19vh;
+}
+
+.infoTabla {
+    text-align: start !important;
+    padding-left: 15px !important;
+}
+
+#desc {
+    background-color: rgb(236, 236, 236);
+    color: black !important;
+}
+
+textarea {
+    width: 194.5px;
+    height: 100px;
+}
+
+.contador {
+    display: flex;
+}
+
+#botones-pag {
+    margin: 1cm;
+}
+
+
+#cont1 input {
+    margin-bottom: 8%;
+    text-align: center;
+}
