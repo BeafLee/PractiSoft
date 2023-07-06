@@ -1,6 +1,6 @@
 from bd import obtener_conexion
 
-def insertar_informe_final_estudiante(estado, introduccion, infraFisica, infraTecnologica, organigrama, descAreaRelaciones, descLabores, conclusiones, recomendaciones, bibliografia, giroEmpresa, representanteLegal, cantTrabajadores, vision, mision, urlAnexo, idPractica):
+def insertar(estado, introduccion, infraFisica, infraTecnologica, organigrama, descAreaRelaciones, descLabores, conclusiones, recomendaciones, bibliografia, giroEmpresa, representanteLegal, cantTrabajadores, vision, mision, urlAnexo, idPractica):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("INSERT INTO INFORME_FINAL_ESTUDIANTE(fechaEntrega, estado, introduccion, infraFisica, infraTecnologica, organigrama, descAreaRelaciones, descLabores, conclusiones, recomendaciones, bibliografia, giroEmpresa, representanteLegal, cantTrabajadores, vision, mision, urlAnexo, idPractica) VALUES (now(),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -17,7 +17,7 @@ def buscar_id(idInformeFinalEst):
     conexion.close()
     return informe
 
-def actualizar_informe_final_estudiante(estado, introduccion, infraFisica, infraTecnologica, organigrama, descAreaRelaciones, descLabores, conclusiones, recomendaciones, bibliografia, giroEmpresa, representanteLegal, cantTrabajadores, vision, mision, urlAnexo, idPractica, idInformeFinalEst):
+def actualizar(estado, introduccion, infraFisica, infraTecnologica, organigrama, descAreaRelaciones, descLabores, conclusiones, recomendaciones, bibliografia, giroEmpresa, representanteLegal, cantTrabajadores, vision, mision, urlAnexo, idPractica, idInformeFinalEst):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("UPDATE INFORME_FINAL_ESTUDIANTE SET fechaEntrega = now(), estado = %s, introduccion = %s, infraFisica = %s, infraTecnologica = %s, organigrama = %s, descAreaRelaciones = %s, descLabores = %s, conclusiones = %s, recomendaciones = %s, bibliografia = %s, giroEmpresa = %s, representanteLegal = %s, cantTrabajadores = %s, vision = %s, mision = %s, urlAnexo = %s WHERE idPractica = %s and idInformeFinalEst = %s",
