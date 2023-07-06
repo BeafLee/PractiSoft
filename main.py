@@ -290,6 +290,7 @@ def agregarInformeFinalEstudiante():
 def guardar_informeFinalEstudiante():
     
     idPractica = request.form["idPractica"]
+    introduccion = request.form["introduccion"]
     giro = request.form["giro"]
     representante = request.form["representante"]
     cantTrabajadores = request.form["cantTrabajadores"]
@@ -318,13 +319,14 @@ def guardar_informeFinalEstudiante():
 
     estado = "G" #Guardado
     print(conclusiones, recomendaciones)
-    #cont_sem.insertar_semestre(nombreSe, fechaI,fechaF,estado)
+    cont_inf_final_est.insertar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
     return redirect("/agregarInformeFinalEstudiante")
 
 @app.route("/actualizar_informeFinalEstudiante", methods=["POST"])
 def actualizar_informeFinalEstudiante():
     
     idPractica = request.form["idPractica"]
+    introduccion = request.form["introduccion"]
     giro = request.form["giro"]
     representante = request.form["representante"]
     cantTrabajadores = request.form["cantTrabajadores"]
@@ -353,7 +355,7 @@ def actualizar_informeFinalEstudiante():
 
     estado = "G" #Guardado
     print(conclusiones, recomendaciones)
-    #cont_sem.insertar_semestre(nombreSe, fechaI,fechaF,estado)
+    cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
     return redirect("/agregarInformeFinalEstudiante")
 
 
