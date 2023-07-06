@@ -22,6 +22,7 @@ import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
 
+#hola esto es nuevo
 
 
 app = Flask(__name__)
