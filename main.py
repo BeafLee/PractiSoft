@@ -38,21 +38,11 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'static/files/'
+UPLOAD_FOLDER = 'PractiSoft/static/files'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
-# Database
-mydb = mysql.connector.connect(
-  host="127.0.0.1",
-  user="root",
-  password="",
-  database="proyecto_bytesquad"
-)
-
-mycursor = mydb.cursor()
-
 # Get the uploaded files
-@app.route("/", methods=['POST'])
+@app.route("/estudiantes", methods=['POST'])
 def uploadFiles():
       # get the uploaded file
       uploaded_file = request.files['file']
@@ -60,21 +50,9 @@ def uploadFiles():
            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
           # set the file path
            uploaded_file.save(file_path)
-           parseCSV(file_path)
+           cont_est.parseCSV(file_path)
           # save the file
-      return redirect(url_for('index'))
-
-def parseCSV(filePath):
-      # CVS Column Names
-      col_names = ['first_name','last_name','address', 'street', 'state' , 'zip']
-      # Use Pandas to parse the CSV file
-      excelData = pd.read_excel(filePath,names=col_names,index_col=None)
-      # Loop through the Rows
-      for i,row in excelData.iterrows():
-             sql = "INSERT INTO adress (name, name2, first_name, town, code, number) VALUES (%s, %s, %s, %s, %s, %s)"
-             value = (row['first_name'],row['last_name'],row['address'],row['street'],row['state'],str(row['zip']))
-             mycursor.execute(sql, value)
-             mydb.commit()
+      return redirect(url_for('estudiantes'))
 
 #################################################################################
 ##                                  INICIO                                     ##
