@@ -1,0 +1,280 @@
+CREATE TABLE SEGUIMIENTO_PRACTICA (
+  idSeguimiento   int(2) NOT NULL AUTO_INCREMENT, 
+  fechaCreacion   date NOT NULL, 
+  horaCreacion    time NOT NULL, 
+  tipo            char(1) NOT NULL, 
+  observacion     text NOT NULL, 
+  recomendaciones text, 
+  idPractica      int(2) NOT NULL, 
+  PRIMARY KEY (idSeguimiento));
+CREATE TABLE PERSONAL (
+  idPersonal int(2) NOT NULL AUTO_INCREMENT, 
+  nombres    varchar(50) NOT NULL, 
+  apellidos  varchar(50) NOT NULL, 
+  tipoDoc    char(1) NOT NULL, 
+  numDoc     varchar(20) NOT NULL, 
+  correo1    varchar(50) NOT NULL, 
+  correo2    varchar(50), 
+  celular1   varchar(9) NOT NULL, 
+  celular2   varchar(9), 
+  estado     char(1) NOT NULL, 
+  direccion  varchar(50) NOT NULL, 
+  idEscuela  int(2) NOT NULL, 
+  idUsuario  int(2) NOT NULL, 
+  idDistrito int(2), 
+  idPais     int(2), 
+  PRIMARY KEY (idPersonal));
+CREATE TABLE ESCUELA (
+  idEscuela   int(2) NOT NULL AUTO_INCREMENT, 
+  nombre      varchar(50) NOT NULL, 
+  descripcion varchar(150) NOT NULL, 
+  estado      char(1) NOT NULL, 
+  idFacultad  int(2) NOT NULL, 
+  PRIMARY KEY (idEscuela));
+CREATE TABLE FACULTAD (
+  idFacultad  int(2) NOT NULL AUTO_INCREMENT, 
+  nombre      varchar(50) NOT NULL, 
+  descripcion varchar(150) NOT NULL, 
+  estado      char(1) NOT NULL, 
+  PRIMARY KEY (idFacultad));
+CREATE TABLE PAIS (
+  idPais int(2) NOT NULL AUTO_INCREMENT, 
+  nombre varchar(20) NOT NULL, 
+  PRIMARY KEY (idPais));
+CREATE TABLE USUARIO (
+  idUsuario  int(2) NOT NULL AUTO_INCREMENT, 
+  nomUsuario varchar(30) NOT NULL, 
+  contraseña varchar(20) NOT NULL, 
+  idTipoU    int(2) NOT NULL, 
+  PRIMARY KEY (idUsuario));
+CREATE TABLE TIPO_USUARIO (
+  idTipoU    int(2) NOT NULL AUTO_INCREMENT, 
+  nombPerfil varchar(30) NOT NULL, 
+  estado     char(1) NOT NULL, 
+  PRIMARY KEY (idTipoU));
+CREATE TABLE PRACTICA (
+  idPractica     int(2) NOT NULL AUTO_INCREMENT, 
+  fechaInicio    date NOT NULL, 
+  fechaFin       date NOT NULL, 
+  horasPractica  int(2) NOT NULL, 
+  estado         char(1) NOT NULL, 
+  fechaLimite    date NOT NULL, 
+  modalidad      char(1) NOT NULL, 
+  esConvalidado  char(1) NOT NULL, 
+  estadoPractica char(1) NOT NULL, 
+  estadoEnvio    char(1) NOT NULL, 
+  observacion    text, 
+  idEstudiante   int(2) NOT NULL, 
+  idJefe         int(2) NOT NULL, 
+  idPersonal     int(2) NOT NULL, 
+  idLinea        int(2) NOT NULL, 
+  idSemestreIn   int(2) NOT NULL, 
+  idSemestreFi   int(2) NOT NULL, 
+  PRIMARY KEY (idPractica));
+CREATE TABLE ESTUDIANTE (
+  idEstudiante   int(2) NOT NULL AUTO_INCREMENT, 
+  codigo         varchar(10) NOT NULL, 
+  nombres        varchar(50) NOT NULL, 
+  apellidos      varchar(50) NOT NULL, 
+  cicloActual    varchar(4) NOT NULL, 
+  semestreInicio varchar(7) NOT NULL, 
+  dni            char(8) NOT NULL, 
+  correo1        varchar(50) NOT NULL, 
+  correo2        varchar(50), 
+  telefono1      varchar(20) NOT NULL, 
+  telefono2      varchar(20), 
+  direccion      varchar(255) NOT NULL, 
+  estado         char(1) NOT NULL, 
+  idPlanEs       int(2) NOT NULL, 
+  idUsuario      int(2) NOT NULL, 
+  idDistrito     int(2), 
+  idPais         int(2), 
+  PRIMARY KEY (idEstudiante));
+CREATE TABLE PLAN_ESTUDIO (
+  idPlanEs  int(2) NOT NULL AUTO_INCREMENT, 
+  nombre    varchar(50) NOT NULL, 
+  estado    char(1) NOT NULL, 
+  idEscuela int(2) NOT NULL, 
+  PRIMARY KEY (idPlanEs));
+CREATE TABLE JEFE_INMEDIATO (
+  idJefe       int(2) NOT NULL AUTO_INCREMENT, 
+  nombre       varchar(50) NOT NULL, 
+  apellidos    varchar(50) NOT NULL, 
+  telefono     char(9) NOT NULL, 
+  telefono2    varchar(9), 
+  correo       varchar(50) NOT NULL, 
+  correo2      varchar(50), 
+  cargo        varchar(50) NOT NULL, 
+  turnoHorario varchar(255), 
+  idEmpresa    int(2) NOT NULL, 
+  idUsuario    int(2) NOT NULL, 
+  idDistrito   int(2), 
+  idPais       int(2), 
+  PRIMARY KEY (idJefe));
+CREATE TABLE EMPRESA (
+  idEmpresa   int(2) NOT NULL AUTO_INCREMENT, 
+  razonSocial varchar(80) NOT NULL, 
+  direccion   varchar(255) NOT NULL, 
+  ruc         char(11) NOT NULL, 
+  telefono    varchar(20) NOT NULL, 
+  telefono2   varchar(20), 
+  correo      varchar(50) NOT NULL, 
+  estado      char(1) NOT NULL, 
+  idDistrito  int(2), 
+  idPais      int(2), 
+  PRIMARY KEY (idEmpresa));
+CREATE TABLE LINEA_DESARROLLO (
+  idLinea     int(2) NOT NULL AUTO_INCREMENT, 
+  descripcion varchar(50) NOT NULL, 
+  estado      char(1) NOT NULL, 
+  PRIMARY KEY (idLinea));
+CREATE TABLE SEMESTRE (
+  idSemestre int(2) NOT NULL AUTO_INCREMENT, 
+  nombreSe   varchar(8) NOT NULL, 
+  fechaI     date NOT NULL, 
+  fechaF     date NOT NULL, 
+  estado     char(1) NOT NULL, 
+  PRIMARY KEY (idSemestre));
+CREATE TABLE RESULTADOS (
+  idResultado        int(2) NOT NULL AUTO_INCREMENT, 
+  nombreResultado    varchar(100) NOT NULL, 
+  escala             char(1) NOT NULL, 
+  idInformeDesempeño int(2) NOT NULL, 
+  PRIMARY KEY (idResultado));
+CREATE TABLE INFORME_DESEMPEÑO (
+  idInformeDesempeño    int(2) NOT NULL AUTO_INCREMENT, 
+  estado                char(1) NOT NULL, 
+  fechaEntrega          date NOT NULL, 
+  responsabilidad       char(1) NOT NULL, 
+  proactividad          char(1) NOT NULL, 
+  comunicacionAsertiva  char(1) NOT NULL, 
+  trabajoEquipo         char(1) NOT NULL, 
+  compromisoCalidad     char(1) NOT NULL, 
+  organizacionTrabajo   char(1) NOT NULL, 
+  puntualidadAsistencia char(1) NOT NULL, 
+  conclusiones          text NOT NULL, 
+  urlFirmaResponsable   text NOT NULL, 
+  observacion           text, 
+  idPractica            int(2) NOT NULL, 
+  PRIMARY KEY (idInformeDesempeño));
+CREATE TABLE VALORACION (
+  idValoracion          int(2) NOT NULL AUTO_INCREMENT, 
+  aspectoValoracion     text NOT NULL, 
+  idInformeFinalEmpresa int(2) NOT NULL, 
+  PRIMARY KEY (idValoracion));
+CREATE TABLE INFORME_FINAL_EMPRESA (
+  idInformeFinalEmpresa int(2) NOT NULL AUTO_INCREMENT, 
+  estado                char(1) NOT NULL, 
+  fechaEntrega          date NOT NULL, 
+  urlFirmaResponsable   text NOT NULL, 
+  urlSelloEmpresa       text NOT NULL, 
+  observacion           text, 
+  idPractica            int(2) NOT NULL, 
+  PRIMARY KEY (idInformeFinalEmpresa));
+CREATE TABLE PLAN_TRABAJO (
+  idPlanTrabajo       int(10) NOT NULL AUTO_INCREMENT, 
+  NSemana             int(2) NOT NULL, 
+  fechaI              date NOT NULL, 
+  fechaF              date NOT NULL, 
+  actividad           text NOT NULL, 
+  NHoras              int(2) NOT NULL, 
+  idInformeInicialEst int(2) NOT NULL, 
+  PRIMARY KEY (idPlanTrabajo));
+CREATE TABLE INFORME_INICIAL_ESTUDIANTE (
+  idInformeInicialEst int(2) NOT NULL AUTO_INCREMENT, 
+  estado              char(1) NOT NULL, 
+  fechaEntrega        date NOT NULL, 
+  urlFirmaEstudiante  text NOT NULL, 
+  urlFirmaResponsable text NOT NULL, 
+  observacion         text, 
+  idPractica          int(2) NOT NULL, 
+  PRIMARY KEY (idInformeInicialEst));
+CREATE TABLE OBJETIVOS_PRACTICA (
+  idObjetivo          int(10) NOT NULL AUTO_INCREMENT, 
+  objetivo            varchar(200) NOT NULL, 
+  idInformeInicialEst int(2) NOT NULL, 
+  PRIMARY KEY (idObjetivo));
+CREATE TABLE INFORME_FINAL_ESTUDIANTE (
+  idInformeFinalEst  int(2) NOT NULL AUTO_INCREMENT, 
+  introduccion       text NOT NULL, 
+  estado             char(1) NOT NULL, 
+  fechaEntrega       date NOT NULL, 
+  infraFisica        text NOT NULL, 
+  infraTecnologica   text NOT NULL, 
+  urlOrganigrama     text NOT NULL, 
+  descAreaRelaciones text NOT NULL, 
+  descLabores        text NOT NULL, 
+  conclusiones       text NOT NULL, 
+  recomendaciones    text NOT NULL, 
+  bibliografia       text NOT NULL, 
+  giroEmpresa        text NOT NULL, 
+  representanteLegal text NOT NULL, 
+  cantTrabajadores   int(2) NOT NULL, 
+  vision             text NOT NULL, 
+  mision             text NOT NULL, 
+  urlAnexo           text NOT NULL, 
+  observacion        text, 
+  idPractica         int(2) NOT NULL, 
+  PRIMARY KEY (idInformeFinalEst));
+CREATE TABLE INFORME_INICIAL_EMPRESA (
+  idInformeInicialEmpresa int(2) NOT NULL AUTO_INCREMENT, 
+  estado                  char(1) NOT NULL, 
+  urlAceptacionCompromiso text NOT NULL, 
+  fechaEntrega            date NOT NULL, 
+  labores                 text NOT NULL, 
+  urlFirmaResponsable     text NOT NULL, 
+  urlSelloEmpresa         text NOT NULL, 
+  observacion             text, 
+  idPractica              int(2) NOT NULL, 
+  PRIMARY KEY (idInformeInicialEmpresa));
+CREATE TABLE PROVINCIA (
+  idProvincia    int(11) NOT NULL AUTO_INCREMENT, 
+  nombre         varchar(50) NOT NULL, 
+  idDepartamento int(11) NOT NULL, 
+  PRIMARY KEY (idProvincia));
+CREATE TABLE DEPARTAMENTO (
+  idDepartamento int(11) NOT NULL AUTO_INCREMENT, 
+  nombre         varchar(50) NOT NULL, 
+  idPais         int(2) NOT NULL, 
+  PRIMARY KEY (idDepartamento));
+CREATE TABLE DISTRITO (
+  idDistrito  int(2) NOT NULL AUTO_INCREMENT, 
+  nombre      varchar(50) NOT NULL, 
+  idProvincia int(11) NOT NULL, 
+  PRIMARY KEY (idDistrito));
+ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL644129 FOREIGN KEY (idEscuela) REFERENCES ESCUELA (idEscuela);
+ALTER TABLE ESCUELA ADD CONSTRAINT FKESCUELA289344 FOREIGN KEY (idFacultad) REFERENCES FACULTAD (idFacultad);
+ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL20787 FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario);
+ALTER TABLE USUARIO ADD CONSTRAINT FKUSUARIO373003 FOREIGN KEY (idTipoU) REFERENCES TIPO_USUARIO (idTipoU);
+ALTER TABLE SEGUIMIENTO_PRACTICA ADD CONSTRAINT FKSEGUIMIENT124589 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA636421 FOREIGN KEY (idEstudiante) REFERENCES ESTUDIANTE (idEstudiante);
+ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE140953 FOREIGN KEY (idPlanEs) REFERENCES PLAN_ESTUDIO (idPlanEs);
+ALTER TABLE PLAN_ESTUDIO ADD CONSTRAINT FKPLAN_ESTUD208706 FOREIGN KEY (idEscuela) REFERENCES ESCUELA (idEscuela);
+ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE412956 FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA177324 FOREIGN KEY (idJefe) REFERENCES JEFE_INMEDIATO (idJefe);
+ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED558256 FOREIGN KEY (idEmpresa) REFERENCES EMPRESA (idEmpresa);
+ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED756945 FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA254783 FOREIGN KEY (idPersonal) REFERENCES PERSONAL (idPersonal);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA150333 FOREIGN KEY (idLinea) REFERENCES LINEA_DESARROLLO (idLinea);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA552086 FOREIGN KEY (idSemestreIn) REFERENCES SEMESTRE (idSemestre);
+ALTER TABLE PRACTICA ADD CONSTRAINT FKPRACTICA552184 FOREIGN KEY (idSemestreFi) REFERENCES SEMESTRE (idSemestre);
+ALTER TABLE RESULTADOS ADD CONSTRAINT FKRESULTADOS947188 FOREIGN KEY (idInformeDesempeño) REFERENCES INFORME_DESEMPEÑO (idInformeDesempeño);
+ALTER TABLE INFORME_DESEMPEÑO ADD CONSTRAINT FKINFORME_DE18898 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE VALORACION ADD CONSTRAINT FKVALORACION463066 FOREIGN KEY (idInformeFinalEmpresa) REFERENCES INFORME_FINAL_EMPRESA (idInformeFinalEmpresa);
+ALTER TABLE INFORME_FINAL_EMPRESA ADD CONSTRAINT FKINFORME_FI904658 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE PLAN_TRABAJO ADD CONSTRAINT FKPLAN_TRABA719100 FOREIGN KEY (idInformeInicialEst) REFERENCES INFORME_INICIAL_ESTUDIANTE (idInformeInicialEst);
+ALTER TABLE INFORME_INICIAL_ESTUDIANTE ADD CONSTRAINT FKINFORME_IN915715 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE OBJETIVOS_PRACTICA ADD CONSTRAINT FKOBJETIVOS_989091 FOREIGN KEY (idInformeInicialEst) REFERENCES INFORME_INICIAL_ESTUDIANTE (idInformeInicialEst);
+ALTER TABLE INFORME_FINAL_ESTUDIANTE ADD CONSTRAINT FKINFORME_FI253245 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE INFORME_INICIAL_EMPRESA ADD CONSTRAINT FKINFORME_IN418711 FOREIGN KEY (idPractica) REFERENCES PRACTICA (idPractica);
+ALTER TABLE DEPARTAMENTO ADD CONSTRAINT FKDEPARTAMEN674676 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE PROVINCIA ADD CONSTRAINT FKPROVINCIA676468 FOREIGN KEY (idDepartamento) REFERENCES DEPARTAMENTO (idDepartamento);
+ALTER TABLE DISTRITO ADD CONSTRAINT FKDISTRITO667807 FOREIGN KEY (idProvincia) REFERENCES PROVINCIA (idProvincia);
+ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL178500 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
+ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE570669 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
+ALTER TABLE EMPRESA ADD CONSTRAINT FKEMPRESA82584 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
+ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED599232 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
+ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED866755 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL910976 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE EMPRESA ADD CONSTRAINT FKEMPRESA350107 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE668444 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);

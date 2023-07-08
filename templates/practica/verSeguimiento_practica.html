@@ -25,30 +25,31 @@
           <input id="" type="text" name="apellidos" value="{{seguimiento_practica[0]}}" disabled>
         </div>
         <div class="obv">
-            <label for="">Empresa:</label>
-            <input id="" type="text" name="razonSocial" value="{{seguimiento_practica[1]}}" disabled>
+          <label for="">Empresa:</label>
+          <input id="" type="text" name="razonSocial" value="{{seguimiento_practica[1]}}" disabled>
         </div>
         <div class="obv">
-              <label for="">Tipo:</label>
-              <input id="" type="text" name="tipo" value="{{seguimiento_practica[2]}}" disabled>
+          <label for="">Tipo:</label>
+          <input id="" type="text" name="tipo" value="{{seguimiento_practica[2]}}" disabled>
         </div>
         <div class="obv">
-              <label for="">Fecha:</label>
-              <input id="" type="date" name="fechaCreacion" value="{{seguimiento_practica[3]}}" disabled>
+          <label for="">Fecha:</label>
+          <input id="" type="date" name="fechaCreacion" value="{{seguimiento_practica[3]}}" disabled>
         </div>
         <div class="obv">
-              <label for="">Hora:</label>
-              <input id="" type="text" name="horaCreacion" value="{{seguimiento_practica[4]}}" disabled>
+          <label for="">Hora:</label>
+          <input id="" type="text" name="horaCreacion" value="{{seguimiento_practica[4]}}" disabled>
         </div>
         <div class="observacion">
-                <label for="">Observaciones:</label>
-                <textarea class="textarea" id="observacion" name="observacion" disabled>{{seguimiento_practica[5]}}</textarea>
-                <!-- <textarea ><input id="" type="" name="observacion" value="{{seguimiento_practica[5]}}" disabled></textarea> -->
+          <label for="">Observaciones:</label>
+          <textarea class="textarea" id="observacion" name="observacion" disabled>{{seguimiento_practica[5]}}</textarea>
+          <!-- <textarea ><input id="" type="" name="observacion" value="{{seguimiento_practica[5]}}" disabled></textarea> -->
         </div>
         <div class="btnsNuevo">
+          <a href="{{ url_for('seguimiento_practica', id=seguimiento_practica[6]) }}"></a>
           <button id="btnCancelar">
-            <a href="{{ url_for('seguimiento_practica', id=seguimiento_practica[6]) }}">Cerrar</a>
-          </button>
+            Cerrar
+          </button></a>
         </div>
       </form>
     </div>

@@ -1,0 +1,115 @@
+{% extends maestra %}
+{% block titulo %}Registrar ubicación {% endblock %}
+{% block subtitul %} Registrar ubicación {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('distrito')}}">Listar</a>
+    </label>
+    <label class="btnOpSeleccionado">
+      <a href="{{url_for('agregar_distrito')}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="">
+      <form action="{{url_for('guardar_distrito')}}" method="post">
+
+
+
+        <div class="mb-3 row">
+          <label for="staticEmail" class="col-sm-4 col-form-label">País</label>
+          <div class="col-sm-8">
+            <select id="selectPais" class="form-select" aria-label="Default select example">
+              <option selected>Seleccione un país</option>
+              {% for ubicacion in ubicaciones[0] %}
+              <option value="{{ubicacion[0]}}">{{ubicacion[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="staticEmail" class="col-sm-4 col-form-label">Departamento</label>
+          <div class="col-sm-8">
+            <select id="selectDepartamento" class="form-select" aria-label="Default select example">
+              <option selected>Seleccione un departamento</option>
+              {% for ubicacion in ubicaciones[1] %}
+              <option class="departamento d-none" value="{{ubicacion[0]}}" data-pais="{{ubicacion[2]}}">{{ubicacion[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="staticEmail" class="col-sm-4 col-form-label">Provincia</label>
+          <div class="col-sm-8">
+            <select id="selectProvincia" class="form-select" aria-label="Default select example">
+              <option selected>Seleccione un provincia</option>
+              {% for ubicacion in ubicaciones[2] %}
+              <option class="provincia d-none" value="{{ubicacion[0]}}" data-departamento="{{ubicacion[2]}}">{{ubicacion[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+
+
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+
+<script>
+  const selectPais = document.getElementById("selectPais");
+  const departamentos = document.querySelectorAll(".departamento");
+  
+  selectPais.addEventListener("change", (event) => {
+    
+    var idPais = selectPais.value;
+    departamentos.forEach((departamento) => {
+
+      if (departamento.dataset.pais == idPais) {
+        departamento.classList.remove("d-none");
+
+      } else {
+        departamento.classList.add("d-none");
+      }
+    });
+  });
+
+
+  const selectDepartamento = document.getElementById("selectDepartamento");
+  const provincias = document.querySelectorAll(".provincia");
+  
+  selectDepartamento.addEventListener("change", (event) => {
+    
+    var idDepartamento = selectDepartamento.value;
+    provincias.forEach((provincia) => {
+
+      if (provincia.dataset.departamento == idDepartamento) {
+        provincia.classList.remove("d-none");
+
+      } else {
+        provincia.classList.add("d-none");
+      }
+    });
+  });
+
+
+</script>
+
+{% endblock %}
