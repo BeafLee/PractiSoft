@@ -1,7 +1,15 @@
+from math import isnan
 from bd import obtener_conexion
+import pymysql
 import mysql.connector
-
+import numpy as np
 import pandas as pd 
+import tkinter
+from tkinter import messagebox
+
+# This code is to hide the main tkinter window
+root = tkinter.Tk()
+root.withdraw()
 
 mydb= mysql.connector.connect(
     host="127.0.0.1",
@@ -16,7 +24,7 @@ def obtener_estudiante():
     conexion = obtener_conexion()
     estudiante = []
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT idEstudiante,codigo,nombres,apellidos,cicloActual,semestreInicio,dni,correo1,correo2,telefono1,telefono2,direccion, CASE estado WHEN 'A' THEN 'Apto' ELSE 'No apto' END AS estado, idPlanEs,idDistrito,idUsuario FROM ESTUDIANTE")
+        cursor.execute("SELECT idEstudiante,codigo,nombres,apellidos,cicloActual,semestreInicio,dni,correo1,correo2,telefono1,telefono2,direccion, CASE estudiante.estado WHEN 'A' THEN 'Apto' ELSE 'No apto' END AS estado, plan_estudio.nombre,distrito.nombre,idUsuario FROM ESTUDIANTE inner join distrito on distrito.iddistrito=estudiante.iddistrito inner join plan_estudio on plan_estudio.idPlanEs=estudiante.idPlanEs")
         estudiante = cursor.fetchall()
 
     conexion.close()
@@ -90,8 +98,11 @@ def obtener_distrito(nomDistrito):
     conexion = obtener_conexion()
     id=None
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT idDistrito from DISTRITO where nombre=%s",(nomDistrito))
-        id = cursor.fetchone()
+        try:
+            cursor.execute("SELECT idDistrito from DISTRITO where nombre=%s",(nomDistrito))
+            id = cursor.fetchone()
+        except:
+            id=-1
     conexion.close()
     return id
 
@@ -99,8 +110,11 @@ def obtener_pais(nomPais):
     conexion = obtener_conexion()
     id=None
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT idPais from PAIS where nombre=%s",(nomPais))
-        id = cursor.fetchone()
+        try:
+            cursor.execute("SELECT idPais from PAIS where nombre=%s",(nomPais))
+            id = cursor.fetchone()
+        except:
+            id=-1
     conexion.close()
     return id
 
@@ -108,8 +122,11 @@ def obtener_plan(nomPlan):
     conexion = obtener_conexion()
     id=None
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT idPlanEs from PLAN_ESTUDIO where nombre=%s",(nomPlan))
-        id = cursor.fetchone()
+        try:
+            cursor.execute("SELECT idPlanEs from PLAN_ESTUDIO where nombre=%s",(nomPlan))
+            id = cursor.fetchone()
+        except:
+            id=-1
     conexion.close()
     return id
 
@@ -121,32 +138,54 @@ def buscar_estudiante(idCodESt):
         estudiante = cursor.fetchone()
     conexion.close()
     return estudiante
+def buscar_usuario(CodESt):
+    conexion = obtener_conexion()
+    estudiante = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT idUsuario FROM USUARIO WHERE nomUsuario = %s", (CodESt,))
+        estudiante = cursor.fetchone()
+    conexion.close()
+
 
 def parseCSV(filePath):
       # CVS Column Names
-      col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
+    col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
       # Use Pandas to parse the CSV file
-      excelData = pd.read_excel(filePath,names=col_names,index_col=None)
-      excelData.dropna(inplace = True)
+    excelData = pd.read_excel(filePath,names=col_names,index_col=None)
+    x=1        
       # Loop through the Rows
-      for i,row in excelData.iterrows():
-             
-             if (buscar_estudiante(str(row['codigo_estudiante'])) == None):
-                    print(row['codigo_estudiante'])
-                    print(buscar_estudiante(row['codigo_estudiante']))
+    for i,row in excelData.iterrows():
+        
+        if obtener_plan(str(row['Plan_de_Estudio'])) == None or obtener_distrito(row['Distrito']) == None or obtener_pais(row['Pais']) == None:   
+            x=-1
+        elif obtener_plan(str(row['Plan_de_Estudio'])) == -1 or obtener_distrito(row['Distrito']) == -1 or obtener_pais(row['Pais']) == -1:   
+            
+            x=-2
+        
+    return x
+        
+        
+            
+
+def importData (filePath):
+    col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
+      # Use Pandas to parse the CSV file
+    excelData = pd.read_excel(filePath,names=col_names,index_col=None)
+            
+      # Loop through the Rows
+    for i,row in excelData.iterrows():
+        if (buscar_estudiante(str(row['codigo_estudiante'])) == None):
                     idU=obtener_ultimoidUsuario()
                     sql1 = "INSERT INTO USUARIO (idUsuario, nomUsuario, contraseña, idTipoU) VALUES (%s, %s, %s, 1)"
                     value1 = (idU[0],row['codigo_estudiante'],str(row['dni']))
                     mycursormydb.execute(sql1, value1)
                     mydb.commit()
-                                        
                     idE=obtener_ultimoidEstudiante()
-                    plEst=obtener_plan(str(row['Plan_de_Estudio']))
+                    plEst=obtener_plan(str(row['Plan_de_Estudio']))[0]
                     dis=obtener_distrito(row['Distrito'])
                     pais=obtener_pais(row['Pais'])
-                    print(pais)
-                    print(dis)
+                    
                     sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, correo2, telefono1, telefono2, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
-                    value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],str(row['dni']),row['correo1'],row['correo2'],str(row['telefono1']),str(row['telefono2']),row['direccion'],plEst[0],1,dis[0],pais[0])
+                    value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],str(row['dni']),row['correo1'],row['correo2'],str(row['telefono1']),str(row['telefono2']),row['direccion'],plEst,idU[0],dis[0],pais[0])
                     mycursormydb.execute(sql2, value2)
                     mydb.commit()
