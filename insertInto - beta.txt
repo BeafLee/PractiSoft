@@ -1,26 +1,190 @@
+INSERT INTO PAIS (nombre) VALUES ('Argentina');
+INSERT INTO PAIS (nombre) VALUES ('Belice');
+INSERT INTO PAIS (nombre) VALUES ('Bolivia');
+INSERT INTO PAIS (nombre) VALUES ('Brasil');
+INSERT INTO PAIS (nombre) VALUES ('Canadá');
+INSERT INTO PAIS (nombre) VALUES ('Chile');
+INSERT INTO PAIS (nombre) VALUES ('Colombia');
+INSERT INTO PAIS (nombre) VALUES ('Costa Rica');
+INSERT INTO PAIS (nombre) VALUES ('Cuba');
+INSERT INTO PAIS (nombre) VALUES ('Dominica');
+INSERT INTO PAIS (nombre) VALUES ('Ecuador');
+INSERT INTO PAIS (nombre) VALUES ('El Salvador');
+INSERT INTO PAIS (nombre) VALUES ('Estados Unidos');
+INSERT INTO PAIS (nombre) VALUES ('Granada');
+INSERT INTO PAIS (nombre) VALUES ('Guatemala');
+INSERT INTO PAIS (nombre) VALUES ('Guyana');
+INSERT INTO PAIS (nombre) VALUES ('Haití');
+INSERT INTO PAIS (nombre) VALUES ('Honduras');
+INSERT INTO PAIS (nombre) VALUES ('Jamaica');
+INSERT INTO PAIS (nombre) VALUES ('México');
+INSERT INTO PAIS (nombre) VALUES ('Nicaragua');
+INSERT INTO PAIS (nombre) VALUES ('Panamá');
+INSERT INTO PAIS (nombre) VALUES ('Paraguay');
+INSERT INTO PAIS (nombre) VALUES ('Perú');
+INSERT INTO PAIS (nombre) VALUES ('República Dominicana');
+INSERT INTO PAIS (nombre) VALUES ('San Cristóbal y Nieves');
+INSERT INTO PAIS (nombre) VALUES ('San Vicente y las Granadinas');
+INSERT INTO PAIS (nombre) VALUES ('Santa Lucía');
+INSERT INTO PAIS (nombre) VALUES ('Surinam');
+INSERT INTO PAIS (nombre) VALUES ('Trinidad y Tobago');
+INSERT INTO PAIS (nombre) VALUES ('Uruguay');
+INSERT INTO PAIS (nombre) VALUES ('Venezuela');
 
-insert into TIPO_USUARIO(idTipoU,estado,nombPerfil)values(1,'V','E');
-insert into USUARIO(nomUsuario,contraseña,idTipoU)values('JuanCP','123456',1);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Amazonas', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Áncash', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Apurímac', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Arequipa', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Ayacucho', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Cajamarca', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Callao', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Cusco', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Huancavelica', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Huánuco', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Ica', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Junín', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('La Libertad', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Lambayeque', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Lima', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Loreto', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Madre de Dios', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Moquegua', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Pasco', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Piura', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Puno', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('San Martín', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Tacna', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Tumbes', 24);
+INSERT INTO DEPARTAMENTO (nombre, idPais) VALUES ('Ucayali', 24);
+
+-- provincia de Lima
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Barranca', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Cajatambo', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Canta', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Cañete', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Huaral', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Huarochirí', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Huaura', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Lima', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Oyón', 15);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Yauyos', 15);
+
+-- PROVINCIA de Lambayeque
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Chiclayo', 14);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Ferreñafe', 14);
+INSERT INTO PROVINCIA (nombre, idDepartamento) VALUES ('Lambayeque', 14);
+
+-- Verificamos los datos insertados
+SELECT * FROM PROVINCIA;
+
+
+-- distritos de Lima
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Ancón', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Ate', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Barranco', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Breña', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Carabayllo', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Chaclacayo', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Chorrillos', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Cieneguilla', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Comas', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('El Agustino', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Independencia', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Jesús María', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('La Molina', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('La Victoria', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Lince', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Los Olivos', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Lurigancho-Chosica', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Lurín', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Magdalena del Mar', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Miraflores', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pachacámac', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pucusana', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pueblo Libre', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Puente Piedra', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Punta Hermosa', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Punta Negra', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Rímac', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Bartolo', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Borja', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Isidro', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Juan de Lurigancho', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Juan de Miraflores', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Luis', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Martín de Porres', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San Miguel', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Santa Anita', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Santa María del Mar', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Santa Rosa', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Santiago de Surco', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Surquillo', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Villa El Salvador', 8);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Villa María del Triunfo', 8);
+
+-- distritos de Chiclayo
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Chiclayo', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Chongoyape', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Eten', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Eten Puerto', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('José Leonardo Ortiz', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('La Victoria', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Lagunas', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Monsefú', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Nueva Arica', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Oyotún', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pátapo', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Picsi', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pimentel', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pomalca', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pucalá', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Reque', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Santa Rosa', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Saña', 11);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Tumán', 11);
+
+-- distritos de Ferreñafe
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Ferreñafe', 12);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Cañaris', 12);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Incahuasi', 12);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Manuel Antonio Mesones Muro', 12);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pítipo', 12);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pueblo Nuevo', 12);
+
+-- distritos de Lambayeque
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Lambayeque', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Chochope', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Illimo', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Jayanca', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Mochumi', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Morrope', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Motupe', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Olmos', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Pacora', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Salas', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('San José', 13);
+INSERT INTO DISTRITO (nombre, idProvincia) VALUES ('Tucume', 13);
+
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','E'); 
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','A');
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','D');
+insert into TIPO_USUARIO(estado,nombPerfil)values('V','J');
+
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('admin','admin',2);
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('personal','personal',3);
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('jefe','jefe',4);
+insert into USUARIO(nomUsuario,contraseña,idTipoU)values('estudiante','estudiante',1);
 insert into FACULTAD(nombre,estado,descripcion)values('Ingenieria','V','Facultad de Ingenierias');
 insert into ESCUELA(nombre,estado,descripcion,idFacultad)values('Sistemas','V','Ingenieria de Sistemas y computacion',1);
 insert into PLAN_ESTUDIO(nombre,estado,idEscuela)values('2017','V',1);
-
 insert into LINEA_DESARROLLO(descripcion, estado) values('linea de desarrollo de prueba','V');
+insert into EMPRESA(correo,direccion,idDistrito,razonSocial,ruc,telefono,telefono2,estado) VALUES('correo@mail.com', 'Avenida Luis Gonzales' ,1, 'TECNO NORT', '12345678901','123456789','987654321','V');
+insert into ESTUDIANTE(apellidos,cicloActual,codigo,correo1,correo2,direccion,dni, idDistrito,idPlanes,idUsuario,nombres,semestreInicio,telefono1,telefono2,estado) values ('Cajan Polo','II','201VP00019','cajanjuan1@gmail.com','cajanpolojuanalberto@gmail.com','urb. El Ingeniero1','71491708',1,1,1,'Juan Alberto','2020-1','912267158','123456789','V');
+insert into  SEMESTRE(nombreSe, estado, fechaI, fechaF) values('2023-1', 'V','2023-03-10', '2023-07-26');
 
------
-insert into EMPRESA(idEmpresa,correo,direccion,idCiudad,razonSocial,ruc,telefono, cantTrabajadores, vision, mision) VALUES(1,'correo@mail.com', 'luisgonzales' ,1, 'TECNO NORT', '12345678901','123456789',25,'Vision de la empresa TECNO NORT', 'Mision de la empresa TECNO NORT');
+insert into PERSONAL(idPersonal,apellidos,idDistrito,correo1,correo2,direccion, idEscuela,estado, idUsuario,nombres, numDoc,celular1,celular2,tipoDoc) values(1,'Chung',1,'correo1@gmail.com', 'correo2@gmail.com','direccion desconocida',1,'V',3,'Carlos','12345678','123456789','987654321','D');
 
+insert into JEFE_INMEDIATO(idJefe,apellidos,cargo, correo,correo2,idEmpresa,nombre,telefono, telefono2,turnoHorario, idUsuario) values(1,'Burgos', 'Jefe de Sistemas','correo1@gmail.com','correo2@gmail.com', 1,'Luis','123456789','987654321','Tarde', 2);
 
-insert into ESTUDIANTE(apellidos,cicloActual,codigo,correo1,correo2,direccion,dni, idCiudad,idPlanEs,idUsuario,nombres,semestreInicio,telefono1,telefono2) values ('Cajan Polo','II','201VP00019','cajanjuan1@gmail.com','cajanpolojuanalberto@gmail.com','urb. El Ingeniero1','71491708',1,1,1,'Juan Alberto','2020-1','912267158','123456789');
+insert into PRACTICA(fechaInicio,fechaFin,horasPractica,estado,fechaLimite,modalidad,esConvalidado,estadoPractica,estadoEnvio, idEstudiante,idJefe,idLinea, idPersonal,idSemestreIn,idSemestreFi) values('2023-03-28','2023-07-10',280,'V','2023-07-20','P','S','E','E',1,1,1,1,1,1);
 
-insert into SEMESTRE(nombreSe, estado, fechaI, fechaF) values('2023-1', 'V','20-03-2023', '15-07-2023');
-insert into TIPO_USUARIO(estado,nombPerfil)values('V','A');
-insert into USUARIO(nomUsuario,contraseña,idTipoU)values('admin','admin',2);
-insert into JEFE_INMEDIATO(idJefe,apellidos,cargo, correo,correo2,idEmpresa,nombre,telefono, telefono2,turnoHorario, idUsuario) values(1,'Burgos', 'Admi','correo1@gmail.com','correo2@gmail.com', 1,'Luis','123456789','987654321','Tarde', 2);
-
-
-insert into TIPO_USUARIO(estado,nombPerfil)values('V','D'); 
-insert into USUARIO(nomUsuario,contraseña,idTipoU)values('Chung','carlos',3);
-insert into PERSONAL(idPersonal,apellidos,CIUDADid,correo1,correo2,direccion, ESCUELAid,estado, idUsuario,nombres, numDoc,celular1,celular2,tipoDoc) values(1,'Chung',1,'correo1@gmail.com', 'correo2@gmail.com','direccion desconocida',1,'V',3,'Carlos','12345678','123456789','987654321','D');
-
-insert into PRACTICA(idPractica,estado,fechaInicio,fechaFin,fechaLimite,horasPractica, idAlumno,idJefe,idLinea, idPersonal,idSemestreIn,idSemestreFi,modalidad) values(1,'V','2023-03-28','2023-07-10','2023-07-20',280,1,1,1,1,1,1,'P');

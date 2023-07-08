@@ -23,17 +23,11 @@
       <p>{% block subtitul %}{% endblock %}</p>
     </div>
     <div class="usuario">
-      <!-- <img id="iconoUsuario" src="{{url_for('static', filename='inconUs.png')}}" alt="icono usuario">
-      <div class="nomUsuario ">
-        <a href="{{url_for('logout')}}" class="text-white">
-          {{usuario[1]}}
-        </a>
-      </div> -->
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle " id="dropdownUser2"
           data-bs-toggle="dropdown" aria-expanded="false">
           <img id="iconoUsuario" src="{{url_for('static', filename='inconUs.png')}}" alt="icono usuario">
-          <strong>{{usuario[1]}}</strong>
+          <strong>{{usuario[4]}}</strong>
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
           <li><a class="dropdown-item" href="{{url_for('perfil')}}">Mi perfil</a></li>
@@ -63,11 +57,27 @@
             <div class="collapse show ps-5" id="submenu1">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li class="w-100"><a class="w-100" href="{{url_for('semestres')}}">Gestión Semestre</a></li>
-                <li><a class="w-100" href="{{url_for('practicas')}}">Gestión Práctica</a></li>
-                <li><a class="w-100" href="{{url_for('empresas')}}">Gestión Empresa</a></li>
-                <li><a class="w-100" href="{{url_for('facultades')}}">Gestión Facultad</a></li>
-                <li><a class="w-100" href="{{url_for('escuelas')}}">Gestión Escuelas</a></li>
-                <li><a class="w-100" href="{{url_for('estudiantes')}}">Gestión Estudiantes</a></li>
+                <li><a class="w-100" href="{{url_for('practicas')}}">Gestión de Prácticas</a></li>
+                <li><a class="w-100" href="{{url_for('empresas')}}">Gestión de Empresas</a></li>
+                <li><a class="w-100" href="{{url_for('facultades')}}">Gestión de Facultades</a></li>
+                <li><a class="w-100" href="{{url_for('escuelas')}}">Gestión de Escuelas</a></li>
+                <li><a class="w-100" href="{{url_for('estudiantes')}}">Gestión de Estudiantes</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="opGestion- mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed " data-bs-toggle="collapse"
+              data-bs-target="#ubicaciones" aria-expanded="true">
+              <i class="bi bi-grid-fill" style="color: rgb(199, 1, 1);"></i>
+              Gestionar ubicaciones
+            </button>
+            <div class="collapse show ps-5" id="ubicaciones">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a class="w-100" href="{{url_for('practicas')}}">Gestión de país</a></li>
+                <li><a class="w-100" href="{{url_for('empresas')}}">Gestión de departamentos</a></li>
+                <li><a class="w-100" href="{{url_for('facultades')}}">Gestión de provincias</a></li>
+                <li><a class="w-100" href="{{url_for('distrito')}}">Gestión de distritos</a></li>
               </ul>
             </div>
           </li>

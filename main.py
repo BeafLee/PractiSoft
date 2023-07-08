@@ -21,9 +21,7 @@ import controladores.controlador_informe_final_estudiante as cont_inf_final_est
 import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
-
-#hola esto es nuevo
-
+import controladores.controlador_ubicacion as cont_ubi
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -70,19 +68,27 @@ def login():
     usuario = request.form["usuario"]
     contra = request.form["contra"]
 
-    usuario_log = cont_ini.verificarUsuario(usu=usuario, contra=contra)
+    usuario_log = list(cont_ini.verificarUsuario(usu=usuario, contra=contra))
 
     if usuario_log is None:
         return redirect(url_for("iniciarSesion", mostrar='mostrar') )
     elif usuario_log[3] == 1:
+        usuario_log[4] = 'Estudiante'
         session['usuario'] = usuario_log
         session['maestra'] = "maestra_e.html"
         return redirect("/index_e")
     elif usuario_log[3] == 2:
+        usuario_log[4] = 'Administrador del sistema'
         session['usuario'] = usuario_log
         session['maestra'] = "maestra.html"
         return redirect("/index_a")
     elif usuario_log[3] == 3:
+        usuario_log[4] = 'Docente de apoyo'
+        session['usuario'] = usuario_log
+        session['maestra'] = "maestra.html"
+        return redirect("/index_d")
+    elif usuario_log[3] == 4:
+        usuario_log[4] = 'Responsable de la practica'
         session['usuario'] = usuario_log
         session['maestra'] = "maestra.html"
         return redirect("/index_d")
@@ -91,7 +97,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-
+    session.pop('usuario')
     return redirect("/")
 
 #################################################################################
@@ -879,6 +885,69 @@ def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
     return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+
+#################################################################################
+##                                UBICACIÓN                                    ##
+#################################################################################
+
+###     MOSTRAR UBICACIÓN
+@app.route("/distrito")
+def distrito():
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        ubicaciones = cont_ubi.listar_distritos()
+        return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+    else:
+        return redirect('/')
+
+
+###     AGREGAR SEMESTRE
+@app.route("/agregar_distrito")
+def agregar_distrito():
+    ubicaciones = cont_ubi.obtener_datos_combos()
+    print(ubicaciones)
+    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+
+@app.route("/guardar_distrito", methods=["POST"])
+def guardar_distrito():
+
+    nombreSe = request.form["nombreSe"]
+    fechaI = request.form["fechaI"]
+    fechaF = request.form["fechaF"]
+    estado = request.form["estado"]
+
+    cont_sem.insertar_semestre(nombreSe, fechaI,fechaF,estado)
+    return redirect("/distrito")
+
+
+###     EDITAR SEMESTRE
+@app.route("/editar_distrito/<int:id>")
+def editar_distrito(id):
+    semestre = cont_sem.buscar_semestre_id(id)
+    opt = False
+    if(semestre[4] == 'V'):
+        opt = True
+
+    return render_template("/semestre/editarSemestre.html", usuario = session['usuario'], maestra=session['maestra'], semestre=semestre, opt=opt)
+
+@app.route("/actualizar_distrito", methods=["POST"])
+def actualizar_distrito():
+    idSemestre = request.form["idSemestre"]
+    nombreSe = request.form["nombreSe"]
+    fechaI = request.form["fechaI"]
+    fechaF = request.form["fechaF"]
+    estado = request.form["estado"]
+
+    cont_sem.actualizar_semestre(nombreSe, fechaI,fechaF,estado, idSemestre)
+
+    return redirect("/distrito")
+
+
+###     ELIMINAR SEMESTRE
+@app.route("/eliminar_distrito/<int:id>")
+def eliminar_distrito(id):
+    cont_sem.eliminar_semestre(id)
+    return redirect("/distrito")
+
 
 # Iniciar el servidor
 if __name__ == "__main__":
