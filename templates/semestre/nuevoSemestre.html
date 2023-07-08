@@ -22,25 +22,38 @@
     </label>
   </div>
   <div class="nuevoSemestre">
-    <div class="formulario">
+    <div class="">
       <form action="{{url_for('guardar_semestre')}}" method="post">
-        <div class="nombreSemestre">
-          <label for="">Nombre de semestre:</label>
-          <input id="" type="text" name="nombreSe" required>
+
+        <div class="mb-3 row">
+          <label for="" class="col-sm-6 col-form-label">Nombre de semestre:</label>
+          <div class="col-sm-6">
+            <input id="nombreSe" class="form-control" type="text" name="nombreSe" required>
+          </div>
         </div>
-        <div class="nombreSemestre">
-          <label for="">Fecha inicio:</label>
-          <input id="" type="date" name="fechaI" required>
+
+        <div class="mb-3 row">
+          <label for="" class="col-sm-6 col-form-label">Fecha inicio:</label>
+          <div class="col-sm-6">
+            <input id="" class="form-control"  type="date" name="fechaI" required>
+          </div>
         </div>
-        <div class="nombreSemestre">
-          <label for="">Fecha fin:</label>
-          <input id="" type="date" name="fechaF" required>
+
+        <div class="mb-3 row">
+          <label for="" class="col-sm-6 col-form-label">Fecha fin:</label>
+          <div class="col-sm-6">
+            <input id="" class="form-control"  type="date" name="fechaF" required>
+          </div>
         </div>
-        <div class="nombreSemestre">
-          <label for="">Vigencia:</label>
-          <input id="checkEstado" type="checkbox" checked="true" value="V" onclick="checkValue()">
-          <input type="hidden" value="V" id="estado" name="estado">
+
+        <div class="mb-3 row">
+          <label for="" class="col-sm-6 col-form-label">Vigencia:</label>
+          <div class="col-sm-6">
+            <input id="checkEstado" type="checkbox" checked="true" value="V" onclick="checkValue()">
+            <input type="hidden" value="V" id="estado" name="estado">
+          </div>
         </div>
+
         <div class="btnsNuevoSemestre">
           <button id="btnCancelar">
             <a href="{{url_for('semestres')}}">Cancelar</a>

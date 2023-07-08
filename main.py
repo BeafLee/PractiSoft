@@ -926,7 +926,6 @@ def distrito():
 @app.route("/agregar_distrito")
 def agregar_distrito():
     ubicaciones = cont_ubi.obtener_datos_combos()
-    print(ubicaciones)
     return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
 
 @app.route("/guardar_distrito", methods=["POST"])

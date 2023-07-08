@@ -184,7 +184,7 @@ insert into  SEMESTRE(nombreSe, estado, fechaI, fechaF) values('2023-1', 'V','20
 
 insert into PERSONAL(idPersonal,apellidos,idDistrito,correo1,correo2,direccion, idEscuela,estado, idUsuario,nombres, numDoc,celular1,celular2,tipoDoc) values(1,'Chung',1,'correo1@gmail.com', 'correo2@gmail.com','direccion desconocida',1,'V',3,'Carlos','12345678','123456789','987654321','D');
 
-insert into JEFE_INMEDIATO(idJefe,apellidos,cargo, correo,correo2,idEmpresa,nombre,telefono, telefono2,turnoHorario, idUsuario) values(1,'Burgos', 'Jefe de Sistemas','correo1@gmail.com','correo2@gmail.com', 1,'Luis','123456789','987654321','Tarde', 2);
+insert into JEFE_INMEDIATO(idJefe,apellidos,cargo, correo,correo2,idEmpresa,nombre,telefono, telefono2,turnoHorario, idUsuario, idDistrito) values(1,'Burgos', 'Jefe de Sistemas','correo1@gmail.com','correo2@gmail.com', 1,'Luis','123456789','987654321','Tarde', 2, 1);
 
 insert into PRACTICA(fechaInicio,fechaFin,horasPractica,estado,fechaLimite,modalidad,esConvalidado,estadoPractica,estadoEnvio, idEstudiante,idJefe,idLinea, idPersonal,idSemestreIn,idSemestreFi) values('2023-03-28','2023-07-10',280,'V','2023-07-20','P','S','E','E',1,1,1,1,1,1);
 
