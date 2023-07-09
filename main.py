@@ -989,10 +989,12 @@ def guardar_distrito():
 ###     EDITAR DISTRITO
 @app.route("/editar_distrito/<int:id>")
 def editar_distrito(id):
-    datos_paises = cont_ubi.datos_paises()
     data = cont_ubi.buscar_distrito(id)
+    datos_paises = cont_ubi.datos_paises()
+    departamentos = cont_ubi.datos_departamentos(data[2])
+    provincias = cont_ubi.datos_provincias(data[3])
 
-    return render_template("/ubicacion/distrito/editarDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data)
+    return render_template("/ubicacion/distrito/editarDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data, departamentos = departamentos, provincias = provincias)
 
 @app.route("/actualizar_distrito", methods=["POST"])
 def actualizar_distrito():
@@ -1009,6 +1011,162 @@ def actualizar_distrito():
 def eliminar_distrito(id):
     cont_ubi.eliminar_distrito(id)
     return redirect("/distrito")
+
+#################################################################################
+##                                PROVINCIA                                    ##
+#################################################################################
+
+###     MOSTRAR PROVINCIA
+@app.route("/provincia")
+def provincia():
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        ubicaciones = cont_ubi.listar_provincias()
+        return render_template("/ubicacion/provincia/listarProvincia.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+    else:
+        return redirect('/')
+
+
+###     AGREGAR PROVINCIA
+@app.route("/agregar_provincia")
+def agregar_provincia():
+    datos_paises = cont_ubi.datos_paises()
+    return render_template("/ubicacion/provincia/nuevoProvincia.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
+
+@app.route("/guardar_provincia", methods=["POST"])
+def guardar_provincia():
+    nombre = request.form["provincia"]
+    idDep = request.form["departamento"]
+
+    cont_ubi.insertar_provincia(nombre, idDep)
+    return redirect("/provincia")
+
+
+###     EDITAR PROVINCIA
+@app.route("/editar_provincia/<int:id>")
+def editar_provincia(id):
+    data = cont_ubi.buscar_provincia(id)
+    datos_paises = cont_ubi.datos_paises()
+    departamentos = cont_ubi.datos_departamentos(data[2])
+
+    return render_template("/ubicacion/provincia/editarProvincia.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data, departamentos = departamentos)
+
+@app.route("/actualizar_provincia", methods=["POST"])
+def actualizar_provincia():
+    idProvincia = request.form["idProvincia"]
+    nombre = request.form["provincia"]
+    idDep = request.form["departamento"]
+    cont_ubi.actualizar_provincia(nombre, idDep, idProvincia)
+
+    return redirect("/provincia")
+
+
+###     ELIMINAR PROVINCIA
+@app.route("/eliminar_provincia/<int:id>")
+def eliminar_provincia(id):
+    cont_ubi.eliminar_provincia(id)
+    return redirect("/provincia")
+
+#################################################################################
+##                                DEPARTAMENTO                                    ##
+#################################################################################
+
+###     MOSTRAR DEPARTAMENTO
+@app.route("/departamento")
+def departamento():
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        ubicaciones = cont_ubi.listar_departamento()
+        return render_template("/ubicacion/departamento/listarDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+    else:
+        return redirect('/')
+
+
+###     AGREGAR DEPARTAMENTO
+@app.route("/agregar_departamento")
+def agregar_departamento():
+    datos_paises = cont_ubi.datos_paises()
+    return render_template("/ubicacion/departamento/nuevoDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
+
+@app.route("/guardar_departamento", methods=["POST"])
+def guardar_departamento():
+    nombre = request.form["departamento"]
+    idPais = request.form["pais"]
+
+    cont_ubi.insertar_departamento(nombre, idPais)
+    return redirect("/departamento")
+
+
+###     EDITAR DEPARTAMENTO
+@app.route("/editar_departamento/<int:id>")
+def editar_departamento(id):
+    data = cont_ubi.buscar_departamento(id)
+    datos_paises = cont_ubi.datos_paises()
+
+    return render_template("/ubicacion/departamento/editarDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data)
+
+@app.route("/actualizar_departamento", methods=["POST"])
+def actualizar_departamento():
+    idDepartamento = request.form["idDepartamento"]
+    nombre = request.form["departamento"]
+    idPais = request.form["pais"]
+    cont_ubi.actualizar_departamento(nombre, idPais, idDepartamento)
+
+    return redirect("/departamento")
+
+
+###     ELIMINAR DEPARTAMENTO
+@app.route("/eliminar_departamento/<int:id>")
+def eliminar_departamento(id):
+    cont_ubi.eliminar_departamento(id)
+    return redirect("/departamento")
+
+#################################################################################
+##                                   PAIS                                      ##
+#################################################################################
+
+###     MOSTRAR PAIS
+@app.route("/pais")
+def pais():
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        ubicaciones = cont_ubi.listar_pais()
+        return render_template("/ubicacion/pais/listarPais.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+    else:
+        return redirect('/')
+
+
+###     AGREGAR PAIS
+@app.route("/agregar_pais")
+def agregar_pais():
+    return render_template("/ubicacion/pais/nuevoPais.html", usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/guardar_pais", methods=["POST"])
+def guardar_pais():
+    nombre = request.form["pais"]
+
+    cont_ubi.insertar_pais(nombre)
+    return redirect("/pais")
+
+
+###     EDITAR PAIS
+@app.route("/editar_pais/<int:id>")
+def editar_pais(id):
+    data = cont_ubi.buscar_pais(id)
+
+    return render_template("/ubicacion/pais/editarPais.html", usuario = session['usuario'], maestra=session['maestra'], data=data)
+
+@app.route("/actualizar_pais", methods=["POST"])
+def actualizar_pais():
+    idPais = request.form["idPais"]
+    nombre = request.form["pais"]
+    cont_ubi.actualizar_pais(nombre, idPais)
+
+    return redirect("/pais")
+
+
+###     ELIMINAR PAIS
+@app.route("/eliminar_pais/<int:id>")
+def eliminar_pais(id):
+    cont_ubi.eliminar_pais(id)
+    return redirect("/pais")
 
 
 #################################################################################

@@ -36,7 +36,7 @@
             </select>
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="" class="btn btn-info btn-sm"><i class="bi bi-plus" style="color: black;"></i></a>
+            <a href="{{url_for('pais')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
           </div>
         </div>
 
@@ -49,7 +49,7 @@
             </select>
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="" class="btn btn-info btn-sm"><i class="bi bi-plus" style="color: black;"></i></a>
+            <a href="{{url_for('departamento')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
           </div>
 
         </div>
@@ -63,14 +63,14 @@
             </select>
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="" class="btn btn-info btn-sm"><i class="bi bi-plus" style="color: black;"></i></a>
+            <a href="{{url_for('provincia')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
           </div>
         </div>
 
         <div class="mb-3 row">
           <label class="col-4 col-form-label">Distrito</label>
           <div class="col-7">
-            <input type="text" class="form-control" name="distrito" id="input_distrito">
+            <input type="text" class="form-control" disabled name="distrito" id="input_distrito">
           </div>
         </div>
 
@@ -78,7 +78,7 @@
           <button id="btnCancelar">
             <a href="{{url_for('distrito')}}">Cancelar</a>
           </button>
-          <button id="btnRegistrar" type="submit">Registrar</button>
+          <button id="btnRegistrar" type="submit" disabled class="btn"><a>Registrar</a></button>
         </div>
 
       </form>
@@ -96,7 +96,7 @@
       var selectDepartamento = $('#select_departamento');
       var selectProvincia = $('#select_provincia');
       var inputDistrito = $('#input_distrito');
-      var botonRegistrar = $('#boton_registrar');
+      var botonRegistrar = $('#btnRegistrar');
 
       // Manejar el cambio en el select de país
       selectPais.change(function() {
@@ -132,7 +132,7 @@
 
         // Limpiar y desactivar los selects y el input de distrito
         selectProvincia.empty().prop('disabled', true);
-        inputDistrito.val('').prop('disabled', true);
+        inputDistrito.val('').prop('disabled', false);
 
         // Habilitar el select de provincia si se seleccionó un departamento
         if (departamentoSeleccionado) {

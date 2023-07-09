@@ -1,0 +1,61 @@
+{% extends maestra %}
+{% block titulo %}Gestionar departamento{% endblock %}
+{% block subtitul %}Gestionar departamento{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/icon-btn.css') }}">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+{% endblock %}
+{% block contenido %}
+
+<section>
+    <div class="barraGest">
+        <!--Le ponen el class "btnOpSeleccionado" cuando quieran que se vea seleccionado-->
+        <label class="btnOp">
+            <a href="{{url_for('index_s')}}">Inicio</a>
+        </label>
+        <label class="btnOpSeleccionado">
+            <a href="{{url_for('departamento')}}">Listar</a>
+        </label>
+        <label class="btnOp">
+            <a href="{{url_for('agregar_departamento')}}">Nuevo</a>
+        </label>
+    </div>
+
+
+    <div class="tabla m-3" id="contenido-dinamico">
+        <table id="tabla" class="display">
+            <thead>
+                <tr class="headTable">
+                    <th>País</th>
+                    <th>Departamento</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ubicacion in ubicaciones %}
+                <tr>
+                    <td>{{ubicacion[1]}}</td>
+                    <td>{{ubicacion[2]}}</td>
+                    <td>
+                        <a href="{{url_for('editar_departamento', id=ubicacion[0])}}"><i class="bi bi-pencil-fill"></i></a>
+                        <a class="mx-3" href="{{url_for('eliminar_departamento', id=ubicacion[0])}}"><i
+                                class="bi bi-trash-fill"></i></a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+{% endblock %}
+
+{%block scripts %}
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/paginacion.js') }}"></script>
+
+{% endblock %}

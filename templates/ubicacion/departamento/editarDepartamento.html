@@ -1,0 +1,82 @@
+{% extends maestra %}
+{% block titulo %}Editar departamento{% endblock %}
+{% block subtitul %}Editar departamento{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('departamento')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('agregar_departamento')}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="">
+      <form action="{{url_for('actualizar_departamento')}}" method="post">
+        <input type="hidden" name="idDepartamento" value="{{data[0]}}">
+
+        <div class="mb-3 row">
+          <label class="col-4 col-form-label">País</label>
+          <div class="col-7">
+            <select id="select_pais" name="pais" class="form-select" aria-label="Default select example">
+              {% for pais in paises %}
+              <option value="{{pais[0]}}" {% if data[2] == pais[0] %}selected{% endif %}>{{pais[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-1 m-0 p-0">
+            <a href="{{url_for('pais')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label class="col-4 col-form-label">Departamento</label>
+          <div class="col-7">
+            <input type="text" class="form-control" value="{{data[1]}}" name="departamento" id="input_departamento">
+          </div>
+
+        </div>
+
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('departamento')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit" class="btn"><a>Guardar</a></button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+
+<script>
+  $(document).ready(function() {
+      // Obtener referencias a los selects y el input de distrito
+      var inputDepartamento = $('#input_departamento');
+      var botonRegistrar = $('#btnRegistrar');
+      
+
+      // Manejar el cambio en el input de distrito
+      inputDepartamento.on('input', function() {
+        // Habilitar el botón de registrar si se ingresó un distrito
+        botonRegistrar.prop('disabled', !$(this).val());
+      });
+    });
+
+</script>
+
+{% endblock %}

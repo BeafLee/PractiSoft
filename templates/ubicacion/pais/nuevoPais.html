@@ -1,0 +1,66 @@
+{% extends maestra %}
+{% block titulo %}Registrar pais{% endblock %}
+{% block subtitul %}Registrar pais{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a> <!-- Cambiar a la función de inicio -->
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('pais')}}">Listar</a>
+    </label>
+    <label class="btnOpSeleccionado">
+      <a href="{{url_for('agregar_pais')}}">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevoSemestre">
+    <div class="">
+      <form action="{{url_for('guardar_pais')}}" method="post">
+
+        <div class="mb-3 row">
+          <label class="col-4 col-form-label">País</label>
+          <div class="col-7">
+            <input type="text" class="form-control" name="pais" id="input_pais">
+          </div>
+        </div>
+
+
+        <div class="btnsNuevoSemestre">
+          <button id="btnCancelar">
+            <a href="{{url_for('pais')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit" disabled class="btn"><a>Registrar</a></button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+
+<script>
+  $(document).ready(function() {
+      // Obtener referencias a los selects y el input de distrito
+      var inputPais = $('#input_pais');
+      var botonRegistrar = $('#btnRegistrar');
+
+      // Manejar el cambio en el input de distrito
+      inputPais.on('input', function() {
+        // Habilitar el botón de registrar si se ingresó un distrito
+        botonRegistrar.prop('disabled', !$(this).val());
+      });
+    });
+
+</script>
+
+{% endblock %}
