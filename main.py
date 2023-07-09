@@ -194,6 +194,12 @@ def practicas():
     practica = cont_prac.obtener_practica()
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/practicasE")
+def practicasE():
+    usu=session['usuario']
+    idE=usu[0]
+    practica = cont_prac.obtener_practicaE(idE)
+    return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 ###     AGREGAR PRACTICA
 
 @app.route("/agregar_practica")
