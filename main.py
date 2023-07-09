@@ -5,7 +5,7 @@ import pandas as pd  #instalar
 import mysql.connector #instalar
 from os.path import join, dirname, realpath
 from PyPDF2 import PdfMerger , PdfReader 
-from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file
+from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
 import controladores.controlador_semestre as cont_sem
@@ -287,15 +287,43 @@ def guardar_seguimiento_practica():
 #################################################################################
 ##                          INFORME FINAL - ESTUDIANTE                         ##
 #################################################################################
+separadorText = '/%/'
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
-@app.route("/af")
-@app.route("/agregarInformeFinalEstudiante")
-def agregarInformeFinalEstudiante():
+@app.route("/afe/<int:idPractica>")
+@app.route("/agregarInformeFinalEstudiante/<int:idPractica>")
+def agregarInformeFinalEstudiante(idPractica):
+    extraData = cont_inf_final_est.buscarOtraData_idPractica(idPractica)
+    data = ["Crear", 1, extraData[0], extraData[1]]
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
 
-    data = ["Crear", 1, "RAZON 1", "DIREC 1"]
-    data = ["Editar", 1, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", 20, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
-    #data = ["Ver", 1, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", 20, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
+@app.route("/efe/<int:idPractica>")
+@app.route("/editarInformeFinalEstudiante/<int:idPractica>")
+def editarInformeFinalEstudiante(idPractica):
+    infoData = cont_inf_final_est.buscar_id(idPractica)
+    
+    #Separar las conclusiones y recomendaciones en listas
+    conclusiones = infoData[12].split(separadorText)
+    recomendaciones = infoData[13].split(separadorText)
+    print(conclusiones)
+    print(recomendaciones)
+
+    data = ["Editar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
+    #data = ["Editar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
+
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+
+@app.route("/vfe/<int:idPractica>")
+@app.route("/InformeFinalEstudiante/<int:idPractica>")
+def verInformeFinalEstudiante(idPractica):
+    infoData = cont_inf_final_est.buscar_id(idPractica)
+    
+    #Separar las conclusiones y recomendaciones en listas
+    conclusiones = infoData[12].split(separadorText)
+    recomendaciones = infoData[13].split(separadorText)
+    
+    data = ["Ver", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
+    #data = ["Ver", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
     return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
 
 
@@ -317,8 +345,8 @@ def guardar_informeFinalEstudiante():
         os.makedirs(urlBase)
 
     organigramaImg = request.files["organigramaImg"]
-    urlOrganigrama = urlBase + "/organigrama" + os.path.splitext(organigramaImg.filename)[1]
-    organigramaImg.save(urlOrganigrama)
+    urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
+    organigramaImg.save(urlBase + "/" + urlOrganigrama)
 
     descAreaTrabajo = request.form["descAreaTrabajo"]
     descLabores = request.form["descLabores"]
@@ -327,11 +355,17 @@ def guardar_informeFinalEstudiante():
     bibliografia = request.form["bibliografia"]
 
     anexosPdf = request.files["anexosPdf"]
-    urlAnexos = urlBase + "/anexos" + os.path.splitext(anexosPdf.filename)[1]
-    anexosPdf.save(urlAnexos)
+    urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
+    anexosPdf.save(urlBase + "/" + urlAnexos)
 
     estado = "G" #Guardado
     print(conclusiones, recomendaciones)
+
+    #Unir las conclusiones y recomendaciones en un string
+    conclusiones = separadorText.join(conclusiones)
+    recomendaciones = separadorText.join(recomendaciones)
+    print(conclusiones)
+    print(recomendaciones)
     cont_inf_final_est.insertar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
     return redirect("/agregarInformeFinalEstudiante")
 
@@ -339,6 +373,7 @@ def guardar_informeFinalEstudiante():
 def actualizar_informeFinalEstudiante():
     
     idPractica = request.form["idPractica"]
+    idInforme = request.form["idInforme"]
     introduccion = request.form["introduccion"]
     giro = request.form["giro"]
     representante = request.form["representante"]
@@ -353,8 +388,8 @@ def actualizar_informeFinalEstudiante():
         os.makedirs(urlBase)
 
     organigramaImg = request.files["organigramaImg"]
-    urlOrganigrama = urlBase + "/organigrama" + os.path.splitext(organigramaImg.filename)[1]
-    organigramaImg.save(urlOrganigrama)
+    urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
+    organigramaImg.save(urlBase + "/" + urlOrganigrama)
 
     descAreaTrabajo = request.form["descAreaTrabajo"]
     descLabores = request.form["descLabores"]
@@ -363,22 +398,28 @@ def actualizar_informeFinalEstudiante():
     bibliografia = request.form["bibliografia"]
 
     anexosPdf = request.files["anexosPdf"]
-    urlAnexos = urlBase + "/anexos" + os.path.splitext(anexosPdf.filename)[1]
-    anexosPdf.save(urlAnexos)
+    urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
+    anexosPdf.save(urlBase + "/" + urlAnexos)
 
     estado = "G" #Guardado
     print(conclusiones, recomendaciones)
-    cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
+
+    #Unir las conclusiones y recomendaciones en un string
+    conclusiones = separadorText.join(conclusiones)
+    recomendaciones = separadorText.join(recomendaciones)
+    print(conclusiones)
+    print(recomendaciones)
+
+    cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica, idInforme)
     return redirect("/agregarInformeFinalEstudiante")
 
 
-@app.route("/visualizar/<string:filename>/<int:idPractica>")
-def visualizar(filename, idPractica):
+@app.route("/visualizar_ife/<int:idPractica>/<string:filename>")
+def visualizar_ife(idPractica, filename):
     base = "practica/" + str(idPractica) + "/informe/final_estudiante/"
-    if os.path.splitext(filename)[1] != ".pdf":
-        url = base + filename
-        return render_template("/informes/final_estudiante/visualizar.html", url = url)
-    return None
+    url = base + filename
+    return send_from_directory('static', url)
+     
 
 @app.route("/descargar_pdf/<string:filename>/<int:idPractica>")
 def descargar_pdf(filename, idPractica):
@@ -397,16 +438,17 @@ def prueba():
 
     return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
 
-@app.route("/generar_informeFinalEstudiante/<int:id>")
-def generar_informeFinalEstudiante(id):
-    data = cont_inf_final_est.buscar_id(id)
-    idPractica = 1
+@app.route("/generar_informeFinalEstudiante/<int:idPractica>")
+def generar_informeFinalEstudiante(idPractica):
+    data = list(cont_inf_final_est.buscar_id(idPractica))
 
-    # base = "practica/" + data[22] + "/informe/final_estudiante/"
-    base = "practica/" + str(idPractica) + "/informe/final_estudiante/"
+    #base = "practica/" + data[22] + "/informe/final_estudiante/"
 
-    data = ["Carlos Chung", "Empresa 1", "Direccion 1", 1, "texto de la introduccion", "A", "20/10/2023", "texto de la infra fisica", "texto de la infra tecnologica", "organigrama.png", "descripcion del area relaciones", "descripcion de labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "bibliografia \nreferencia1 \nreferencia 2", "giro de la empresa", "representante legal de la empresa", 20, "vision", "mision", "anexos.pdf", 'observacion hecho por el docente', 1]
+    #data = ["Carlos Chung", "Empresa 1", "Direccion 1", 1, "texto de la introduccion", "A", "20/10/2023", "texto de la infra fisica", "texto de la infra tecnologica", "organigrama.png", "descripcion del area relaciones", "descripcion de labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "bibliografia \nreferencia1 \nreferencia 2", "giro de la empresa", "representante legal de la empresa", 20, "vision", "mision", "anexos.pdf", 'observacion hecho por el docente', 1]
 
+    #Separar las conclusiones y recomendaciones en listas
+    data[12] = data[12].split(separadorText)
+    data[13] = data[13].split(separadorText)
       
     context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
     context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': data[9],'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}

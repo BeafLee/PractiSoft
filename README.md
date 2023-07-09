@@ -2,6 +2,9 @@
 Repositorio para el software a la ayuda a la documentación de las PPP - PractiSoft
 
 Credito a @AldanaGod
+## Configuración del git (Solo la primera vez)
+git config --global user.name "usurio de github"
+git config --global user.email github@example.com
 
 ## Instalación
 
