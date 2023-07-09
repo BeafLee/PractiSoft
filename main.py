@@ -80,18 +80,18 @@ def login():
     elif usuario_log[3] == 2:
         usuario_log[4] = 'Administrador del sistema'
         session['usuario'] = usuario_log
-        session['maestra'] = "maestra.html"
+        session['maestra'] = "maestra_a.html"
         return redirect("/index_a")
     elif usuario_log[3] == 3:
         usuario_log[4] = 'Docente de apoyo'
         session['usuario'] = usuario_log
-        session['maestra'] = "maestra.html"
+        session['maestra'] = "maestra_d.html"
         return redirect("/index_d")
     elif usuario_log[3] == 4:
         usuario_log[4] = 'Responsable de la practica'
         session['usuario'] = usuario_log
-        session['maestra'] = "maestra.html"
-        return redirect("/index_d")
+        session['maestra'] = "maestra_j.html"
+        return redirect("/index_j")
 
 
 
@@ -133,15 +133,26 @@ def index_s():
     cod = cont_ini.obtenerIdUsuario(usu[1])
     if cod[0] is None:
         return "uwu"
-    elif cod[0] == 1:
+    elif cod[0] == 4:
         return redirect("/index_e")
-    elif cod[0] == 2:
+    elif cod[0] == 1:
         return redirect("/index_a")
     elif cod[0] == 3:
+        return redirect("/index_j")
+    elif cod[0] == 2:
         return redirect("/index_d")
 
 
+@app.route("/index_d_modulo1")
+def index_d_modulo1():
+    usu = session['usuario']
+    return render_template("/maestra_d_modulo1.html",usuario = usu)
 
+@app.route("/index_d_modulo2")
+def index_d_modulo2():
+    usu = session['usuario']
+    return render_template("/maestra_d_modulo2.html",usuario = usu)
+    
 @app.route("/index_a")
 def index_a():
     usu = session['usuario']
@@ -160,6 +171,10 @@ def index_d():
     usu = session['usuario']
     return render_template("/index/index_d.html", usuario = usu, maestra=session['maestra'])
 
+@app.route("/index_j")
+def index_j():
+    usu = session['usuario']
+    return render_template("/index/index_j.html", usuario = usu, maestra=session['maestra'])
 
 #################################################################################
 ##                                  PRACTICA                                   ##
