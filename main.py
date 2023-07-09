@@ -130,16 +130,15 @@ def actualizar_perfil():
 @app.route("/index_supremo")
 def index_s():
     usu = session['usuario']
-    cod = cont_ini.obtenerIdUsuario(usu[1])
-    if cod[0] is None:
+    if usu[3] is None:
         return "uwu"
-    elif cod[0] == 4:
+    elif usu[3] == 1:
         return redirect("/index_e")
-    elif cod[0] == 1:
+    elif usu[3] == 2:
         return redirect("/index_a")
-    elif cod[0] == 3:
+    elif usu[3] == 4:
         return redirect("/index_j")
-    elif cod[0] == 2:
+    elif usu[3] == 3:
         return redirect("/index_d")
 
 
