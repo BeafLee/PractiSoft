@@ -5,7 +5,7 @@ import pandas as pd  #instalar
 import mysql.connector #instalar
 from os.path import join, dirname, realpath
 from PyPDF2 import PdfMerger , PdfReader 
-from flask import Flask, request, jsonify, render_template, redirect, session, url_for, send_file
+from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
 import controladores.controlador_semestre as cont_sem
@@ -901,10 +901,10 @@ def reportes1():
     return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
 
 #################################################################################
-##                                UBICACIÓN                                    ##
+##                                DISTRITO                                    ##
 #################################################################################
 
-###     MOSTRAR UBICACIÓN
+###     MOSTRAR DISTRITO
 @app.route("/distrito")
 def distrito():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
@@ -914,52 +914,68 @@ def distrito():
         return redirect('/')
 
 
-###     AGREGAR SEMESTRE
+###     AGREGAR DISTRITO
 @app.route("/agregar_distrito")
 def agregar_distrito():
-    ubicaciones = cont_ubi.obtener_datos_combos()
-    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+    datos_paises = cont_ubi.datos_paises()
+    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
 
 @app.route("/guardar_distrito", methods=["POST"])
 def guardar_distrito():
+    nombre = request.form["distrito"]
+    idPro = request.form["provincia"]
 
-    nombreSe = request.form["nombreSe"]
-    fechaI = request.form["fechaI"]
-    fechaF = request.form["fechaF"]
-    estado = request.form["estado"]
-
-    cont_sem.insertar_semestre(nombreSe, fechaI,fechaF,estado)
+    cont_ubi.insertar_distrito(nombre, idPro)
+    flash('Distrito registrado satisfactoriamente', 'message')
     return redirect("/distrito")
 
 
-###     EDITAR SEMESTRE
+###     EDITAR DISTRITO
 @app.route("/editar_distrito/<int:id>")
 def editar_distrito(id):
-    semestre = cont_sem.buscar_semestre_id(id)
-    opt = False
-    if(semestre[4] == 'V'):
-        opt = True
+    datos_paises = cont_ubi.datos_paises()
+    data = cont_ubi.buscar_distrito(id)
 
-    return render_template("/semestre/editarSemestre.html", usuario = session['usuario'], maestra=session['maestra'], semestre=semestre, opt=opt)
+    return render_template("/ubicacion/distrito/editarDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data)
 
 @app.route("/actualizar_distrito", methods=["POST"])
 def actualizar_distrito():
-    idSemestre = request.form["idSemestre"]
-    nombreSe = request.form["nombreSe"]
-    fechaI = request.form["fechaI"]
-    fechaF = request.form["fechaF"]
-    estado = request.form["estado"]
-
-    cont_sem.actualizar_semestre(nombreSe, fechaI,fechaF,estado, idSemestre)
+    idDistrito = request.form["idDistrito"]
+    nombre = request.form["distrito"]
+    idPro = request.form["provincia"]
+    cont_ubi.actualizar_distrito(nombre, idPro, idDistrito)
 
     return redirect("/distrito")
 
 
-###     ELIMINAR SEMESTRE
+###     ELIMINAR DISTRITO
 @app.route("/eliminar_distrito/<int:id>")
 def eliminar_distrito(id):
-    cont_sem.eliminar_semestre(id)
+    cont_ubi.eliminar_distrito(id)
     return redirect("/distrito")
+
+
+#################################################################################
+##                       APIS PARA DATOS DE UBICACION                          ##
+#################################################################################
+@app.route('/obtener_paises', methods=['GET'])
+def obtener_paises():
+    datos_paises = cont_ubi.datos_paises()
+    return jsonify(paises=datos_paises)
+
+@app.route('/obtener_departamentos', methods=['GET'])
+def obtener_departamentos():
+    pais_seleccionado = request.args.get('pais')
+    departamentos = cont_ubi.datos_departamentos(pais_seleccionado)
+    return jsonify(departamentos=departamentos)
+
+@app.route('/obtener_provincias', methods=['GET'])
+def obtener_provincias():
+    departamento_seleccionado = request.args.get('departamento')
+    provincias = cont_ubi.datos_provincias(departamento_seleccionado)
+    return jsonify(provincias=provincias)
+
+
 
 
 # Iniciar el servidor
