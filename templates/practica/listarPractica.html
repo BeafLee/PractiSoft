@@ -31,17 +31,16 @@
     <table id="tabla" class="display">
       <thead>
       <tr class="headTable">
-        <th>Practica</th>
+        <th>Codigo Universitario</th>
         <th>Estudiante</th>
         <th>Empresa</th>
-        <th>Linea Desarrollo</th>
-        <th>Fecha de inicio</th>
-        <th>Fecha Final</th>
+       
+        
         <th>Horas practicas</th>
         <th>Estado</th>
-        <th>Fecha Limite</th>
+        
         <th>Modalidad</th>
-        <th>Jefe inmediato</th>
+        
         <th>Ver Detalle</th>
         <th>Editar</th>
       </tr>
@@ -49,19 +48,18 @@
 
       {% for practica in practica %}
       <tr>
-        <td style="text-align: center;">{{practica[0]}}</td> <!-- el centrado modificarlo y ponerlo en el css -->
+        <td style="text-align: center;">{{practica[11]}}</td> <!-- el centrado modificarlo y ponerlo en el css -->
         <td>{{practica[1]}}</td>
         <td>{{practica[2]}}</td>
-        <td>{{practica[3]}}</td>
-        <td>{{practica[4]}}</td>
-        <td>{{practica[5]}}</td>
+        
+        
         <td>{{practica[6]}}</td>
         <td>{{practica[7]}}</td>
-        <td>{{practica[8]}}</td>
+       
         <td>{{practica[9]}}</td>
-        <td>{{practica[10]}}</td>
+        
         <td><a href="{{url_for('detalle_practica', id=practica[0])}}"><i class="bi bi-eye-fill"></i></a></td>
-        <td class="editar"><a href="{{url_for('editar_semestre', id=practica[0])}}"><i class="bi bi-pencil-fill"></i></a></td>
+        <td class="editar"><a href="{{url_for('editar_Practica', id=practica[0])}}"><i class="bi bi-pencil-fill"></i></a></td>
       </tr>
       {% endfor %}
     </table>

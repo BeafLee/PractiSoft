@@ -1,0 +1,66 @@
+{% extends maestra %}
+{% block titulo %}DETALLE JEFE {% endblock %}
+{% block subtitul %}DETALLE JEFE {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+ <link rel="stylesheet" href="{{url_for('static',filename='styles/listarDetallePractica.css') }}">
+
+{% endblock %}
+{% block contenido %}
+
+<section>
+<div class="">
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp gestSelect">
+      <a href="{{url_for('JefeInmediato')}}">Jefe</a>
+    </label>
+  </div>
+
+  <div id="cont1"class="container">
+    <div  class="row">
+      <div class="col-md-6">
+        <!-- Contenido de la primera columna -->
+        <h3>DATOS DEL JEFE:</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Contenido de la primera columna -->
+            <span class="d-block">Nombre Jefe:</span>
+            <span class="d-block">Telefono:</span>
+            <span class="d-block">Telefono 2:</span>
+            <span class="d-block">Correo:</span>
+            <span class="d-block">Correo 2:</span>
+            <span class="d-block">Cargo:</span>
+            <span class="d-block">Empresa:</span>
+            <span class="d-block">Distrito:</span>
+          </div>
+          {% for jefe in jefes %}
+          <div class="col-md-6">
+            <!-- Contenido de la segunda columna -->
+            <input readonly value="{{jefe[0] }}"></input>
+            <input readonly value="{{jefe[1] }}" ></input>
+            <input readonly value="{{jefe[6] }}"></input>
+            <input readonly value="{{jefe[2] }}"></input>
+            <input readonly value="{{jefe[7] }}"></input>
+            <input readonly value="{{jefe[3] }}"></input>
+            <input readonly value="{{jefe[4] }}"></input>
+            <input readonly value="{{jefe[8] }}"></input>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+</section>
+{% endblock %}
+{%block scripts %}
+
+
+
+
+{% endblock %}
+
+
+

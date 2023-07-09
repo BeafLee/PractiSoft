@@ -22,6 +22,9 @@ import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
 import controladores.controlador_ubicacion as cont_ubi
+import controladores.controladorGrafico as controladorGrafico
+import controladores.controlador_jefe_inmediato as controlador_jefe_inmediato
+import controladores.localidad as cont_localidad
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -71,6 +74,14 @@ def uploadFiles():
 @app.route('/<mostrar>')
 def iniciarSesion(mostrar='no mostrar'):
     return render_template("/login.html", mostrarModal = mostrar)
+
+@app.route('/graficoCajan')
+def graficoCajan():   
+    lineasPracticas=controladorGrafico.obtener_cantidadPracticasLineaD()
+    datos = {}
+    for nombre, cantidad in lineasPracticas:
+        datos[nombre] = cantidad
+    return render_template("/reportes/grafico.html",datos=datos,lineasPracticas=lineasPracticas,maestra=session['maestra'],usuario=session['usuario'])
 
 
 @app.route('/login', methods=["POST"])
@@ -247,6 +258,14 @@ def detalle_practica(id):
     detalle = cont_dp.listar_detalle_practica(id)
     usu = session['usuario']
     return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+
+@app.route("/editar_Practica/<int:id>")
+def editar_Practica(id):
+    practica = cont_prac.obtener_practicaID(id)
+    empresa=cont_emp.obtener_empresa()
+    semestreF = cont_nprac.obtenerSemestres()
+    linea = cont_nprac.obtener_linea_desarrollo()
+    return render_template("/practica/editarPractica.html", usuario = session['usuario'], maestra=session['maestra'], practica=practica,empresa=empresa,semestreF=semestreF,linea=linea,id=id)
 
 #################################################################################
 ##                             SEGUIMIENTO PRACTICA                            ##
@@ -1037,7 +1056,46 @@ def obtener_provincias():
     provincias = cont_ubi.datos_provincias(departamento_seleccionado)
     return jsonify(provincias=provincias)
 
+#################################################################################
+##                            Jefe_Inmediato                                   ##
+#################################################################################
+@app.route("/JefeInmediato")
+def JefeInmediato():
+    jefes = controlador_jefe_inmediato.obtener_Jefe()
+    return render_template("/Jefe_Inmediato/jefe.html", jefes=jefes, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/DetalleJefeInmediato/<int:id>")
+def DetalleJefeInmediato(id):
+    jefes = controlador_jefe_inmediato.obtener_DetalleJefe(id)
+    return render_template("/Jefe_Inmediato/detalle_jefe.html", jefes=jefes, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/AgregarJefeInmediato")
+def AgregarJefeInmediato():
+    jefes = controlador_jefe_inmediato.obtener_Jefe()
+    departamentos=cont_localidad.obtener_Departamento()
+    distritos=cont_localidad.obtener_Distrito()
+    provincias=cont_localidad.obtener_Provincia()
+    empresas=cont_emp.obtener_empresa()
+    
+    return render_template("/Jefe_Inmediato/nuevoJefe.html",empresas=empresas, jefes=jefes,departamentos=departamentos,distritos=distritos,provincias=provincias, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/guardarJefe", methods=["POST"])
+def guardarJefe():
+    nombre = request.form["nombre"]
+    apellidos = request.form["apellidos"]
+    telefono = request.form["telefono"]
+    telefono2 = request.form["telefono2"]
+    correo = request.form["correo"]
+    correo2 = request.form["correo2"]
+    cargo = request.form["cargo"]
+    turno = request.form["turno"]
+    empresa = request.form["empresa"]
+    usuario = request.form["usuario"]
+    contraseña = request.form["contraseña"]
+    distrito = request.form["distrito"]
+    controlador_jefe_inmediato.insertar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+    # De cualquier modo, y si todo fue bien, redireccionar
+    return redirect("/JefeInmediato")
 
 
 # Iniciar el servidor

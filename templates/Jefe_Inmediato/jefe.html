@@ -1,0 +1,68 @@
+{% extends maestra %}
+{% block titulo %}Gestionar JEFE {% endblock %}
+{% block subtitul %}Gestionar JEFE {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarPractica.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+{% endblock %}
+{% block contenido %}
+
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('AgregarJefeInmediato')}}">Nuevo</a>
+    </label>
+  </div>
+
+  <div class="tabla" id="contenido-dinamico">
+    <table id="tabla" class="display">
+      <thead>
+      <tr class="headTable">
+        <th>Encargado</th>
+        <th>Telefono</th>
+        <th>Correo</th>       
+        <th>Cargo</th>
+        <th>Empresa</th>      
+        <th>Ver Detalle</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+
+      {% for jefe in jefes %}
+      <tr>
+        <td style="text-align: center;">{{jefe[0]}}</td> <!-- el centrado modificarlo y ponerlo en el css -->
+        <td>{{jefe[1]}}</td>
+        <td>{{jefe[2]}}</td>            
+        <td>{{jefe[3]}}</td>
+        <td>{{jefe[4]}}</td>             
+        <td><a href="{{url_for('DetalleJefeInmediato',id=jefe[5])}}"><i class="bi bi-eye-fill"></i></a></td>
+        <td class="editar"><a href="#"><i class="bi bi-pencil-fill"></i></a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+{% endblock %}
+
+
+{%block scripts %}
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/paginacion.js') }}"></script>
+
+
+{% endblock %}

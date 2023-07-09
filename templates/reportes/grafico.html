@@ -1,0 +1,64 @@
+{% extends "maestra.html" %}
+{% block titulo %}Reportes Graficos{% endblock %}
+{% block subtitul %}Reportes Graficos{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/listarSemestre.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+{% endblock %}
+{% block contenido %}
+
+<section>   
+    <div style="margin-top: 8%; margin-left: 25%;">
+        <div style="width: 500px; height: 500px;"><canvas id="grafico"></canvas></div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/semestre.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/js/paginacion.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtén los datos de las líneas de prácticas desde Flask
+        var datos = JSON.parse('{{ datos | tojson | safe }}');
+    
+        // Extrae los nombres y las cantidades de los datos
+        var nombres = Object.keys(datos);
+        var cantidades = Object.values(datos);
+    
+        // Calcula los porcentajes
+        var total = cantidades.reduce(function(a, b) {
+            return a + b;
+        }, 0);
+        var porcentajes = cantidades.map(function(cantidad) {
+            return (cantidad / total) * 100;
+        });
+    
+        // Configura los datos y opciones del gráfico
+        var data = {
+            labels: nombres,
+            datasets: [{
+                data: porcentajes,
+                backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff'],
+                hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff']
+            }]
+        };
+        var options = {
+            responsive: true
+        };
+    
+        // Crea el gráfico circular
+        var ctx = document.getElementById('grafico').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    });
+</script>
+
+
+{% endblock %}

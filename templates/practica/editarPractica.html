@@ -23,30 +23,30 @@
   </div>
   <div class="nuevaPractica">
     <div class="formulario">
-      <form action="{{url_for('guardar_practica')}}" method="post">
+      <form action="{{url_for('actualizar_practica',id=id)}}" method="post">
 
 
         <div>
           <h2>DATOS DEL ESTUDIANTE</h2>
           <br>
           <div class="wrapper">
-
+            {% for practica in practica %}
             <label for="">Código de estudiante:</label>
-            <input readonly value="{{estudiante[1] }}"></input>
+            <input readonly value="{{practica[1] }}"></input>
             <label for="">DNI:</label>
-            <input readonly value="{{estudiante[2] }}"></input>
+            <input readonly value="{{practica[2] }}"></input>
 
 
           </div>
           <br>
           <div class="wrapper">
             <label for="">Nombre Completo:</label>
-            <input readonly value="{{estudiante[3] }}"></input>
+            <input readonly value="{{practica[3] }}"></input>
             <label for="">Plan de Estudios:</label>
-            <input readonly value="{{estudiante[4] }}"></input>
+            <input readonly value="{{practica[4] }}"></input>
 
           </div>
-
+          {% endfor %}
 
         </div>
 
@@ -61,7 +61,7 @@
                 <select id="empresa" class="dropdown" name="emp">
                 <option >Empresas</option>
                 {% for empresa in empresa %}
-                <option value="{{ empresa[0] }}">{{ empresa[0] }}</option>
+                <option value="{{ empresa[0] }}">{{ empresa[1] }}</option>
                 {% endfor %}
                 </select>
             </div>
@@ -70,13 +70,12 @@
           </div>
           <br>
           <div class="wrapper">
-
+            {% for empresa in empresa %}
             <label for="">RUC:</label>
-            <input readonly id="ruc" name="ruc"></input>
+            <input  readonly id="ruc" name="ruc" value="{{ empresa[2] }}"></input>
             <label for="">Jefe Inmediato:</label>
-            <input readonly id="jefe" name="jefe"></input>
-
-
+            <input  readonly id="jefe" name="jefe" value="{{ empresa[4] }}"></input>
+            {% endfor %}
           </div>
 
         </div>
@@ -91,12 +90,16 @@
           <div class="wrapper">
 
             <label for="">Semestre de Inicio:</label>
-            <input readonly value="{{semestreA[0] }}" name="semI"></input>
+            <select id="" class="dropdown" name="semF">
+              {% for semestreF in semestreF %}
+              <option value="{{ semestreF[1] }}">{{ semestreF[0] }}</option>
+              {% endfor %}
+            </select>
             <label for="">Semestre Final:</label>
             <div class="col">
               <select id="" class="dropdown" name="semF">
                 {% for semestreF in semestreF %}
-                <option value="{{ semestreF[0] }}">{{ semestreF[0] }}</option>
+                <option value="{{ semestreF[1] }}">{{ semestreF[0] }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -153,7 +156,7 @@
 
         <div class="btnsNuevaPractica">
           <button id="btnCancelar">
-            <a href="{{url_for('semestres')}}">Cancelar</a>
+            <a href="{{url_for('practicas')}}">Cancelar</a>
           </button>
           <button id="btnRegistrar" type="submit">
 
