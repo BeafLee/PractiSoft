@@ -1,217 +1,187 @@
 /* GENERALES */
 
 *{
-    padding: 0;
-    margin: 0;
-    font-family: 'K2D', sans-serif;
-  }
-  body{
-    height: 100vh;
-    
-  }
-  .navSec{
-    display: flex;
-  }
+  padding: 0;
+  margin: 0;
+  font-family: 'K2D', sans-serif;
+}
+body{
+  height: 100vh;
   
-  /* HEADER */
-  
-  header{
-    border-bottom: 2px solid rgb(198, 198, 198);
-    display: flex;
-    justify-content: space-between;
-  }
-  #logo{
-    max-height: 100px;
-  }
-  .titulo{
-    display: flex;
-    align-items: center;
-    font-size: 50px;
-    font-weight: bold;
-  }
-  #iconoUsuario{
-    height: 50px;
-    border-radius: 50%;
-  }
-  .usuario{
-    padding: 10px;
-    width: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nomUsuario{
-    color: white;
-    background-color: red;
-    padding: 8px;
-    border-radius: 10px;
-  }
-  
-  /* NAV */
-  
-  nav{
-    border-right: 2px solid rgb(198, 198, 198);
-    width: 300px;
-    height: calc(100vh - 106px);
-  }
-  .barraOp{
-    height: 35px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    padding: 10px;
-    background-color: red;
-    font-size: 25px;
-  }
-  .opGestion{
-    display: flex;
-    align-items: center;
-    justify-content: space-around !important;
-  }
-  #iconoGestion{
-    height: 30px;
-  }
-  .contGestion{
-    border-bottom: 2px solid rgb(198, 198, 198);
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    font-size: 16px;
-  }
-  .contGestion > li{
-    display: flex;
-    justify-content: end;
-    text-decoration: none !important;
-  }
-  li{
-    padding: 3px;
-  }
-  a{
-    text-decoration: none;
-    color: black;
-  }
-  
-  /* SECTION */
-  
-  section{
-    background-image: url("../fondo.jpg");
-    height: calc(100vh - 106px);
-    width: 100%;
-  }
-  
-    /* BARRA GESTIÓN */
-  
-  .barraGest{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    height: 53px;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: white;
-    border-bottom: 2px solid rgb(198, 198, 198);
-  }
-  .btnOp a{
-    color: rgb(199, 199, 199);
-  }
-  .btnOp{
-    margin-left: 150px;
-  }
-  .btnOp a:hover{
-    color: black;
-    border-bottom: 4px solid red;
-  }
-  
-    /* BARRA BUSCAR */
-  
-  .buscar{
-    margin-right: 60px;
-    height: 100px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-  }
-  .barraBuscar{
-    width: 360px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .barraBuscar > button{
-    background-color: transparent;
-    border: none;
-  }
-  button:hover{
-    cursor: pointer;
-  }
-  .barraBuscar > input{
-    height: 36px;
-    font-size: 24px;
-  }
-  
-    /* TABLA */
-  
-  .tabla{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 50px;
-  }
-  table{
-    font-size: 24px;
-    border-radius: 10px;
-    border-collapse: collapse;
-    width: 75%;
-    background-color: rgb(245, 245, 245);
-  }
-  th,td{
-    border: 3px solid rgb(168, 168, 168);
-    height: 50px;
-    padding: 5px;
-    min-width: 75px;
-  }
-  th{
-    font-weight: bold;
-  }
-  .vigente,.editar,.eliminar,.darBaja,.fechaInicio,.fechaFin{
-    text-align: center;
-  }
-  .darBaja{
-    padding-bottom: 10px;
-  }
-  .darBaja button{
-    height: 35px;
-    width: 70px;
-    font-size: 16px;
-  }
-  
-  /* BOTONES Y SELECT DE INDICE */
-  
-  .indice{
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .btnIndice{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  .btnIndice button{
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    background-color: green;
-    border-radius: 4px;
-    color: white;
-  }
-  .btnIndice p{
-    width: 50px;
-    text-align: center;
-  }
-  
-  
+}
+.navSec{
+  display: flex;
+}
+
+/* HEADER */
+
+header{
+  border-bottom: 2px solid rgb(198, 198, 198);
+  display: flex;
+  justify-content: space-between;
+}
+#logo{
+  max-height: 100px;
+}
+.titulo{
+  display: flex;
+  align-items: center;
+  font-size: 50px;
+  font-weight: bold;
+}
+#iconoUsuario{
+  height: 50px;
+  border-radius: 50%;
+}
+.usuario{
+  padding: 10px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nomUsuario{
+  color: white;
+  background-color: red;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+/* NAV */
+
+nav{
+  border-right: 2px solid rgb(198, 198, 198);
+  width: 300px;
+  height: calc(100vh - 106px);
+}
+.barraOp{
+  height: 35px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 10px;
+  background-color: red;
+  font-size: 25px;
+}
+.opGestion{
+  display: flex;
+  align-items: center;
+  justify-content: space-around !important;
+}
+#iconoGestion{
+  height: 30px;
+}
+.contGestion{
+  border-bottom: 2px solid rgb(198, 198, 198);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  font-size: 16px;
+}
+.contGestion > li{
+  display: flex;
+  justify-content: end;
+  text-decoration: none !important;
+}
+li{
+  padding: 3px;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+
+/* SECTION */
+
+section{
+  background-image: url("../fondo.jpg");
+  height: calc(100vh - 106px);
+  width: 100%;
+}
+
+  /* BARRA GESTIÓN */
+
+.barraGest{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 53px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  border-bottom: 2px solid rgb(198, 198, 198);
+}
+.btnOp a{
+  color: rgb(199, 199, 199);
+}
+.btnOp{
+  margin-left: 150px;
+}
+.btnOp a:hover{
+  color: black;
+  border-bottom: 4px solid red;
+}
+
+  /* BARRA BUSCAR */
+
+.buscar{
+  margin-right: 60px;
+  height: 100px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.barraBuscar{
+  width: 360px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.barraBuscar > button{
+  background-color: transparent;
+  border: none;
+}
+button:hover{
+  cursor: pointer;
+}
+.barraBuscar > input{
+  height: 36px;
+  font-size: 24px;
+}
+
+i{
+  font-size: 30px;
+}
+/* #contenido-dinamico{
+  padding: 50px;
+} */
+
+/* BOTONES Y SELECT DE INDICE */
+
+.indice{
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btnIndice{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.btnIndice button{
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  background-color: green;
+  border-radius: 4px;
+  color: white;
+}
+.btnIndice p{
+  width: 50px;
+  text-align: center;
+}
+

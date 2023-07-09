@@ -1,3 +1,4 @@
+import requests
 import os
 import jinja2
 import pdfkit
@@ -21,6 +22,7 @@ import controladores.controlador_informe_final_estudiante as cont_inf_final_est
 import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
+import practisoftdrive.GoogleDrive as gd
 
 #hola esto es nuevo
 
@@ -205,8 +207,18 @@ def guardar_practica():
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
     detalle = cont_dp.listar_detalle_practica(id)
+    informe = cont_iie.obtener_informe_iniciales(id)
+    informe1 = cont_iie.obtener_informe_finales(id)
     usu = session['usuario']
-    return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+    if not informe and not informe1:
+        return render_template("/practica/detalle_practica.html", usuario = usu,id = id, detalle = detalle,informe=informe,mostrar_boton=True,mostrar_boton1=True)
+    elif not informe:
+        return render_template("/practica/detalle_practica.html", usuario = usu,id = id, detalle = detalle,informe=informe,mostrar_boton=True,mostrar_boton1=False)
+    elif not informe1:
+        return render_template("/practica/detalle_practica.html", usuario = usu,id = id, detalle = detalle,informe=informe,mostrar_boton=False,mostrar_boton1=True)
+    else:
+        return render_template("/practica/detalle_practica.html", usuario = usu,id = id, detalle = detalle,informe=informe,mostrar_boton=False,mostrar_boton1=False)
+
 
 #################################################################################
 ##                             SEGUIMIENTO PRACTICA                            ##
@@ -703,9 +715,9 @@ def guardar_empresa():
     telefono2 = request.form["telefono2"]
     correo = request.form["correo"]
     pais = request.form["pais"]
-    distrito = request.form["distrito"]
 
-    if pais == '1':
+    if pais == '24':
+        distrito = request.form["distrito"]
         cont_emp.insertar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito)
     else: cont_emp.insertar_empresa_internacional(razonSocial,direccion,ruc,telefono,telefono2,correo,pais)
     return redirect("/empresas")
@@ -717,16 +729,18 @@ def editar_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+    print(empresa)
+    if (empresa[9] == None):
+        info = cont_emp.empresa_nacional(empresa[8])
         prov = cont_emp.listar_provincia(info[1])
         dis = cont_emp.listar_distrito(info[2])
         bandera = True
         disable = ''
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
         bandera = False
         disable = 'disabled'
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
     return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_empresa/<int:id>")
@@ -734,10 +748,10 @@ def ver_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+    if (empresa[9] == None):
+        info = cont_emp.empresa_nacional(empresa[8])
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
     return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/actualizar_empresa", methods=["POST"])
@@ -751,7 +765,7 @@ def actualizar_empresa():
     correo = request.form["correo"]
     pais = request.form["pais"]
     distrito = 0
-    if pais == '1':
+    if pais == '24':
         distrito = request.form["distrito"]
         cont_emp.actualizar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito,id)
     else: 
@@ -782,23 +796,31 @@ def guardar_iie():
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+    urlAcept = urlBase + "/aceptacion" + str(idPractica) + os.path.splitext(aceptacion.filename)[1]
     aceptacion.save(urlAcept)
 
     firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+    urlFirma = urlBase + "/firma" + str(idPractica) + os.path.splitext(firma.filename)[1]
     firma.save(urlFirma)
 
     sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+    urlSello = urlBase + "/sello" + str(idPractica) + os.path.splitext(sello.filename)[1]
     sello.save(urlSello)
+
+    infoImg = ['']
+    cont = 0
+    for img in obtener_archivos(urlBase):
+        gd.subir_archivo(urlBase+'/'+img, '1Wa1ZoRR0M6eIutqJyopHe1_eo-AfIqM4')
+        infoImg[cont] = gd.buscarLink("title = '"+img+"' and trashed = false")
+        infoImg.append('')
+        cont+=1
 
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.insertar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
+        cont_iie.insertar_informe_inicial_empresa("P",infoImg[0],fechaEntrega,labores,infoImg[1],infoImg[2],idPractica)
     if 'btnEnviar' in request.form:
-        cont_iie.insertar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
+        cont_iie.insertar_informe_inicial_empresa("E",infoImg[0],fechaEntrega,labores,infoImg[1],infoImg[2],idPractica)
     return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/editar_iie/<int:id>")
@@ -836,17 +858,17 @@ def actualizar_iie():
     urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
-
+    
     aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+    urlAcept = urlBase + "/aceptacion" + str(idPractica) + os.path.splitext(aceptacion.filename)[1]
     aceptacion.save(urlAcept)
 
     firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+    urlFirma = urlBase + "/firma" + str(idPractica) + os.path.splitext(firma.filename)[1]
     firma.save(urlFirma)
 
     sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+    urlSello = urlBase + "/sello" + str(idPractica) + os.path.splitext(sello.filename)[1]
     sello.save(urlSello)
 
     fechaEntrega = request.form["fechaE"]
@@ -869,6 +891,17 @@ def generar_iie(id):
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
+def obtener_archivos(carpeta):
+    archivos = []
+    extensiones_permitidas = ('.jpeg', '.jpg', '.png')
+
+    for ruta, directorios, archivos_en_ruta in os.walk(carpeta):
+        for archivo in archivos_en_ruta:
+            nombre, extension = os.path.splitext(archivo)
+            if extension.lower() in extensiones_permitidas:
+                archivos.append(archivo)
+    
+    return archivos
 
 #################################################################################
 ##                                  REPORTE                                   ##

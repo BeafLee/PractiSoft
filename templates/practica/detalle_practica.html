@@ -1,4 +1,5 @@
-{% extends maestra %}
+
+{% extends "maestra.html" %}
 {% block titulo %}DETALLE PRÁCTICA {% endblock %}
 {% block subtitul %}DETALLE PRÁCTICA {% endblock %}
 {% block recursos %}
@@ -87,40 +88,49 @@
     <div class="table p-5">
       <table class="table table-light table-hover border" id="tabla">
         <thead>
+
           <tr class="container text-center">
             <th scope="col align-items-center">Informe</th>
             <th scope="col align-items-center">Fecha Entrega</th>
             <th scope="col align-items-center">Estado</th>
-            <th scope="col align-items-center">Editar</th>
-            <th scope="col align-items-center">Ver</th>
-            <th scope="col align-items-center" id="estado1">Descargar</th>
+            <th colspan="3" scope="col align-items-center">Operaciones</th>
           </tr>
         </thead>
         <tbody id="tabla">
-
-          <tr class="container text-center" >
-            <td scope="row align-items-center" id="fecha1"></td>
+        {% if mostrar_boton %}
+        <tr class="container text-center" >
+            <td scope="row align-items-center" id="fecha1">Informe Inicial Empresa</td>
+            <td scope="row align-items-center" id="fecha2">-----</td>
+            <td scope="row align-items-center" id="estado">-----</td>
+            <td colspan="3" scope="row align-items-center"><a href="{{url_for('nuevo_iie',id=id)}}"><i class="bi bi-plus-circle-fill"></i></a></td>
+        </tr>
+          {% else %}
+        <tr class="container text-center" >
+            <td scope="row align-items-center" id="fecha1">Informe Inicial Empresa</td>
+            <td scope="row align-items-center" id="fecha2">{{informe[0]}}</td>
+            <td scope="row align-items-center" id="estado">{{informe[1]}}</td>
+            <td scope="row align-items-center"><a href="{{url_for('editar_iie',id=id)}}"><i class="bi bi-pencil-fill"></i></a></td>
+            <td scope="row align-items-center"><a href="{{url_for('ver_iie',id=id)}}"><i class="bi bi-eye-fill"></i></a></td>
+            <td scope="row align-items-center"><a href="{{url_for('generar_iie',id=id)}}"><i class="bi bi-arrow-down"></i></a></td>
+        </tr>
+        {% endif %}
+        {% if mostrar_boton1 %}
+        <tr class="container text-center" >
+             <td scope="row align-items-center" id="fecha1">Informe Final Estudiante</td>
+            <td scope="row align-items-center" id="fecha2">-----</td>
+            <td scope="row align-items-center" id="estado">-----</td>
+            <td colspan="3" scope="row align-items-center"><a href="#"><i class="bi bi-plus-circle-fill"></i></a></td>
+        </tr>
+          {% else %}
+        <tr class="container text-center" >
+            <td scope="row align-items-center" id="fecha1">Informe Final Estudiante</td>
             <td scope="row align-items-center" id="fecha2"></td>
             <td scope="row align-items-center" id="estado"></td>
-            <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
-                  src="{{url_for('static', filename='lapiz-rojo.png')}}" alt=""></button></td>
-            <td scope="row align-items-center">
-              <button style="border: none;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
-                  src="{{url_for('static', filename='icons8-documento-regular-30.png')}}" alt=""></button>
-
-            </td>
-            <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
-                  src="{{url_for('static', filename='descargar.png')}}" alt=""></button></td>
-
-            <td  scope="row align-items-center">
-                <input type="hidden" name="id" value="1">
-
-            </td>
-
-
+            <td scope="row align-items-center"><a href="#"><i class="bi bi-pencil-fill"></i></a></td>
+            <td scope="row align-items-center"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
+            <td scope="row align-items-center"><a href="#"><i class="bi bi-arrow-down"></i></a></td>
+        </tr>
+        {% endif %}
           </tbody>
       </table>
     </div>
@@ -143,6 +153,3 @@
 
 
 {% endblock %}
-
-
-
