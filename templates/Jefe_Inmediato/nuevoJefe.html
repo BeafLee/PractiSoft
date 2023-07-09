@@ -1,0 +1,116 @@
+{% extends maestra %}
+{% block titulo %}AGREGAR ENCARGADO DE LA PPP {% endblock %}
+{% block subtitul %}AGREGAR ENCARGADO DE LA PPP {% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaPractica.css') }}">
+<link rel="stylesheet" href="{{url_for('static',filename='styles/jefe.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('JefeInmediato')}}">Listar</a>
+    </label>
+    <label class="btnOp gestSelect">
+      <a href="#" class="gestSelect">Nuevo</a>
+    </label>
+  </div>
+  <div class="nuevaPractica">
+    <div class="formulario">
+      <form action="/guardarJefe" method="post">
+        <div>
+          <h2>DATOS DEL Jefe</h2>
+          <br>
+          <div class="wrapper">
+
+            <label for="">Nombre:</label>
+            <input name="nombre"></input>
+            <label for="">Apellidos:</label>
+            <input name="apellidos"></input>
+
+
+          </div>
+          <br>
+          <div class="wrapper">
+            <label for="">telefono:</label>
+            <input name="telefono"></input>
+            <label for="">telefono2:</label>
+            <input name="telefono2"></input>
+
+          </div>
+          <br>
+          <div class="wrapper">
+            <label for="">correo:</label>
+            <input name="correo"></input>
+            <label for="">correo2:</label>
+            <input name="correo2"></input>
+
+          </div>
+          <br>               
+        </div>
+        <div>
+          <h2>Datos del Trabajo</h2>
+          <br>
+          <div class="wrapper">
+            <label for="">Empresa de trabajo</label>
+            <select name="empresa" id="">
+              {% for empresa in empresas %}
+              <option value="{{empresa[0]}}">{{empresa[1]}}</option>
+              {% endfor %}
+            </select>
+            <label for="">cargo:</label>
+          <input name="cargo"></input>         
+        </div> 
+        <br>
+        <div class="wrapper">
+          <label for="">Turno Horario:</label>
+          <select name="turno" id="">
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+          </select>
+          <label for="">Distrito:</label>
+          <select name="distrito" id="">
+            {% for distrito in distritos %}
+            <option value="{{distrito[0]}}">{{distrito[1]}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        </div>
+        <br>
+        <div>
+          <h2>Asignar Ussuario</h2>
+          <br>
+          <div class="wrapper">
+            <label for="">Usuario:</label>
+            <input  name="usuario"></input>
+            <label for="">Contraseña:</label>
+            <input type="password" name="contraseña"></input>
+          </div>
+        </div>  
+        <div class="btnsNuevaPractica">
+          <button id="btnCancelar">
+            <a href="{{url_for('JefeInmediato')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" type="submit">
+
+            Guardar
+
+          </button>
+        </div>       
+    </div>          
+</div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/practica.js') }}"></script>
+{% endblock %}
