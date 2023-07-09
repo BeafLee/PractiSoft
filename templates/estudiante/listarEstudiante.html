@@ -28,12 +28,26 @@
 
     <body>
       <div class="row">
+        
+
         <h3 for="formFile" class="form-label">Subir documento Excel</h3>
+        
+        
+        
+        
         <form method="POST" action="" enctype="multipart/form-data" class="col-5">
           
           
           <input class="form-control" type="file" id="formFile" name="file">
-          <input class="form-control" type="submit" id="formFile" name="file" value="Subir Archivo">
+          <input class="form-control " type="submit" id="formFile" name="file" value="Subir Archivo">
+          {% if error_statement %}
+        
+          <div class="alert alert-danger alert-dismissible fade show col-12" role="alert">
+            <strong>{{error_statement}}</strong>
+            
+          </div>
+        
+          {% endif %}
         </form>
         
         
@@ -80,7 +94,7 @@
           <td class="">{{estudiante[12]}}</td>
           <td class="">{{estudiante[13]}}</td>
           
-          <td class="">{{estudiante[15]}}</td>
+          <td class="">{{estudiante[14]}}</td>
          
           <td class="darBaja">
               {%if estudiante[12] == "Apto"%}

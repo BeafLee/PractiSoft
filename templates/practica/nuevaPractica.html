@@ -15,160 +15,197 @@
       <a href="{{url_for('index_s')}}">Inicio</a>
     </label>
     <label class="btnOp">
-      <a href="#">Listar</a>
+      <a href="{{url_for('practicas')}}">Listar</a>
     </label>
     <label class="btnOp gestSelect">
       <a href="#" class="gestSelect">Nuevo</a>
     </label>
   </div>
-  <div class="nuevaPractica">
-    <div class="formulario">
-      <form action="{{url_for('guardar_practica')}}" method="post">
 
 
-        <div>
-          <h2>DATOS DEL ESTUDIANTE</h2>
-          <br>
-          <div class="wrapper">
 
-            <label for="">Código de estudiante:</label>
-            <input readonly value="{{estudiante[1] }}"></input>
-            <label for="">DNI:</label>
-            <input readonly value="{{estudiante[2] }}"></input>
+  <form action="{{url_for('guardar_practica')}}" method="post" class="nuevaPractica">
 
-
-          </div>
-          <br>
-          <div class="wrapper">
-            <label for="">Nombre Completo:</label>
-            <input readonly value="{{estudiante[3] }}"></input>
-            <label for="">Plan de Estudios:</label>
-            <input readonly value="{{estudiante[4] }}"></input>
-
-          </div>
-
-
+    <h2>DATOS DEL ESTUDIANTE</h2>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Código de estudiante:</label>
         </div>
-
-        <br>
-        <div>
-          <h2>DATOS DE LA EMPRESA</h2>
-          <br>
-          <div class="wrapper2">
-
-            <label for="">Empresa</label>
-            <div class="col">
-                <select id="empresa" class="dropdown" name="emp">
-                <option >Empresas</option>
-                {% for empresa in empresa %}
-                <option value="{{ empresa[0] }}">{{ empresa[0] }}</option>
-                {% endfor %}
-                </select>
-            </div>
-
-
-          </div>
-          <br>
-          <div class="wrapper">
-
-            <label for="">RUC:</label>
-            <input readonly id="ruc" name="ruc"></input>
-            <label for="">Jefe Inmediato:</label>
-            <input readonly id="jefe" name="jefe"></input>
-
-
-          </div>
-
+        <div class="col-md-4">
+          <input readonly value="{{estudiante[1] }}"></input>
         </div>
-
-
-
-        <br>
-        <div>
-          <h2>DATOS DEL SEMESTRE</h2>
-
-          <br>
-          <div class="wrapper">
-
-            <label for="">Semestre de Inicio:</label>
-            <input readonly value="{{semestreA[0] }}" name="semI"></input>
-            <label for="">Semestre Final:</label>
-            <div class="col">
-              <select id="" class="dropdown" name="semF">
-                {% for semestreF in semestreF %}
-                <option value="{{ semestreF[0] }}">{{ semestreF[0] }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-
-          </div>
-
+        <div class="col-md-2">
+          <label for="">DNI:</label>
         </div>
-        <br>
-        <div>
-          <h2>DATOS DE LA PRÁCTICA</h2>
-          <br>
-          <div class="wrapper">
-
-            <label for="">Linea de desarrollo::</label>
-            <div class="col">
-              <select id="" class="dropdown" name="linDes">
-                {% for linea in linea %}
-                <option value="{{ linea[1] }}">{{ linea[1] }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <label for="">Modalidad:</label>
-            <div class="col">
-              <select id="" class="dropdown" name="mod">
-                <option value="P">Presencial</option>
-                <option value="R">Remoto</option>
-                <option value="S">Semi presencial</option>
-              </select>
-            </div>
-
-
-          </div>
-          <br>
-          <div class="wrapper">
-            <label for="">Fecha Inicio:</label>
-            <input id="" type="date" name="feI">
-            <label for="">Fecha Fin:</label>
-            <input id="" type="date" name="feF">
-
-          </div>
-          <br>
-          <div class="wrapper">
-            <label for="">Horas Prácticas:</label>
-            <input id="" type="number" name="hPrac">
-            <label for="">Fecha Limite:</label>
-            <input id="" type="date" name="feLim">
-
-          </div>
-
+        <div class="col-md-4">
+          <input readonly value="{{estudiante[2] }}"></input>
         </div>
-
-        <br>
-
-        <div class="btnsNuevaPractica">
-          <button id="btnCancelar">
-            <a href="{{url_for('semestres')}}">Cancelar</a>
-          </button>
-          <button id="btnRegistrar" type="submit">
-
-            Guardar
-
-          </button>
-          <button id="btnRegistrar" type="submit">
-
-            Guardar y Enviar
-
-          </button>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Nombre Completo:</label>
         </div>
-      </form>
+        <div class="col-md-4">
+          <input readonly value="{{estudiante[3] }}"></input>
+        </div>
+        <div class="col-md-2">
+          <label for="">Plan de Estudios:</label>
+        </div>
+        <div class="col-md-4">
+          <input readonly value="{{estudiante[4] }}"></input>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <br>
+
+    <h2>DATOS DE LA EMPRESA</h2>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Empresa</label>
+        </div>
+        <div class="col-md-4">
+          <select id="empresa" class="dropdown" name="emp">
+            <option>Empresas</option>
+            {% for empresa in empresa %}
+            <option value="{{ empresa[0] }}">{{ empresa[0] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">RUC:</label>
+
+
+
+        </div>
+        <div class="col-md-4">
+          <input readonly id="ruc" name="ruc"></input>
+        </div>
+        <div class="col-md-2">
+          <label for="">Jefe Inmediato:</label>
+        </div>
+        <div class="col-md-4">
+          <input readonly id="jefe" name="jefe"></input>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h2>DATOS DEL SEMESTRE</h2>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Semestre de Inicio:</label>
+        </div>
+        <div class="col-md-4">
+          <select id="" class="dropdown" name="semI">
+            {% for semestreA in semestreA %}
+            <option value="{{ semestreA[0] }}">{{ semestreA[0] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="">Semestre Final:</label>
+        </div>
+        <div class="col-md-4">
+          <select id="" class="dropdown" name="semF">
+            {% for semestreF in semestreF %}
+            <option value="{{ semestreF[0] }}">{{ semestreF[0] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h2>DATOS DE LA PRÁCTICA</h2>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Linea de desarrollo:</label>
+        </div>
+        <div class="col-md-4">
+          <select id="" class="dropdown" name="linDes">
+            {% for linea in linea %}
+            <option value="{{ linea[1] }}">{{ linea[1] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="">Modalidad:</label>
+        </div>
+        <div class="col-md-4">
+          <select id="" class="dropdown" name="mod">
+            <option value="P">Presencial</option>
+            <option value="R">Remoto</option>
+            <option value="S">Semi presencial</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Fecha Inicio:</label>
+        </div>
+        <div class="col-md-4">
+          <input id="" type="date" name="feI">
+        </div>
+        <div class="col-md-2">
+          <label for="">Fecha Fin:</label>
+        </div>
+        <div class="col-md-4">
+          <input id="" type="date" name="feF">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label for="">Horas Prácticas:</label>
+        </div>
+        <div class="col-md-4">
+          <input id="" type="number" name="hPrac" min="0" max="260"
+            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+
+        </div>
+        <div class="col-md-2">
+          <label for="">Fecha Limite:</label>
+
+        </div>
+        <div class="col-md-4">
+          <input id="" type="date" name="feLim">
+
+        </div>
+      </div>
+
+    </div>
+    <br>
+
+    <div class="btnsNuevaPractica">
+      <button id="btnCancelar">
+        <a href="{{url_for('practicas')}}">Cancelar</a>
+      </button>
+      <button id="btnRegistrar" name="action" type="submit" value="Guardar">
+
+        Guardar
+
+      </button>
+      <button id="btnRegistrarEnviar" name="action" type="submit" value="Enviar">
+
+        Guardar y Enviar
+
+      </button>
+    </div>
+
+  </form>
+
 </section>
 {% endblock %}
 {%block scripts %}

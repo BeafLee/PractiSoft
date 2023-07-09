@@ -5,10 +5,10 @@
     margin: 0;
     font-family: 'K2D', sans-serif;
   }
-  body{
+  /* body{
     height: 100vh;
   
-  }
+  } */
   .navSec{
     display: flex;
   }
@@ -129,51 +129,36 @@
   .nuevaPractica{
     background-color: rgb(201, 201, 201);
     border-radius: 20px;
-    width: 80%;
+    width: 90%;
     margin: auto;
-    margin-top: 70px;
-    padding: 30px;
-    padding-top: 20px;
+    margin-top: 1%;
+    /* padding: 30px; */
+    padding: 10px;
     font-size: 20px;
+    height: 100%;
+    overflow: auto;
   }
-  
-  
-  
-  
   
   input{
-    /*height: 28px;*/
-    height:80%;
+   
+    /* height:80%; */
     width: 95%;
     border-radius: 10px;
     font-size: 20px;
     padding: 5px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
   }
   
-  .dropdown{
-    height: 40px;
-    width: 95%;
+  .dropdown, input{
+    
+    
     border-radius: 10px;
     font-size: 20px;
     padding: 5px;
-  
+  margin-bottom: 3%;
   
   }
-  
-  .wrapper {
-    display: grid;
-    grid-template-columns:  1fr 2fr 1fr 2fr;
-  }
-  
-  .wrapper2 {
-    display: grid;
-    grid-template-columns:  2fr 9fr 1fr;
-  }
-  
-  
-  
-  
+
   /* BOTONES */
   
   .btnsNuevaPractica{
@@ -190,7 +175,7 @@
   #btnCancelar{
     background-color: red;
   }
-  #btnRegistrar{
+  #btnRegistrar, #btnRegistrarEnviar{
     background-color: green;
     margin-left: 50px;
   }

@@ -43,15 +43,25 @@ app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 # Get the uploaded files
 @app.route("/estudiantes", methods=['POST'])
 def uploadFiles():
-      # get the uploaded file
-      uploaded_file = request.files['file']
-      if uploaded_file.filename != '':
-           file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+    # get the uploaded file
+    estudiantes = cont_est.obtener_estudiante()
+    usu = session['usuario']
+    error_statement=None
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
           # set the file path
-           uploaded_file.save(file_path)
-           cont_est.parseCSV(file_path)
-          # save the file
-      return redirect(url_for('estudiantes'))
+        uploaded_file.save(file_path)
+        error=cont_est.parseCSV(file_path)
+        if error ==-1:
+            error_statement="Formato de Excel Incorrecto"
+        elif error ==-2:
+            error_statement="Datos no válidos"
+        elif error==1:
+            cont_est.importData(file_path)
+            return redirect("/estudiantes")
+        return render_template("/estudiante/listarEstudiante.html", error_statement=error_statement, usuario = usu, maestra=session['maestra'], estudiantes = estudiantes)
+    return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement=error_statement)
 
 #################################################################################
 ##                                  INICIO                                     ##
@@ -177,7 +187,7 @@ def agregar_practica():
     usu = session['usuario']
     estudiante = cont_nprac.obtener_estudiante(usu[0])
     empresa = cont_nprac.obtener_empresa()
-    semestreA = cont_nprac.semestre_actual()
+    semestreA = cont_nprac.obtenerSemestres()
     semestreF = cont_nprac.obtenerSemestres()
     linea = cont_nprac.obtener_linea_desarrollo()
     return render_template("/practica/nuevaPractica.html", usuario = session['usuario'], maestra=session['maestra'], estudiante = estudiante, empresa=empresa,semestreA=semestreA,semestreF=semestreF,linea=linea)
@@ -202,10 +212,14 @@ def guardar_practica():
     linDes=request.form["linDes"]
     semI=request.form["semI"]
     semF=request.form["semF"]
+    if request.form['action'] == 'Guardar':
+        cont_nprac.insertar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
-    cont_nprac.insertar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
+    elif request.form['action'] == 'Enviar':
+        cont_nprac.enviar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
-    return redirect("/empresas")
+
+    return redirect("/practicas")
 
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
@@ -641,7 +655,7 @@ def estudiantes():
     estudiantes = cont_est.obtener_estudiante()
     usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes)
+    return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
 
 
 
