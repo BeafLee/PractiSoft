@@ -1310,13 +1310,17 @@ def editar_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_iie/<int:id>")
 def ver_iie(id):
@@ -1324,33 +1328,44 @@ def ver_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/actualizar_iie", methods=["POST"])
 def actualizar_iie():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
+    iie = cont_iie.buscar_informe_inicial_empresa_id(idPractica)
     urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = "aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlAcept)
+    if os.path.splitext(aceptacion.filename)[1] != '':
+        urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+        aceptacion.save(urlAcept)
+    else: urlAcept = iie[1]
 
     firma = request.files["firma"]
-    urlFirma = "firma" + os.path.splitext(firma.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlFirma)
+    if os.path.splitext(firma.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+        firma.save(urlFirma)
+    else: urlFirma = iie[4]
 
     sello = request.files["sello"]
-    urlSello = "sello" + os.path.splitext(sello.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlSello)
+    if os.path.splitext(sello.filename)[1] != '':
+        urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+        sello.save(urlSello)
+    else: urlSello = iie[5]
 
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
@@ -1373,7 +1388,6 @@ def generar_iie(id):
     html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores, img = img)
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
-
 
 #################################################################################
 ##                                  REPORTE                                   ##
