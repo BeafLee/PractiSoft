@@ -1,6 +1,6 @@
 {% extends maestra %}
-{% block titulo %}AGREGAR ENCARGADO DE LA PPP {% endblock %}
-{% block subtitul %}AGREGAR ENCARGADO DE LA PPP {% endblock %}
+{% block titulo %}EDITAR ENCARGADO DE LA PPP {% endblock %}
+{% block subtitul %}EDITAR ENCARGADO DE LA PPP {% endblock %}
 {% block recursos %}
 <link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoJefe.css') }}">
 <script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
@@ -23,33 +23,34 @@
   </div>
   <div class="nuevaPractica">
     <div class="formulario">
-      <form action="/guardarJefe" method="post">
+      <form action="/ActualizarJefe" method="post">
+        {% for jefe in jefes %}
         <div>
           <h2>DATOS DEL Jefe</h2>
           <br>
           <div class="wrapper">
 
             <label for="">Nombre:</label>
-            <input name="nombre"></input>
+            <input name="nombre" value="{{jefe[1]}}"></input>
             <label for="">Apellidos:</label>
-            <input name="apellidos"></input>
+            <input name="apellidos" value="{{jefe[0]}}"></input>
 
 
           </div>
           <br>
           <div class="wrapper">
             <label for="">telefono:</label>
-            <input name="telefono"></input>
+            <input name="telefono" value="{{jefe[2]}}"></input>
             <label for="">telefono2:</label>
-            <input name="telefono2"></input>
+            <input name="telefono2" value="{{jefe[7]}}"></input>
 
           </div>
           <br>
           <div class="wrapper">
             <label for="">correo:</label>
-            <input name="correo"></input>
+            <input name="correo" value="{{jefe[3]}}"></input>
             <label for="">correo2:</label>
-            <input name="correo2"></input>
+            <input name="correo2" value="{{jefe[8]}}"></input>
 
           </div>
           <br>               
@@ -65,7 +66,7 @@
               {% endfor %}
             </select>
             <label for="">cargo:</label>
-          <input name="cargo"></input>         
+          <input name="cargo" value="{{jefe[4]}}"></input>         
         </div> 
         <br>
         <div class="wrapper">
@@ -84,15 +85,18 @@
         </div>
         <br>
         <div>
-          <h2>Asignar Ussuario</h2>
+          <h2>Editar Ussuario</h2>
           <br>
           <div class="wrapper">
+            {% for UsuarioJefe in UsuarioJefe %}
             <label for="">Usuario:</label>
-            <input  name="usuario"></input>
+            <input  name="usuario" value="{{UsuarioJefe[0]}}"></input>
             <label for="">Contraseña:</label>
-            <input type="password" name="contraseña"></input>
+            <input type="password" name="contraseña" value="{{UsuarioJefe[1]}}"></input>
+            {% endfor %}
           </div>
-        </div>  
+        </div>
+        {% endfor %}  
         <div class="btnsNuevaPractica">
           <button id="btnCancelar">
             <a href="{{url_for('JefeInmediato')}}">Cancelar</a>

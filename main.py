@@ -231,6 +231,7 @@ def buscar_empresa_datos():
 
 @app.route("/guardar_practica", methods=["POST"])
 def guardar_practica():
+    
     usu = session['usuario']
     feI = request.form["feI"]
     feF = request.form["feF"]
@@ -1097,7 +1098,33 @@ def guardarJefe():
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/JefeInmediato")
 
+@app.route("/JefeInmediatoID/<int:id>")
+def JefeInmediatoID(id):
+    jefes = controlador_jefe_inmediato.obtener_DetalleJefeID(id)
+    idJefe=jefes[0][10]
+    usuarioJefe=controlador_jefe_inmediato.obtener_UsuarioJefe(idJefe)
+    distritos=cont_localidad.obtener_Distrito()
+    empresas=cont_emp.obtener_empresa()
+    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/ActualizarJefe", methods=["POST"])
+def ActualizarJefe():
+    nombre = request.form["nombre"]
+    apellidos = request.form["apellidos"]
+    telefono = request.form["telefono"]
+    telefono2 = request.form["telefono2"]
+    correo = request.form["correo"]
+    correo2 = request.form["correo2"]
+    cargo = request.form["cargo"]
+    turno = request.form["turno"]
+    empresa = request.form["empresa"]
+    usuario = request.form["usuario"]
+    contraseña = request.form["contraseña"]
+    distrito = request.form["distrito"]
+    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+
+    # De cualquier modo, y si todo fue bien, redireccionar
+    return redirect("/JefeInmediato")
 # Iniciar el servidor
 if __name__ == "__main__":
     #app.secret_key = 'ByteSquad S.A.C. - PRACTISOFT'
