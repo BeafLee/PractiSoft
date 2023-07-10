@@ -54,7 +54,7 @@ function habilitarCombos(select) {
   var combo2 = document.getElementById('provincia');
   var combo3 = document.getElementById('distrito');
 
-  if (select.value == 1) {
+  if (select.value == 24) {
     combo1.disabled = false;
     combo2.disabled = false;
     combo3.disabled = false;
