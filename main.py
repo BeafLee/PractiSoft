@@ -797,7 +797,7 @@ def generar_informeFinalEstudiante(idPractica):
 ##                          INFORME FINAL - EMPRESA                            ##
 #################################################################################
 
-@app.route("/nuevo_iiem/<int:id>")
+@app.route("/nuevo_ifem/<int:id>")
 def nuevo_iiem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
@@ -806,7 +806,7 @@ def nuevo_iiem(id):
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
-@app.route("/guardar_iiem", methods=["POST"])
+@app.route("/guardar_ifem", methods=["POST"])
 def guardar_iiem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
@@ -838,42 +838,43 @@ def guardar_iiem():
     return redirect("/detalle_practica/"+idPractica)
 
 
-@app.route("/ver_iiem/<int:id>")
+@app.route("/ver_ifem/<int:id>")
 def ver_iiem(id):
-    data = cont_inf_final_emp.buscar_id(id)
+    data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
-    print(valoraciones)
-    
-
+    data[6]=request.scheme + '://'+ request.host +'/'+ data[6]
+    data[7]=request.scheme + '://'+ request.host +'/'+ data[7]
     return render_template("/informes/final_empresa/verInforme.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
 
-@app.route("/actualizar_iiem", methods=["POST"])
-def actualizar_iiem():
+
+
+@app.route("/actualizar_ifem", methods=["POST"])
+def actualizar_ifem():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
-    urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
+
+    urlBase = "static/practica/"+str(idPractica)+"/informe/final_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
-    aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlAcept)
+    
+    selloImg = request.files["selloEmpImg"]
+    urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(selloImg.filename)[1]
+    selloImg.save(urlSelloEmpresa)
+    
+    firmaImg = request.files["firmaResImg"]
+    urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaResponsable)
 
-    firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
-    firma.save(urlFirma)
+    print(idInforme)
+    print(urlSelloEmpresa)
+    print(urlFirmaResponsable)
 
-    sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
-    sello.save(urlSello)
-
-    fechaEntrega = request.form["fechaE"]
-    labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
-    if 'btnEnviar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+        cont_inf_final_emp.actualizar_informe_final_empresa("G",urlFirmaResponsable,urlSelloEmpresa,idInforme)
+    if 'btnActualizarEnviar' in request.form:
+        cont_inf_final_emp.actualizar_informe_final_empresa("E",urlFirmaResponsable,urlSelloEmpresa,idInforme)
     return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/generar_informeFinalEmpresa/<int:id>")
@@ -884,11 +885,13 @@ def generar_informeFinalEmpresa(id):
     lista_resultante = [item[0] for item in data2]
     idPractica = data[14]
     firmas = [request.scheme +'://'+ request.host +'/'+data[6],request.scheme +'://'+ request.host +'/'+data[7]]
+
     context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
                          "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido,firmas=firmas)
+
     output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
     if not os.path.exists(output_pdf_contenido):
         os.makedirs(output_pdf_contenido)
