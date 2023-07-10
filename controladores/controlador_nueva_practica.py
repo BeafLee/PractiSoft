@@ -180,7 +180,7 @@ def eliminar_facultad(id):
 def actualizar_practica(fechaI,fechaF,horas,fechaL,id):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE practica SET fechaInicio=%s ,fechaFin=%s ,horasPractica=%s, fechaLimite=%s WHERE idPractica = %s",
+        cursor.execute("UPDATE PRACTICA SET fechaInicio=%s ,fechaFin=%s ,horasPractica=%s, fechaLimite=%s WHERE idPractica = %s",
                        (fechaI,fechaF,horas,fechaL,id))
     conexion.commit()
     conexion.close()

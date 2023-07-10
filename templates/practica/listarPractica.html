@@ -40,6 +40,7 @@
         <th>Estado Envio</th>       
         <th>Ver Detalle</th>
         <th>Editar</th>
+        <th>Enviar</th>
       </tr>
     </thead>
 
@@ -57,12 +58,22 @@
         <td>{{practica[12]}}</td>
         <td><a href="{{url_for('detalle_practica', id=practica[0])}}"><i class="bi bi-eye-fill"></i></a></td>
         <td class="editar">
-          {% if practica[12] == 'G' %}
+          {% if practica[12] == 'GUARDADO' %}
             <a href="{{url_for('editar_Practica', id=practica[0])}}"><i class="bi bi-pencil-fill"></i></a>
           {% else %}
             <a href="#"><i class="bi bi-x-circle-fill"></i></a>
           {% endif %}
         </td>
+        <td>
+          {% if practica[12] == 'GUARDADO' %}
+          <form action="EnviarPractica" method="post">
+            <input type="text" name="id" value="{{practica[0]}}" style="display: none;">
+            <button><img src="{{url_for('static',filename='cloud-upload-alt.png') }}" alt=""></button>
+          </form>
+          {% else %}
+            
+          {% endif %}
+          </td>
       </tr>
       {% endfor %}
     </table>
