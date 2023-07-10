@@ -5,7 +5,7 @@ import pandas as pd  #instalar
 import mysql.connector #instalar
 from os.path import join, dirname, realpath
 from PyPDF2 import PdfMerger , PdfReader 
-from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file, send_from_directory
+from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file, send_from_directory, make_response
 import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
@@ -28,6 +28,8 @@ import controladores.controlador_ubicacion as cont_ubi
 import controladores.controladorGrafico as controladorGrafico
 import controladores.controlador_jefe_inmediato as controlador_jefe_inmediato
 import controladores.localidad as cont_localidad
+import controladores.controlador_informe_estudiante as cont_infes
+import controladores.controlador_desempenio as cont_des
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -255,6 +257,12 @@ def practicasE():
     idE=estudiante[0]
     practica = cont_prac.obtener_practicaE(idE)
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/EnviarPractica",methods=["POST"])
+def EnviarPractica():
+    id=request.form["id"]
+    cont_prac.EnviarPractica(id)
+    return redirect("practicasE")
 ###     AGREGAR PRACTICA
 
 @app.route("/agregar_practica")
@@ -359,6 +367,234 @@ def guardar_seguimiento_practica():
     idPractica = request.form["idPractica"]
     cont_seg.insertar_seguimiento_practica(fechaCreacion, horaCreacion, tipo, observacion, idPractica)
     return redirect("/seguimiento_practica/"+idPractica)
+
+#################################################################################
+##                              INFORME DESEMPEÑO                              ##
+#################################################################################
+@app.route('/generar_ide/<int:id>/<int:id1>', methods=['GET'])
+def generar_ide(id,id1):
+    # Realizar la consulta y obtener los datos
+    # Supongamos que los datos se almacenan en una lista llamada 'datos'
+    datos = cont_des.listar_desempenio(id1)
+    resultados = cont_des.obtener_resultado(id)
+    todos = cont_des.listar_todo_desempenio(id1)
+    firmas = ['http://127.0.0.1:8000/'+todos[11]]
+    # Renderizar el template HTML con los datos
+    rendered_template = render_template('/informes/desempenio/htmlpuro.html', datos=datos, resultados = resultados, todos = todos,firmas=firmas)
+
+    # Generar el PDF a partir del HTML renderizado
+    pdf = pdfkit.from_string(rendered_template, False,configuration=config, options={"enable-local-file-access": ""})
+
+    # Crear la respuesta con el PDF generado
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=INFORME_DESEMPEÑO.pdf'
+    return response
+
+
+@app.route("/agregarInformeDesempenio/<int:id>")
+def agregarInformeDesempenio(id):
+    datos = cont_des.listar_desempenio(id)
+    return render_template("/informes/desempenio/crudEvaluacionDesempenio.html", usuario = session['usuario'], datos = datos)
+@app.route("/eid/<int:id>/<int:id1>")
+@app.route("/editarInformeDesempeño/<int:id>/<int:id1>")
+def editarInformeDesempeño(id,id1):
+    datos = cont_des.listar_desempenio(id1)
+    resultados = cont_des.obtener_resultado(id)
+    todos = cont_des.listar_todo_desempenio(id1)
+    return render_template("/informes/desempenio/editarEvaluacionDesempenio.html", usuario = session['usuario'],datos=datos, resultados = resultados, todos = todos,informe=id1)
+@app.route("/vid/<int:id>/<int:id1>")
+@app.route("/verInformeDesempenio/<int:id>/<int:id1>")
+def verInformeDesempenio(id1,id):
+    datos = cont_des.listar_desempenio(id)
+    resultados = cont_des.obtener_resultado(id1)
+    todos = cont_des.listar_todo_desempenio(id)
+    return render_template("/informes/desempenio/verEvaluacionDesempenio.html", usuario = session['usuario'],datos=datos,resultados=resultados,todos=todos)
+@app.route("/actualizar_desempenio", methods=["POST"])
+def actualizar_desempenio():
+    no1=request.form['idInforme']
+    est = request.form.get('submit_button')
+    re = request.form.get('opcion1')
+    pro = request.form.get('opcion2')
+    com = request.form.get('opcion3')
+    tra = request.form.get('opcion4')
+    comp = request.form.get('opcion5')
+    org  = request.form.get('opcion6')
+    pun  = request.form.get('opcion7')
+    con  = request.form['descAreaTrabajo']
+    idp= request.form['idPractica']
+    n1 = request.form.getlist('resultado1')
+    n2 = request.form.getlist('opcionn')
+    print(n1)
+    print(n2)
+    print(no1)
+    urlBase = "static/practica/"+str(idp)+"/informe/desempenio"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
+
+    firmaImg = request.files["firmaImg"]
+    urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirma)
+    
+    cont_des.modificar_desempenio(est, re, pro, com, tra, comp, org, pun, con, urlFirma, idp)
+    cont_des.eliminar_resultados(no1)
+
+    for i in range(len(n1)):
+        cont_des.insertar_resultado(n1[i], n2[i],no1)
+    return redirect("/detalle_practica/"+idp)
+
+@app.route("/guardar_desempenio", methods=["POST"])
+def guardar_desempenio():
+
+    est = request.form.get('submit_button')
+    re = request.form.get('opcion1')
+    pro = request.form.get('opcion2')
+    com = request.form.get('opcion3')
+    tra = request.form.get('opcion4')
+    comp = request.form.get('opcion5')
+    org  = request.form.get('opcion6')
+    pun  = request.form.get('opcion7')
+    con  = request.form['descAreaTrabajo']
+    idp= request.form['idPractica']
+    
+    urlBase = "static/practica/"+str(idp)+"/informe/desempenio"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
+
+    firmaImg = request.files["firmaImg"]
+    urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirma)
+
+    nfilas = int(request.form['nfilas'])
+
+    cont_des.insertar_desempenio(est, re, pro, com, tra, comp, org, pun, con, urlFirma, idp)
+    idd = cont_des.obtener_ultimo_desempenio()
+    for i in range(nfilas):
+        nombre = 'tablita'+str(i+1)
+        escala = 'opcionn'+str(i+1)
+        no=request.form[nombre]
+        es = request.form.get(escala)
+        cont_des.insertar_resultado(no, es,idd)
+    return redirect("/detalle_practica/"+idp)
+
+#################################################################################
+##                        INFORME INICIAL ESTUDIANTE                           ##
+#################################################################################
+@app.route('/generar_ies/<int:id>/<int:id1>', methods=['GET'])
+def generar_ies(id,id1):
+    # Realizar la consulta y obtener los datos
+    # Supongamos que los datos se almacenan en una lista llamada 'datos'
+    datos = cont_infes.listarInforme(id1)
+    objetivos= cont_infes.obtener_objetivos(id)
+    planes=cont_infes.obtener_plan(id)
+    totales=cont_infes.obtener_totalh(id)
+    imagenes=cont_infes.obtener_firmas(id)
+    firmas = ['http://127.0.0.1:8000/'+imagenes[0],'http://127.0.0.1:8000/'+imagenes[1]]
+    # Renderizar el template HTML con los datos
+    rendered_template = render_template('/informes/inicial_estudiante/informe_inicial_estudiante.html', datos=datos,objetivos=objetivos,planes=planes,totales=totales,firmas=firmas)
+    # Generar el PDF a partir del HTML renderizado
+    options={'page-size':'Letter',
+             'margin-top': '0.05in',
+             'margin-right': '0.05in',
+             'margin-bottom': '0.10in',
+             'margin-left': '0.05in',
+             'encoding': 'UTF-8'}
+    pdf = pdfkit.from_string(rendered_template,options=options,configuration=config)
+
+    # Crear la respuesta con el PDF generado
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=INFORME_INICIAL_ESTUDIANTE.pdf'
+    return response
+@app.route("/ai/<int:id>")
+@app.route("/agregarInformeInicialEstudiante/<int:id>")
+def agregarInformeInicialEstudiante(id):
+    datos=cont_infes.listarInforme(id)
+    return render_template("/informes/inicial_estudiante/agregarInformeInicial-Estudiante.html", usuario = session['usuario'],datos=datos)
+
+@app.route("/ei/<int:id>/<int:id1>")
+@app.route("/editarInformeInicialEstudiante/<int:id>/<int:id1>")
+def editarInformeInicialEstudiante(id,id1):
+    datos=cont_infes.listarInforme(id)
+    objetivos= cont_infes.obtener_objetivos(id1)
+    planes=cont_infes.obtener_plane(id1)
+    return render_template("/informes/inicial_estudiante/editarInformeInicial-Estudiante.html", usuario = session['usuario'],datos=datos,objetivos=objetivos,planes=planes,informe=id1)
+
+@app.route("/vie/<int:id>/<int:id1>")
+@app.route("/verInformeInicialEstudiante/<int:id>/<int:id1>")
+def verInformeInicialEstudiante(id,id1):
+    datos=cont_infes.listarInforme(id)
+    objetivos= cont_infes.obtener_objetivos(id1)
+    planes=cont_infes.obtener_plane(id1)
+    return render_template("/informes/inicial_estudiante/verInformeInicial-Estudiante.html", usuario = session['usuario'],datos=datos,objetivos=objetivos,planes=planes,informe=id1)
+
+@app.route("/actualizar_iies", methods=["POST"])
+def actualizar_iies():
+    no=request.form['idInforme']
+    idp  = request.form['idPractica']
+    est = request.form.get('submit_button')
+    objetivos = request.form.getlist("objetivo")
+    n1 = request.form.getlist("nsemana")
+    n2 = request.form.getlist("fechai")
+    n3 = request.form.getlist("fechaf")
+    n4 = request.form.getlist("actividad")
+    n5 = request.form.getlist("nhoras")
+    urlBase = "static/practica/"+str(idp)+"/informe/inicial_estudiante"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
+    firmaImg = request.files["firmaImg"]
+    urlFirmaE = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaE)
+    firmaImg1 = request.files["firmaImg1"]
+    urlFirmaJ = urlBase + "/firma" + os.path.splitext(firmaImg1.filename)[1]
+    firmaImg1.save(urlFirmaJ)
+    cont_infes.eliminar_plan(no)
+    cont_infes.eliminar_objetivos(no)
+    for i in range(len(objetivos)):
+       cont_infes.insertar_objetivos(objetivos[i],no)
+    for i in range(len(n1)):
+       cont_infes.insertar_plan(n1[i],n2[i],n3[i],n4[i],n5[i],no)           
+    cont_infes.modificar_informe_inicial_estudiante(est,urlFirmaE,urlFirmaJ,idp)
+    return redirect("/detalle_practica/"+idp)
+
+@app.route("/guardar_iies", methods=["POST"])
+def guardar_iies():
+    est = request.form.get('submit_button')
+    idp  = request.form['idPractica']
+    urlBase = "static/practica/"+str(idp)+"/informe/inicial_estudiante"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
+    firmaImg = request.files["firmaImg"]
+    urlFirmaE = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaE)
+    firmaImg1 = request.files["firmaImg1"]
+    urlFirmaJ = urlBase + "/firma" + os.path.splitext(firmaImg1.filename)[1]
+    firmaImg1.save(urlFirmaJ)
+    
+    nfilas = int(request.form['nfilas'])
+    nfilas1 = int(request.form['nfilas1'])
+    cont_infes.insertar_informe_inicial_estudiante(est, urlFirmaE,urlFirmaJ,idp)
+    idd = cont_infes.obtener_ultimo_ie()
+    for i in range(nfilas):
+        nombre = 'objetivo'+str(i+1)
+        no=request.form[nombre]
+        cont_infes.insertar_objetivos(no,idd)
+        
+    for i in range(nfilas1):
+        nsemana = 'nsemana'+str(i+1)
+        fechai = 'fechai'+str(i+1)
+        fechaf = 'fechaf'+str(i+1)
+        actividad = 'actividad'+str(i+1)
+        nhoras = 'nhoras'+str(i+1)
+        n1=request.form[nsemana]
+        n2=request.form[fechai]
+        n3=request.form[fechaf]
+        n4=request.form[actividad]
+        n5=request.form[nhoras]
+        cont_infes.insertar_plan(n1,n2,n3,n4,n5,idd)   
+    return redirect("/detalle_practica/"+idp)
+
+
 
 #################################################################################
 ##                          INFORME FINAL - ESTUDIANTE                         ##
@@ -573,10 +809,21 @@ def nuevo_iiem(id):
 def guardar_iiem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
-    urlFirmaResponsable = "firma.png"
-    urlSelloEmpresa = "sello.png"
+
     observacion = ""
     
+    urlBase = "static/practica/"+str(idPractica)+"/informe/final_empresa"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
+    selloImg = request.files["selloEmpImg"]
+    urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(selloImg.filename)[1]
+    selloImg.save(urlSelloEmpresa)
+
+    firmaImg = request.files["firmaResImg"]
+    urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaResponsable)
+
+
     valoraciones = request.form.getlist('valoraciones')
     
     if 'btnGuardar' in request.form:
@@ -594,13 +841,39 @@ def guardar_iiem():
 def ver_iiem(id):
     data = cont_inf_final_emp.buscar_id(id)
     val = cont_inf_final_emp.buscar_valoracion(id)
-    valoracion = [item[0] for item in val]
-    print(valoracion)
-    #data2 = cont_inf_final_emp.buscar_valoracion(iiem)
+    valoraciones = [item[0] for item in val]
+    print(valoraciones)
+    
 
-    return render_template("/informes/final_empresa/verInforme.html",valoracion=valoracion, data = data,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informes/final_empresa/verInforme.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/actualizar_iiem", methods=["POST"])
+def actualizar_iiem():
+    idInforme = request.form["idInforme"]
+    idPractica = request.form["idPractica"]
+    urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
+    if not os.path.exists(urlBase):
+        os.makedirs(urlBase)
 
+    aceptacion = request.files["aceptArch"]
+    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+    aceptacion.save(urlAcept)
+
+    firma = request.files["firma"]
+    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+    firma.save(urlFirma)
+
+    sello = request.files["sello"]
+    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+    sello.save(urlSello)
+
+    fechaEntrega = request.form["fechaE"]
+    labores = cont_iie.concat_labores(request.form.getlist("labor"))
+    if 'btnGuardar' in request.form:
+        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+    if 'btnEnviar' in request.form:
+        cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/generar_informeFinalEmpresa/<int:id>")
 def generar_informeFinalEmpresa(id):
@@ -609,11 +882,12 @@ def generar_informeFinalEmpresa(id):
     data2 = cont_inf_final_emp.buscar_valoracion(id)
     lista_resultante = [item[0] for item in data2]
     idPractica = data[14]
+    firmas = [request.scheme +'://'+ request.host +'/'+data[6],request.scheme +'://'+ request.host +'/'+data[7]]
     context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
                          "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
 
     #Generamos el contenido para el informe
-    output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido)
+    output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido,firmas=firmas)
     output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
     if not os.path.exists(output_pdf_contenido):
         os.makedirs(output_pdf_contenido)
@@ -632,13 +906,13 @@ def semestres():
     semestres = cont_sem.obtener_semestre()
     usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/semestre/listarSemestre.html", usuario = usu, maestra=session['maestra'], semestres = semestres)
+    return render_template("/semestre/listarSemestre.html", usuario = usu, maestra="maestra_d_modulo2.html", semestres = semestres)
 
 
 ###     AGREGAR SEMESTRE
 @app.route("/agregar_semestre")
 def agregar_semestre():
-    return render_template("/semestre/nuevoSemestre.html", usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/semestre/nuevoSemestre.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/guardar_semestre", methods=["POST"])
 def guardar_semestre():
@@ -660,7 +934,7 @@ def editar_semestre(id):
     if(semestre[4] == 'V'):
         opt = True
 
-    return render_template("/semestre/editarSemestre.html", usuario = session['usuario'], maestra=session['maestra'], semestre=semestre, opt=opt)
+    return render_template("/semestre/editarSemestre.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", semestre=semestre, opt=opt)
 
 @app.route("/actualizar_semestre", methods=["POST"])
 def actualizar_semestre():
@@ -710,7 +984,7 @@ def facultades():
 ###     AGREGAR FACULTAD
 @app.route("/agregar_facultad")
 def agregar_facultad():
-    return render_template("/facultad/nuevaFacultad.html" , usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/facultad/nuevaFacultad.html" , usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/guardar_facultad", methods=["POST"])
 def guardar_facultad():
@@ -731,7 +1005,7 @@ def editar_facultad(id):
     if(facultad[3] == 'V'):
         opt = True
 
-    return render_template("/facultad/editarFacultad.html", usuario = session['usuario'], maestra=session['maestra'], facultad=facultad, opt=opt)
+    return render_template("/facultad/editarFacultad.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", facultad=facultad, opt=opt)
 
 @app.route("/actualizar_facultad", methods=["POST"])
 def actualizar_facultad():
@@ -791,14 +1065,14 @@ def escuelas():
 def escuelas_nombre():
     nombre = request.form["nombre"]
     escuelas = cont_esc.buscar_escuela(nombre)
-    return render_template("/escuela/listarEscuela.html", usuario = session['usuario'], maestra=session['maestra'], escuelas = escuelas, editEscuela = None)
+    return render_template("/escuela/listarEscuela.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", escuelas = escuelas, editEscuela = None)
 
 
 ###     AGREGAR ESCUELA
 @app.route("/agregar_escuela")
 def agregar_escuela():
     facultades = cont_esc.listarFacultades()
-    return render_template("/escuela/nuevaEscuela.html", usuario = session['usuario'], maestra=session['maestra'],facultades=facultades)
+    return render_template("/escuela/nuevaEscuela.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html",facultades=facultades)
 
 @app.route("/guardar_escuela", methods=["POST"])
 def guardar_escuela():
@@ -821,7 +1095,7 @@ def editar_escuela(id):
     if(escuela[3] == 'V'):
         opt = True
 
-    return render_template("/escuela/editarEscuela.html", usuario = session['usuario'], maestra=session['maestra'], escuela=escuela,facultades=facultades, opt=opt)
+    return render_template("/escuela/editarEscuela.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", escuela=escuela,facultades=facultades, opt=opt)
 
 @app.route("/actualizar_escuela", methods=["POST"])
 def actualizar_escuela():
@@ -913,7 +1187,7 @@ def empresas_nombre():
 def agregar_empresa():
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    return render_template("/empresa/nuevaEmpresa.html", paises = paises, dep = dep,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/empresa/nuevaEmpresa.html", paises = paises, dep = dep,  usuario = session['usuario'], maestra="maestra_d_modulo1.html")
 
 @app.route("/buscar_prov_dep", methods=["GET"])
 def buscar_prov_dep():
@@ -1123,7 +1397,7 @@ def reportes1():
 def distrito():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         ubicaciones = cont_ubi.listar_distritos()
-        return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+        return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", ubicaciones = ubicaciones)
     else:
         return redirect('/index_supremo')
 
@@ -1152,7 +1426,7 @@ def editar_distrito(id):
     departamentos = cont_ubi.datos_departamentos(data[2])
     provincias = cont_ubi.datos_provincias(data[3])
 
-    return render_template("/ubicacion/distrito/editarDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data, departamentos = departamentos, provincias = provincias)
+    return render_template("/ubicacion/distrito/editarDistrito.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises, data=data, departamentos = departamentos, provincias = provincias)
 
 @app.route("/actualizar_distrito", methods=["POST"])
 def actualizar_distrito():
@@ -1179,7 +1453,7 @@ def eliminar_distrito(id):
 def provincia():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         ubicaciones = cont_ubi.listar_provincias()
-        return render_template("/ubicacion/provincia/listarProvincia.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+        return render_template("/ubicacion/provincia/listarProvincia.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", ubicaciones = ubicaciones)
     else:
         return redirect('/')
 
@@ -1188,7 +1462,7 @@ def provincia():
 @app.route("/agregar_provincia")
 def agregar_provincia():
     datos_paises = cont_ubi.datos_paises()
-    return render_template("/ubicacion/provincia/nuevoProvincia.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
+    return render_template("/ubicacion/provincia/nuevoProvincia.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises)
 
 @app.route("/guardar_provincia", methods=["POST"])
 def guardar_provincia():
@@ -1206,7 +1480,7 @@ def editar_provincia(id):
     datos_paises = cont_ubi.datos_paises()
     departamentos = cont_ubi.datos_departamentos(data[2])
 
-    return render_template("/ubicacion/provincia/editarProvincia.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data, departamentos = departamentos)
+    return render_template("/ubicacion/provincia/editarProvincia.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises, data=data, departamentos = departamentos)
 
 @app.route("/actualizar_provincia", methods=["POST"])
 def actualizar_provincia():
@@ -1233,7 +1507,7 @@ def eliminar_provincia(id):
 def departamento():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         ubicaciones = cont_ubi.listar_departamento()
-        return render_template("/ubicacion/departamento/listarDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+        return render_template("/ubicacion/departamento/listarDepartamento.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", ubicaciones = ubicaciones)
     else:
         return redirect('/')
 
@@ -1242,7 +1516,7 @@ def departamento():
 @app.route("/agregar_departamento")
 def agregar_departamento():
     datos_paises = cont_ubi.datos_paises()
-    return render_template("/ubicacion/departamento/nuevoDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
+    return render_template("/ubicacion/departamento/nuevoDepartamento.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises)
 
 @app.route("/guardar_departamento", methods=["POST"])
 def guardar_departamento():
@@ -1259,7 +1533,7 @@ def editar_departamento(id):
     data = cont_ubi.buscar_departamento(id)
     datos_paises = cont_ubi.datos_paises()
 
-    return render_template("/ubicacion/departamento/editarDepartamento.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises, data=data)
+    return render_template("/ubicacion/departamento/editarDepartamento.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises, data=data)
 
 @app.route("/actualizar_departamento", methods=["POST"])
 def actualizar_departamento():
@@ -1286,7 +1560,7 @@ def eliminar_departamento(id):
 def pais():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         ubicaciones = cont_ubi.listar_pais()
-        return render_template("/ubicacion/pais/listarPais.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
+        return render_template("/ubicacion/pais/listarPais.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", ubicaciones = ubicaciones)
     else:
         return redirect('/')
 
@@ -1294,7 +1568,7 @@ def pais():
 ###     AGREGAR PAIS
 @app.route("/agregar_pais")
 def agregar_pais():
-    return render_template("/ubicacion/pais/nuevoPais.html", usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/ubicacion/pais/nuevoPais.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/guardar_pais", methods=["POST"])
 def guardar_pais():
@@ -1309,7 +1583,7 @@ def guardar_pais():
 def editar_pais(id):
     data = cont_ubi.buscar_pais(id)
 
-    return render_template("/ubicacion/pais/editarPais.html", usuario = session['usuario'], maestra=session['maestra'], data=data)
+    return render_template("/ubicacion/pais/editarPais.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", data=data)
 
 @app.route("/actualizar_pais", methods=["POST"])
 def actualizar_pais():

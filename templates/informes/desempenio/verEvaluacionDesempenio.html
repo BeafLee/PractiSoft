@@ -1,0 +1,523 @@
+{% extends "maestra.html" %}
+{% block titulo %}Ver ficha de evaluación de desempeño{% endblock %}
+{% block subtitul %}Ver ficha de evaluación de desempeño{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/desempenio.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+    <div class="container mt-2">
+
+
+
+        <div class="container mt-2">
+
+            <h3 style="text-align: center; text-decoration: underline;"> <strong>Ficha de Evaluación del Desempeño de
+                    <br>
+                    Prácticas Pre Profesionales </strong>
+            </h3>
+            <form action="{{url_for('detalle_practica', id=datos[8])}}" method="get" enctype="multipart/form-data" >
+                <div class="my-1">
+                    <br>
+                    <h4>La Universidad Católica Santo Toribio de Mogrovejo (USAT) agradece la valiosa colaboración de su
+                        Institución
+                        en la formación profesional de los estudiantes de nuestra casa de estudios. <br>
+                        El objetivo de esta evaluación es recoger información sobre el desempeño de nuestros estudiantes
+                        durante el
+                        periodo de prácticas pre profesionales. En tal sentido, le agradeceremos responderla de manera
+                        objetiva, ya
+                        que su opinión nos ayudará a mejorar el nivel de las Prácticas Pre profesionales que son
+                        requisito para la
+                        titulación de nuestros estudiantes.</h4>
+                    <hr>
+                    <h4 style="text-align: center;"> <strong>Datos Generales</strong></h4>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="razonSocial">Nombres y apellidos del estudiante:</label>
+                            <input type="text" class="form-control" id="razonSocial" name="razonSocial"
+                                value="{{datos[0]}}" disabled>
+                        </div>
+                        <div class="form-group col">
+                            <label for="direccion">Escuela Profesional: </label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" value="{{datos[1]}}"
+                                disabled>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="razonSocial">Periodo de prácticas:</label>
+                            <input type="text" class="form-control" id="razonSocial" value="{{datos[2]}}"
+                                name="razonSocial" disabled>
+                        </div>
+                        <div class="form-group col">
+                            <label for="direccion">Área de desempeño del estudiante:</label>
+                            <input type="text" class="form-control" id="direccion" value="{{datos[3]}}" name="direccion"
+                                disabled>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="razonSocial">Nombre de la Empresa (Centro de prácticas):</label>
+                            <input type="text" class="form-control" id="razonSocial" value="{{datos[4]}}"
+                                name="razonSocial" disabled>
+                        </div>
+                        <div class="form-group col">
+                            <label for="direccion">Dirección de la empresa:</label>
+                            <input type="text" class="form-control" id="direccion" value="{{datos[5]}}" name="direccion"
+                                disabled>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="razonSocial">Nombre del responsable de la empresa:</label>
+                            <input type="text" class="form-control" id="razonSocial" value="{{datos[6]}}"
+                                name="razonSocial" disabled>
+                        </div>
+                        <div class="form-group col">
+                            <label for="direccion">Correo electrónico del responsable de la empresa: </label>
+                            <input type="text" class="form-control" id="direccion" value="{{datos[7]}}" name="direccion"
+                                disabled>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4> <strong>Sírvase marcar con una “✔”, la respuesta que describa mejor su opinión:</strong></h4>
+
+                </div>
+
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+
+                            <th rowspan="2">Características a evaluarse</th>
+                            <th scope="row" colspan="4">Escala</th>
+                        </tr>
+                        <th>Deficiente</th>
+                        <th>Regular</th>
+                        <th>Bueno</th>
+                        <th>Muy bueno</th>
+                        </tr>
+                        <tr>
+
+                        </tr>
+
+                    </thead>
+
+
+                   
+                        <tbody>
+
+                            <tr>
+
+                                <td>1. Responsabilidad</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept(this)" name="opcion1" value="D" disabled {% if todos[3]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept(this)" name="opcion1" value="R" disabled {% if todos[3]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept(this)" name="opcion1" value="B" disabled {% if todos[3]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept(this)" name="opcion1" value="M" disabled {% if todos[3]=="M" %}checked{% endif %}>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>2. Proactividad</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept2(this)" name="opcion2" value="D" disabled {% if todos[4]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept2(this)" name="opcion2" value="R" disabled {% if todos[4]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept2(this)" name="opcion2" value="B" disabled {% if todos[4]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept2(this)" name="opcion2" value="M" disabled {% if todos[4]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3. Comunicación asertiva</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept3(this)" name="opcion3" value="D" disabled {% if todos[5]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept3(this)" name="opcion3" value="R" disabled {% if todos[5]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept3(this)" name="opcion3" value="B" disabled {% if todos[5]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept3(this)" name="opcion3" value="M" disabled {% if todos[5]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4. Trabajo en equipo</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept4(this)" name="opcion4" value="D" disabled {% if todos[6]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept4(this)" name="opcion4" value="R" disabled {% if todos[6]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept4(this)" name="opcion4" value="B" disabled {% if todos[6]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept4(this)" name="opcion4" value="M" disabled {% if todos[6]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5. Compromiso con la calidad</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept5(this)" name="opcion5" value="D" disabled {% if todos[7]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept5(this)" name="opcion5" value="R" disabled {% if todos[7]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept5(this)" name="opcion5" value="B" disabled {% if todos[7]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept5(this)" name="opcion5" value="M" disabled {% if todos[7]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6. Organización en el trabajo</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept6(this)" name="opcion6" value="D" disabled {% if todos[8]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept6(this)" name="opcion6" value="R" disabled {% if todos[8]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept6(this)" name="opcion6" value="B" disabled {% if todos[8]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept6(this)" name="opcion6" value="M" disabled {% if todos[8]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7. Puntualidad y asistencia</td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept7(this)" name="opcion7" value="D" disabled {% if todos[9]=="D" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept7(this)" name="opcion7" value="R" disabled {% if todos[9]=="R" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept7(this)" name="opcion7" value="B" disabled {% if todos[9]=="B" %}checked{% endif %}>
+                                </td>
+                                <td><input type="checkbox" onclick="uncheckAllExcept7(this)" name="opcion7" value="M" disabled {% if todos[9]=="M" %}checked{% endif %}>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                </table>
+
+                <table class="table table-bordered" id="eltablas">
+                    <thead class="thead-dark">
+                        <tr>
+
+                            <th rowspan="2">Resultados de aprendizaje</th>
+                            <th scope="row" colspan="5">Escala</th>
+                        </tr>
+                        <th>Deficiente</th>
+                        <th>Regular</th>
+                        <th>Bueno</th>
+                        <th>Muy bueno</th>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+
+                    </thead>
+
+                    
+
+                    <tbody id="alternativa">
+                        {% for resultado in resultados %}
+                        <tr>
+
+                            <td>{{resultado[0]}}</td>
+                            <td><input type="checkbox"  {% if resultado[1]=="D" %}checked{% endif %} disabled>
+                            </td>
+                            <td><input type="checkbox"  {% if resultado[1]=="R" %}checked{% endif %} disabled>
+                            </td>
+                            <td><input type="checkbox"  {% if resultado[1]=="B" %}checked{% endif %} disabled>
+                            </td>
+                            <td><input type="checkbox" {% if resultado[1]=="M" %}checked{% endif %} disabled>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                       
+                    </tbody>
+                    
+                </table>
+
+                <div class="mt-2">
+                    <input type="text" id="" name="idPractica" value="{{datos[8]}}" hidden>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="row">Conclusiones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                </table>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+
+                            <textarea class="form-control" id="descAreaTrabajo" name="descAreaTrabajo" placeholder=""
+                                readonly>{{todos[10]}}</textarea>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                </table>
+
+                <h5> <strong>Fecha:</strong>
+                    <input type="text" id="fechaActual"  name="fechae" readonly>
+                </h5>
+                <br>
+                <div class="text-center pb-5">
+                    <button class="btn btn-success">Volver</button>
+                </div>
+            </form>
+            
+        </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+
+<script>
+    // Obtener la fecha actual
+    var fecha = new Date();
+
+    // Obtener los componentes de la fecha
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+    var año = fecha.getFullYear();
+
+    // Formatear la fecha como "dd/mm/aaaa"
+    var fechaFormateada = dia + '/' + mes + '/' + año;
+
+    // Mostrar la fecha en el elemento con id "fechaActual"
+    document.getElementById('fechaActual').value = fechaFormateada;
+</script>
+
+<script>
+    function uncheckAllExcept(checkbox) {
+        var checkboxes = document.getElementsByName('opcion1');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+
+<script>
+    function uncheckAllExcept2(checkbox) {
+        var checkboxes = document.getElementsByName('opcion2');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+
+<script>
+    function uncheckAllExcept3(checkbox) {
+        var checkboxes = document.getElementsByName('opcion3');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+<script>
+    function uncheckAllExcept4(checkbox) {
+        var checkboxes = document.getElementsByName('opcion4');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+<script>
+    function uncheckAllExcept5(checkbox) {
+        var checkboxes = document.getElementsByName('opcion5');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+<script>
+    function uncheckAllExcept6(checkbox) {
+        var checkboxes = document.getElementsByName('opcion6');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+<script>
+    function uncheckAllExcept7(checkbox) {
+        var checkboxes = document.getElementsByName('opcion7');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+    
+</script>
+
+
+<script>
+    var idn = 0
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        
+        $('#add-conclucion').click(function () {
+           
+            var inputGroup = '<tr id="input-group">' +
+                '<td><input name="tablita'+(idn+1)+'" style="border: none; width: 100%;" type="text"></td>' +
+                ' <td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M"></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M"></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M"></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M"></td>'+
+                '<td><button class="btn btn-outline-danger remove-input" type="button">Eliminar</button></td>'+
+                '</tr>';
+
+            $('#alternativa').append(inputGroup);
+            idn = idn+1;
+            contarFilas();
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('#input-group').remove();
+            idn=idn-1;
+        });
+    });
+
+    function contarFilas() {
+      var tabla = document.getElementById('eltablas');
+      var filas = tabla.getElementsByTagName('tr').length;
+      document.getElementById("nfilas").value = filas-3;
+
+    }
+
+    
+
+    function validar1(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn1');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+
+    function validar2(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn2');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+
+    function validar3(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn3');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+
+    function validar4(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn4');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+    function validar5(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn5');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }function validar6(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn6');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }function validar7(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn7');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }function validar8(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn8');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }function validar9(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn9');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }function validar10(checkbox) {
+        
+        var checkboxes = document.getElementsByName('opcionn10');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+
+    
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-recomendacion').click(function () {
+            var inputGroup = '<div class="input-group mt-1">' +
+                '<input type="text" class="form-control" name="recomendaciones[]">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#recomendaciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+{% endblock %}
