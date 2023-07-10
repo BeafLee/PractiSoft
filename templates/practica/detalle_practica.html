@@ -267,11 +267,13 @@
         </table>
       </div>
     </div>
+    {%if estadoP[0] != 'Inicializado'%}
     <div id="cont3">
       <p>Seguimientos de la Práctica Pre Profesional:</p>
       <a href="{{url_for('seguimiento_practica', id=detalle[15])}}"><button type="button"
           class="btn btn-success">Mostrar</button></a>
     </div>
+    {%endif%}
     <div id="cont4">
       <br>
     </div>
