@@ -1,0 +1,34 @@
+<h3 style="text-align: center; margin-top: 5%;">INFORME FINAL SOBRE LAS PRACTICAS PRE PROFESIONALES</h3>
+<h3 style="text-align: center; margin-top: 0%;">(ELABORADO POR LA EMPRESA/INSTITUCI&Oacute;N)</h3>
+<ol style="margin-left: 10%; margin-top: 3%;">
+    <li><strong>Nombre de la Empresa/Instituci&oacute;n</strong> <br />{{context.nombreEmpresa}}</li>
+    <br />
+    <li><strong>Persona de la Empresa/Intituci&ograve;n responsable de la practica</strong>
+        <br />{{context.responsable}}
+    </li>
+    <br />
+    <li><strong>Cargo</strong> <br />{{context.cargo}}</li>
+    <br />
+    <li><strong>Nombre y apellidos del estudiante</strong> <br />{{context.estudiante}}</li>
+    <br />
+    <li><strong>Fecha de inicio de la practica</strong> <br />{{context.fechaInicio}}</li>
+    <br />
+    <li><strong>Fecha de t&eacute;rmino de la practica</strong> <br />{{context.fechaFin}}</li>
+    <br />
+    <li><strong>Valoraci&oacute;n sobre el trabajo realizado por el estudiante</strong>
+        <ul style="list-style-type: disc;">
+            {% for valoracion in context.valoraciones %}
+            <li>{{valoracion}}</li>
+            {% endfor %}
+        </ul>
+    </li> 
+    <br /><br />
+    <li><strong>Fecha, firma del responsable y sello de la
+            Empresa/Instituci&oacute;n</strong><br /><br /><img src="{{context.urlFirma}}" alt="firma" width="650"
+            height="200" /> <img src="{{context.urlSello}}" alt="sello" width="650" height="200" />
+    </li>
+</ol>
+<h4 style="text-align: center; margin-bottom: 0%;">
+    <strong>{{context.responsable}}</strong>
+</h4>
+<h4 style="text-align: center; margin-top: 0%;"><strong>{{context.cargo}}</strong></h4>
