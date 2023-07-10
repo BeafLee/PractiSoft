@@ -474,6 +474,7 @@ def prueba():
 
     return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
 
+@app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
     data = list(cont_inf_final_est.buscar_id(idPractica))
@@ -485,14 +486,19 @@ def generar_informeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     data[12] = data[12].split(separadorText)
     data[13] = data[13].split(separadorText)
-      
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': data[9],'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
+    
+    urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    print(urlLogo)
+    print(urlOrganigrama)
+    
+    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6], 'logo': urlLogo}
+    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': urlOrganigrama,'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
 
     #Generamos la caratula para el informe
     output_text_caratula = render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
     output_pdf_caratula = 'static/practica/' + str(idPractica) + '/informe/final_estudiante/caratula.pdf'
-    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": ""})
+    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": "", 'encoding': 'UTF-8'})
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_estudiante/contenido.html", context = context_contenido)
@@ -1068,7 +1074,7 @@ def distrito():
         ubicaciones = cont_ubi.listar_distritos()
         return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
     else:
-        return redirect('/')
+        return redirect('/index_supremo')
 
 
 ###     AGREGAR DISTRITO
