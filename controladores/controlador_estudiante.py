@@ -149,19 +149,24 @@ def buscar_usuario(CodESt):
 
 def parseCSV(filePath):
       # CVS Column Names
+    x=1
     col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
       # Use Pandas to parse the CSV file
-    excelData = pd.read_excel(filePath,names=col_names,index_col=None)
-    x=1        
-      # Loop through the Rows
-    for i,row in excelData.iterrows():
-        
-        if obtener_plan(str(row['Plan_de_Estudio'])) == None or obtener_distrito(row['Distrito']) == None or obtener_pais(row['Pais']) == None:   
-            x=-1
-        elif obtener_plan(str(row['Plan_de_Estudio'])) == -1 or obtener_distrito(row['Distrito']) == -1 or obtener_pais(row['Pais']) == -1:   
+    try:  
+        excelData = pd.read_excel(filePath,names=col_names,index_col=None)
+    
             
-            x=-2
-        
+      # Loop through the Rows
+        for i,row in excelData.iterrows():
+            
+            if obtener_plan(str(row['Plan_de_Estudio'])) == None or obtener_distrito(row['Distrito']) == None or obtener_pais(row['Pais']) == None:   
+                x=-1
+            elif obtener_plan(str(row['Plan_de_Estudio'])) == -1 or obtener_distrito(row['Distrito']) == -1 or obtener_pais(row['Pais']) == -1:   
+                
+                x=-2
+    except:
+        x=-1
+
     return x
         
         
