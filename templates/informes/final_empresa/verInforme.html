@@ -1,0 +1,155 @@
+{% extends "maestra.html" %}
+{% block titulo %}
+Informe final - empresa
+{% endblock %}
+{% block subtitul %}
+Informe final - empresa
+{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+<section>
+    <div class="container mt-2">
+        <br>
+        <h1 style="text-align: center;">Informe Final Empresa</h1>
+        
+        
+        <form action="{{url_for('actualizar_iiem')}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="idPractica" id="idPractica" value="{{data[14]}}">
+            <div class="my-1">
+                <br>
+                <h3>Datos de la institución</h3>
+                <br>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="razonSocial">Razón Social:</label>
+                        <input disabled type="text" class="form-control" id="razonSocial" name="razonSocial" value="{{data[0]}}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="responsable">Persona responsable de la practica:</label>
+                        <input type="text" disabled class="form-control" id="responsable" name="responsable" value="{{data[1]}}">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="cargo">Cargo:</label>
+                        <input type="text" disabled class="form-control" id="cargo" name="cargo" value="{{data[2]}}">
+                    </div>
+                </div>
+                <hr>
+                <h3>Datos de la practica</h3>
+                <br>
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label for="responsable">Fecha inicio de la practica:</label>
+                        <input type="text" disabled class="form-control" id="fechaInicio" name="fechaInicio" value="{{data[4]}}" />
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="cargo">Fecha fin de la practica:</label>
+                        <input type="text" disabled class="form-control" id="fechaFin" name="fechaFin" value="{{data[5]}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="my-1">
+                    <div class="form-group" id="valoraciones-inputs">
+                        <label for="valoraciones"><h3>Valoración: </h3></label>
+                        {% for valoraciones in valoracion[0] %}
+                        <div class="input-group mb-1">
+                            <input type="text" class="form-control" name="valoraciones" value="{{valoraciones}}">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-primary" type="button" id="add-valoraciones">Agregar</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="my-1">
+                    <div class="form-group">
+                        <label for="selloEmpImg">
+                            <h3>Sello de la empresa</h3>
+                        </label>
+                        <br>
+                        <div class="row ">
+                            <input type="file" class="form-control col mx-3" id="selloEmpImg" name="selloEmpImg"
+                                accept="image/jpeg, image/png" disabled
+                                href="{{data[7]}}">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="my-1">
+                    <div class="form-group">
+                        <label for="firmaResImg">
+                            <h3>Firma responsable</h3>
+                        </label>
+                        <br>
+                        <div class="row ">
+                            <input type="file" class="form-control col mx-3" id="firmaResImg" name="firmaResImg"
+                                accept="image/jpeg, image/png" disabled
+                                value="{{data[6]}}">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="text-center pb-5">
+                <button type="submit" name="btnActualizar" class="btn btn-success">Actualizar</button>
+                <button type="submit" name="btnEnviar" class="btn btn-outline-success">Guardar y Enviar</button>
+            </div>
+
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-valoraciones').click(function () {
+            var inputGroup = '<div class="input-group mb-1">' +
+                '<input type="text" class="form-control" name="valoraciones">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#valoraciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-recomendacion').click(function () {
+            var inputGroup = '<div class="input-group mb-1">' +
+                '<input type="text" class="form-control" name="valoraciones">' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#valoraciones-inputs').append(inputGroup);
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+        });
+    });
+</script>
+{% endblock %}
