@@ -6,6 +6,7 @@ import mysql.connector #instalar
 from os.path import join, dirname, realpath
 from PyPDF2 import PdfMerger , PdfReader 
 from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file, send_from_directory
+import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
 import controladores.controlador_semestre as cont_sem
@@ -18,6 +19,7 @@ import controladores.controlador_practica as cont_prac
 import controladores.controlador_reporte as cont_rep
 import controladores.controlador_seguimiento_practica as cont_seg
 import controladores.controlador_informe_final_estudiante as cont_inf_final_est
+import controladores.controlador_informe_final_empresa as cont_inf_final_emp
 import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
@@ -197,6 +199,15 @@ def index_j():
     return render_template("/index/index_j.html", usuario = usu, maestra=session['maestra'])
 
 #################################################################################
+##                                  IMÁGENES                                   ##
+#################################################################################
+@app.route('/images/<path:filepath>')
+def get_image(filepath):
+    folder_path, filename = os.path.split(filepath)
+    return send_from_directory(folder_path, filename)
+
+
+#################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
 ###     GESTIONAR PRACTICA
@@ -255,9 +266,33 @@ def guardar_practica():
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        iem = True
+        ies = True
+    elif 'usuario' in session and session['usuario'][4] == 'Responsable de la practica':
+        iem = True
+        ies = False
+    elif 'usuario' in session and session['usuario'][4] == 'Estudiante':
+        iem = False
+        ies = True
+    validacion = [iem,ies,False,False,False,False]
     detalle = cont_dp.listar_detalle_practica(id)
-    usu = session['usuario']
-    return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+    iies = cont_iie.obtener_iies(id)
+    ifes = cont_iie.obtener_ifes(id)
+    iiem = cont_iie.obtener_iiem(id)
+    ifem = cont_iie.obtener_ifem(id)
+    informe = [iies,ifes,iiem,ifem]
+    if not iies:
+        validacion[2] = True
+    if not ifes:
+        validacion[3] = True
+    if not iiem:
+        validacion[4] = True
+    if not ifem:
+        validacion[5] = True
+        print(validacion,informe)
+    return render_template("/practica/detalle_practica.html", usuario = session['usuario'], maestra=session['maestra'],id = id, detalle = detalle,informe=informe,validacion = validacion)
+
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -463,6 +498,7 @@ def prueba():
 
     return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
 
+@app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
     data = list(cont_inf_final_est.buscar_id(idPractica))
@@ -474,14 +510,19 @@ def generar_informeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     data[12] = data[12].split(separadorText)
     data[13] = data[13].split(separadorText)
-      
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': data[9],'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
+    
+    urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    print(urlLogo)
+    print(urlOrganigrama)
+    
+    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6], 'logo': urlLogo}
+    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': urlOrganigrama,'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
 
     #Generamos la caratula para el informe
     output_text_caratula = render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
     output_pdf_caratula = 'static/practica/' + str(idPractica) + '/informe/final_estudiante/caratula.pdf'
-    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": ""})
+    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": "", 'encoding': 'UTF-8'})
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_estudiante/contenido.html", context = context_contenido)
@@ -499,6 +540,71 @@ def generar_informeFinalEstudiante(idPractica):
     return send_file('static/practica/'+ str(idPractica) + '/informe/final_estudiante/informe_final_estudiante.pdf', as_attachment=True)
     # return redirect("/agregarInformeFinalEstudiante")
 
+#################################################################################
+##                          INFORME FINAL - EMPRESA                            ##
+#################################################################################
+
+@app.route("/nuevo_iiem/<int:id>")
+def nuevo_iiem(id):
+    data = cont_inf_final_emp.infoPlantilla(id)
+    print(data)
+    return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
+
+
+###     MOSTRAR FORMULARIO DE INFORME FINAL
+
+@app.route("/guardar_iiem", methods=["POST"])
+def guardar_iiem():
+    idPractica = request.form["idPractica"]
+    fechaEntrega = datetime.date.today()
+    urlFirmaResponsable = "firma.png"
+    urlSelloEmpresa = "sello.png"
+    observacion = ""
+    
+    valoraciones = request.form.getlist('valoraciones')
+    
+    if 'btnGuardar' in request.form:
+        cont_inf_final_emp.insertar_informe_final_empresa(idPractica,"G",fechaEntrega,urlFirmaResponsable,urlSelloEmpresa,observacion,idPractica)
+    if 'btnEnviar' in request.form:
+        cont_inf_final_emp.insertar_informe_final_empresa(idPractica,"E",fechaEntrega,urlFirmaResponsable,urlSelloEmpresa,observacion,idPractica)
+
+    for valoracion in valoraciones:
+        cont_inf_final_emp.insertar_valoracion(valoracion,idPractica)
+    
+    return redirect("/detalle_practica/"+idPractica)
+
+
+@app.route("/ver_iiem/<int:id>")
+def ver_iiem(id):
+    data = cont_inf_final_emp.buscar_id(id)
+    val = cont_inf_final_emp.buscar_valoracion(id)
+    valoracion = [item[0] for item in val]
+    print(valoracion)
+    #data2 = cont_inf_final_emp.buscar_valoracion(iiem)
+
+    return render_template("/informes/final_empresa/verInforme.html",valoracion=valoracion, data = data,  usuario = session['usuario'], maestra=session['maestra'])
+
+
+
+@app.route("/generar_informeFinalEmpresa/<int:id>")
+def generar_informeFinalEmpresa(id):
+    #controlador obtener
+    data = cont_inf_final_emp.buscar_id(id)
+    data2 = cont_inf_final_emp.buscar_valoracion(id)
+    lista_resultante = [item[0] for item in data2]
+    idPractica = data[14]
+    context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
+                         "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
+
+    #Generamos el contenido para el informe
+    output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido)
+    output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
+    if not os.path.exists(output_pdf_contenido):
+        os.makedirs(output_pdf_contenido)
+    output_pdf_contenido += "/informe_final_empresa.pdf"
+    pdfkit.from_string(output_text_contenido, output_pdf_contenido, configuration=config, options={"enable-local-file-access": ""})
+
+    return send_file('static/practica/'+ str(idPractica) + '/informe/final_empresa/informe_final_empresa.pdf', as_attachment=True)
 
 #################################################################################
 ##                                  SEMESTRE                                   ##
@@ -819,15 +925,15 @@ def editar_empresa(id):
     print(empresa,'|||||||||||||||||||||||||||||||||||')
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[9])
+    if (empresa[9] == None):
+        info = cont_emp.empresa_nacional(empresa[8])
         prov = cont_emp.listar_provincia(info[1])
         dis = cont_emp.listar_distrito(info[2])
         bandera = True
         disable = ''
         return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,maestra=session['maestra'],  usuario = session['usuario'])
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
         bandera = False
         disable = 'disabled'
         return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,maestra=session['maestra'],  usuario = session['usuario'])
@@ -837,11 +943,11 @@ def ver_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        print(empresa[9],'|||||||||||||||||||||||||4789131348279|||||||||||||||||||')
-        info = cont_emp.empresa_nacional(empresa[9])
+    if (empresa[9] == None):
+        print(empresa[8],'|||||||||||||||||||||||||4789131348279|||||||||||||||||||')
+        info = cont_emp.empresa_nacional(empresa[8])
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
     return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,maestra=session['maestra'],  usuario = session['usuario'])
 
 @app.route("/actualizar_empresa", methods=["POST"])
@@ -854,7 +960,6 @@ def actualizar_empresa():
     telefono2 = request.form["telefono2"]
     correo = request.form["correo"]
     pais = request.form["pais"]
-    distrito = 0
     if pais == '24':
         distrito = request.form["distrito"]
         cont_emp.actualizar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito,id)
@@ -968,15 +1073,11 @@ def generar_iie(id):
     infoInforme = cont_iie.buscar_informe_inicial_empresa_id(id)
     labores = []
     labores = cont_iie.desconcat_labores(infoInforme[3])
-    img = ['http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/aceptacion.jpeg','http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/sello.jpeg','http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/firma.jpeg']
-
-    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores, img = img)
+    
+    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores)
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
-@app.route('/images/<filename>')
-def get_image(filename):
-    return send_from_directory('images', filename)
 
 #################################################################################
 ##                                  REPORTE                                   ##
@@ -999,7 +1100,7 @@ def distrito():
         ubicaciones = cont_ubi.listar_distritos()
         return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra=session['maestra'], ubicaciones = ubicaciones)
     else:
-        return redirect('/')
+        return redirect('/index_supremo')
 
 
 ###     AGREGAR DISTRITO

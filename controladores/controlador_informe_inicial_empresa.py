@@ -42,7 +42,23 @@ def buscar_informe_inicial_empresa_id(idInformeInicialEmpresa):
     conexion.close()
     return informe_inicial_empresa
 
-def obtener_informe_iniciales(id):
+def obtener_iies(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,estado from INFORME_INICIAL_ESTUDIANTE where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
+def obtener_ifes(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,estado from INFORME_FINAL_ESTUDIANTE where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
+def obtener_iiem(id):
     conexion = obtener_conexion()
     informe = []
     with conexion.cursor() as cursor:
@@ -50,7 +66,7 @@ def obtener_informe_iniciales(id):
         informe = cursor.fetchone()
     conexion.close()
     return informe
-def obtener_informe_finales(id):
+def obtener_ifem(id):
     conexion = obtener_conexion()
     informe = []
     with conexion.cursor() as cursor:
