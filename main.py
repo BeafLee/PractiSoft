@@ -9,6 +9,7 @@ from flask import Flask, flash, request, jsonify, render_template, redirect, ses
 import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
+import controladores.controlador_informe_estudiante as cont_infes
 import controladores.controlador_semestre as cont_sem
 import controladores.controlador_facultad as cont_fac
 import controladores.controlador_escuela as cont_esc
@@ -267,8 +268,14 @@ def guardar_practica():
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
     detalle = cont_dp.listar_detalle_practica(id)
+    informe = cont_infes.obtener_informe_iniciales(id)
+    informe1=cont_infes.obtener_informe_finales(id)
+    informe2=cont_infes.obtener_informe_inicial_em(id)
+    informe3=cont_infes.obtener_informe_final_em(id)
+    informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
-    return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+    tipou=cont_dp.obtener_tipoUsuario(usu[3])
+    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -659,13 +666,12 @@ def eliminar_semestre(id):
 
 @app.route("/facultades")
 def facultades():
-    facultades = cont_fac.obtener_facultad()
-    usu = session['usuario']
-    #print("Datos:",usu)
-    return render_template("/facultad/listarFacultad.html", usuario = usu, maestra=session['maestra'], facultades = facultades)
-
-
-
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        facultades = cont_fac.obtener_facultad()
+        usu = session['usuario']
+        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra=session['maestra'], facultades = facultades)
+    else:
+        return redirect('/index_supremo')
 
 
 ###     AGREGAR FACULTAD
@@ -720,8 +726,12 @@ def daralta_facultad(id):
 ###     ELIMINAR FACULTAD
 @app.route("/eliminar_facultad/<int:id>")
 def eliminar_facultad(id):
-    cont_fac.eliminar_facultad(id)
-    return redirect("/facultades")
+    try:
+        cont_fac.eliminar_facultad(id)
+        return redirect("/facultades")
+    except Exception as e:
+        
+        return render_template('error2.html', error_message=str(e))
 
 
 
@@ -732,10 +742,13 @@ def eliminar_facultad(id):
 
 @app.route("/escuelas")
 def escuelas():
-    escuelas = cont_esc.obtener_escuela()
-    usu = session['usuario']
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        escuelas = cont_esc.obtener_escuela()
+        usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/escuela/listarEscuela.html", usuario = usu, maestra=session['maestra'], escuelas = escuelas)
+        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra=session['maestra'], escuelas = escuelas)
+    else:
+        return redirect('/index_supremo')
 
 
 
@@ -804,8 +817,12 @@ def daralta_escuela(id):
 ###     ELIMINAR ESCUELA
 @app.route("/eliminar_escuela/<int:id>")
 def eliminar_escuela(id):
-    cont_esc.eliminar_escuela(id)
-    return redirect("/escuelas")
+    try:
+        cont_esc.eliminar_escuela(id)
+        return redirect("/escuelas")
+    except Exception as e:
+        
+        return render_template('error.html', error_message=str(e))
 
 
 #################################################################################
@@ -815,20 +832,22 @@ def eliminar_escuela(id):
 ###     MOSTRAR ESTUDIANTES
 @app.route("/estudiantes")
 def estudiantes():
-    estudiantes = cont_est.obtener_estudiante()
-    usu = session['usuario']
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        estudiantes = cont_est.obtener_estudiante()
+        usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
+        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
+    else:
+        return redirect('/index_supremo')
 
 
-
-###     DAR DE BAJA ESCUELA
+###     DAR DE BAJA ESTUDIANTE
 @app.route("/darbaja_estudiante/<int:id>")
 def darbaja_estudiante(id):
     cont_est.dar_baja(id)
     return redirect("/estudiantes")
 
-###     DAR DE ALTA ESCUELA
+###     DAR DE ALTA ESTUDIANTE
 @app.route("/daralta_estudiante/<int:id>")
 def daralta_estudiante(id):
     cont_est.dar_alta(id)
