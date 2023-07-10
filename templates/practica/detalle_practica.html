@@ -173,10 +173,9 @@
               <td scope="row" id="fecha1">Informe Inicial Empresa</td>
               <td scope="row" id="fecha2">{{informe2[0]}}</td>
               <td scope="row" id="estado">{{informe2[1]}}</td>
-              <td scope="row">{% if tipou[0]=="J" %}<a href="#"><!-- Link Para editar inicial empresa --><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
-              <td scope="row"><a href="#"><!-- Link Para ver inicial empresa --><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row"><a href="#"><!-- Link Para descargar inicial empresa --><i
-                    class="bi bi-arrow-down"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('editar_iie',id=id)}}"><i class="bi bi-pencil-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('ver_iie',id=id)}}"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_iie',id=id)}}"><i class="bi bi-arrow-down"></i></a></td>
 
             </tr>
             {% else %}
@@ -184,9 +183,8 @@
               <td scope="row" id="fecha1">Informe Inicial Empresa</td>
               <td scope="row" id="fecha2">{{informe2[0]}}</td>
               <td scope="row" id="estado">{{informe2[1]}}</td>
-              <td scope="row"><a href="#"><!-- Link Para ver inicial empresa --><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row"><a href="#"><!-- Link Para descargar inicial empresa --><i
-                    class="bi bi-arrow-down"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('ver_iie',id=id)}}"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_iie',id=id)}}"><i class="bi bi-arrow-down"></i></a></td>
             </tr>
             {% endif %}
             {% else %}
@@ -194,9 +192,7 @@
               <td scope="row" id="fecha1">Informe Inicial Empresa</td>
               <td scope="row" id="fecha2">-----</td>
               <td scope="row" id="estado">-----</td>
-              <td colspan="3" scope="row">{% if tipou[0]=="J" %}<a
-                  href="#"><!-- Link Para agregar inicial empresa --><i
-                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
+              <td colspan="3" scope="row align-items-center"><a href="{{url_for('nuevo_iie',id=id)}}"><i class="bi bi-plus-circle-fill"></i></a></td>
 
             </tr>
             {% endif %}
