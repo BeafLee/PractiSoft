@@ -116,8 +116,8 @@
               <td scope="row" id="fecha1">Informe Inicial Estudiante</td>
               <td scope="row" id="fecha2">{{informe[0]}}</td>
               <td scope="row" id="estado">{{informe[1]}}</td>
-              <td scope="row"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row"><a href="#"><i
+              <td scope="row"><a href="{{url_for('verInformeInicialEstudiante', id=detalle[15],id1=informe[2])}}"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="{{url_for('generar_ies', id=informe[2],id1=detalle[15])}}"><i
                     class="bi bi-arrow-down"></i></a></td>
 
             </tr>
@@ -173,7 +173,7 @@
               <td scope="row" id="fecha1">Informe Inicial Empresa</td>
               <td scope="row" id="fecha2">{{informe2[0]}}</td>
               <td scope="row" id="estado">{{informe2[1]}}</td>
-              <td scope="row align-items-center"><a href="{{url_for('editar_iie',id=id)}}"><i class="bi bi-pencil-fill"></i></a></td>
+              <td scope="row align-items-center">{% if tipou[0]=="J" %}<a href="{{url_for('editar_iie',id=id)}}"><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
               <td scope="row align-items-center"><a href="{{url_for('ver_iie',id=id)}}"><i class="bi bi-eye-fill"></i></a></td>
               <td scope="row align-items-center"><a href="{{url_for('generar_iie',id=id)}}"><i class="bi bi-arrow-down"></i></a></td>
 
@@ -192,7 +192,7 @@
               <td scope="row" id="fecha1">Informe Inicial Empresa</td>
               <td scope="row" id="fecha2">-----</td>
               <td scope="row" id="estado">-----</td>
-              <td colspan="3" scope="row align-items-center"><a href="{{url_for('nuevo_iie',id=id)}}"><i class="bi bi-plus-circle-fill"></i></a></td>
+              <td colspan="3" scope="row align-items-center">{% if tipou[0]=="J" %}<a href="{{url_for('nuevo_iie',id=id)}}"><i class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
 
             </tr>
             {% endif %}
@@ -202,9 +202,9 @@
               <td scope="row" id="fecha1">Informe Final Empresa</td>
               <td scope="row" id="fecha2">{{informe3[0]}}</td>
               <td scope="row" id="estado">{{informe3[1]}}</td>
-              <td scope="row"><a href="#">{% if tipou[0]=="J" %}<i class="bi bi-pencil-fill"><!-- Link Para editar final empresa --></i></a>{% else %}{% endif %}</td>
-              <td scope="row"><a href="#"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row"><a href="#"><!-- Link Para descagar final empresa --><i
+              <td scope="row"><a href="{{url_for('ver_ifem',id=id)}}">{% if tipou[0]=="J" %}<i class="bi bi-pencil-fill"><!-- Link Para editar final empresa --></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="{{url_for('ver_ifem',id=id)}}"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="{{url_for('generar_informeFinalEmpresa',id=id)}}"><!-- Link Para descagar final empresa --><i
                     class="bi bi-arrow-down"></i></a></td>
 
             </tr>
@@ -213,8 +213,8 @@
               <td scope="row" id="fecha1">Informe Final Empresa</td>
               <td scope="row" id="fecha2">{{informe3[0]}}</td>
               <td scope="row" id="estado">{{informe3[1]}}</td>
-              <td scope="row"><a href="#"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row"><a href="#"><!-- Link Para descagar final empresa --><i
+              <td scope="row"><a href="{{url_for('ver_ifem',id=id)}}"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="{{url_for('generar_informeFinalEmpresa',id=id)}}"><!-- Link Para descagar final empresa --><i
                     class="bi bi-arrow-down"></i></a></td>
             </tr>
             {% endif %}
@@ -225,7 +225,7 @@
               <td scope="row" id="fecha2">-----</td>
               <td scope="row" id="estado">-----</td>
               <td colspan="3" scope="row">{% if tipou[0]=="J" %}<a
-                  href="#"><!-- Link Para agregar final empresa --><i
+                  href="{{url_for('nuevo_ifem',id=id)}}"><!-- Link Para agregar final empresa --><i
                     class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
 
             </tr>
