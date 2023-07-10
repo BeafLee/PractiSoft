@@ -19,4 +19,3 @@ def obtener_conexion():
 #                                 user='bytesquad',
 #                                 password='bytesquad',
 #                                 db='practisoft_bd')
-

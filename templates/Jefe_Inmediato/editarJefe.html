@@ -90,9 +90,9 @@
           <div class="wrapper">
             {% for UsuarioJefe in UsuarioJefe %}
             <label for="">Usuario:</label>
-            <input  name="usuario" value="{{UsuarioJefe[0]}}"></input>
+            <input readonly  name="usuario" value="{{UsuarioJefe[0]}}"></input>
             <label for="">Contraseña:</label>
-            <input type="password" name="contraseña" value="{{UsuarioJefe[1]}}"></input>
+            <input readonly type="password" name="contraseña" value="{{UsuarioJefe[1]}}"></input>
             {% endfor %}
           </div>
         </div>
@@ -101,6 +101,7 @@
           <button id="btnCancelar">
             <a href="{{url_for('JefeInmediato')}}">Cancelar</a>
           </button>
+          <input style="display: none;" name="id" value="{{idJefe}}"></input>
           <button id="btnRegistrar" type="submit">
 
             Guardar

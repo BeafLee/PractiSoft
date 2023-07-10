@@ -257,6 +257,12 @@ def practicasE():
     idE=estudiante[0]
     practica = cont_prac.obtener_practicaE(idE)
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/EnviarPractica",methods=["POST"])
+def EnviarPractica():
+    id=request.form["id"]
+    cont_prac.EnviarPractica(id)
+    return redirect("practicasE")
 ###     AGREGAR PRACTICA
 
 @app.route("/agregar_practica")
@@ -302,6 +308,7 @@ def guardar_practica():
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
+    estadoP = cont_prac.obtener_estado(id)
     detalle = cont_dp.listar_detalle_practica(id)
     informe = cont_infes.obtener_informe_iniciales(id)
     informe1=cont_infes.obtener_informe_finales(id)
@@ -310,7 +317,7 @@ def detalle_practica(id):
     informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
     tipou=cont_dp.obtener_tipoUsuario(usu[3])
-    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou)
+    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -611,8 +618,6 @@ def editarInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-    print(conclusiones)
-    print(recomendaciones)
 
     data = ["Editar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Editar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
@@ -665,20 +670,18 @@ def guardar_informeFinalEstudiante():
     anexosPdf.save(urlBase + "/" + urlAnexos)
 
     estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
     cont_inf_final_est.insertar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/actualizar_informeFinalEstudiante", methods=["POST"])
 def actualizar_informeFinalEstudiante():
-    
     idPractica = request.form["idPractica"]
+
+    infoData = cont_inf_final_est.buscar_id(idPractica)
     idInforme = request.form["idInforme"]
     introduccion = request.form["introduccion"]
     giro = request.form["giro"]
@@ -694,8 +697,11 @@ def actualizar_informeFinalEstudiante():
         os.makedirs(urlBase)
 
     organigramaImg = request.files["organigramaImg"]
-    urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
-    organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    urlOrganigrama = ''
+    if os.path.splitext(organigramaImg.filename)[1] != '':
+        urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
+        organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    else: urlOrganigrama = infoData[9]
 
     descAreaTrabajo = request.form["descAreaTrabajo"]
     descLabores = request.form["descLabores"]
@@ -704,20 +710,20 @@ def actualizar_informeFinalEstudiante():
     bibliografia = request.form["bibliografia"]
 
     anexosPdf = request.files["anexosPdf"]
-    urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
-    anexosPdf.save(urlBase + "/" + urlAnexos)
+    urlAnexos = ''
+    if os.path.splitext(anexosPdf.filename)[1] != '':
+        urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
+        anexosPdf.save(urlBase + "/" + urlAnexos)
+    else: urlAnexos = infoData[20]
 
     estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
 
     cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica, idInforme)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 
 @app.route("/visualizar_ife/<int:idPractica>/<string:filename>")
@@ -736,14 +742,6 @@ def descargar_pdf(filename, idPractica):
         return send_file(url, as_attachment=True)
     return None
 
-@app.route("/prueba")
-def prueba():
-    data = ["Carlos Chung", "Empresa 1", "Direccion 1", 1, "texto de la introduccion", "A", "20/10/2023", "texto de la infra fisica", "texto de la infra tecnologica", "organigrama.png", "descripcion del area relaciones", "descripcion de labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "bibliografia \nreferencia1 \nreferencia 2", "giro de la empresa", "representante legal de la empresa", 20, "vision", "mision", "anexos.pdf", 'observacion hecho por el docente', 1]
-
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-
-    return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
-
 @app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
@@ -758,7 +756,7 @@ def generar_informeFinalEstudiante(idPractica):
     data[13] = data[13].split(separadorText)
     
     urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
-    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/' + data[9]
     print(urlLogo)
     print(urlOrganigrama)
     
@@ -790,7 +788,7 @@ def generar_informeFinalEstudiante(idPractica):
 ##                          INFORME FINAL - EMPRESA                            ##
 #################################################################################
 
-@app.route("/nuevo_iiem/<int:id>")
+@app.route("/nuevo_ifem/<int:id>")
 def nuevo_iiem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
@@ -799,7 +797,7 @@ def nuevo_iiem(id):
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
-@app.route("/guardar_iiem", methods=["POST"])
+@app.route("/guardar_ifem", methods=["POST"])
 def guardar_iiem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
@@ -831,42 +829,43 @@ def guardar_iiem():
     return redirect("/detalle_practica/"+idPractica)
 
 
-@app.route("/ver_iiem/<int:id>")
+@app.route("/ver_ifem/<int:id>")
 def ver_iiem(id):
-    data = cont_inf_final_emp.buscar_id(id)
+    data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
-    print(valoraciones)
-    
-
+    data[6]=request.scheme + '://'+ request.host +'/'+ data[6]
+    data[7]=request.scheme + '://'+ request.host +'/'+ data[7]
     return render_template("/informes/final_empresa/verInforme.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
 
-@app.route("/actualizar_iiem", methods=["POST"])
-def actualizar_iiem():
+
+
+@app.route("/actualizar_ifem", methods=["POST"])
+def actualizar_ifem():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
-    urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
+
+    urlBase = "static/practica/"+str(idPractica)+"/informe/final_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
-    aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlAcept)
+    
+    selloImg = request.files["selloEmpImg"]
+    urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(selloImg.filename)[1]
+    selloImg.save(urlSelloEmpresa)
+    
+    firmaImg = request.files["firmaResImg"]
+    urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaResponsable)
 
-    firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
-    firma.save(urlFirma)
+    print(idInforme)
+    print(urlSelloEmpresa)
+    print(urlFirmaResponsable)
 
-    sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
-    sello.save(urlSello)
-
-    fechaEntrega = request.form["fechaE"]
-    labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
-    if 'btnEnviar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+        cont_inf_final_emp.actualizar_informe_final_empresa("G",urlFirmaResponsable,urlSelloEmpresa,idInforme)
+    if 'btnActualizarEnviar' in request.form:
+        cont_inf_final_emp.actualizar_informe_final_empresa("E",urlFirmaResponsable,urlSelloEmpresa,idInforme)
     return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/generar_informeFinalEmpresa/<int:id>")
@@ -877,11 +876,13 @@ def generar_informeFinalEmpresa(id):
     lista_resultante = [item[0] for item in data2]
     idPractica = data[14]
     firmas = [request.scheme +'://'+ request.host +'/'+data[6],request.scheme +'://'+ request.host +'/'+data[7]]
+
     context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
                          "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido,firmas=firmas)
+
     output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
     if not os.path.exists(output_pdf_contenido):
         os.makedirs(output_pdf_contenido)
@@ -1160,7 +1161,6 @@ def daralta_estudiante(id):
 ##                                   EMPRESA                                   ##
 #################################################################################
 
-###     MOSTRAR EMPRESAS
 @app.route("/empresas")
 def empresas():
     empresas = cont_emp.obtener_empresa()
@@ -1208,7 +1208,7 @@ def guardar_empresa():
     pais = request.form["pais"]
     distrito = request.form["distrito"]
 
-    if pais == '1':
+    if pais == '24':
         cont_emp.insertar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito)
     else: cont_emp.insertar_empresa_internacional(razonSocial,direccion,ruc,telefono,telefono2,correo,pais)
     return redirect("/empresas")
@@ -1220,27 +1220,28 @@ def editar_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+    if (empresa[9] == None):
+        info = cont_emp.empresa_nacional(empresa[8])
         prov = cont_emp.listar_provincia(info[1])
         dis = cont_emp.listar_distrito(info[2])
         bandera = True
         disable = ''
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
         bandera = False
         disable = 'disabled'
-    return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session["maestra"])
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_empresa/<int:id>")
 def ver_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+    if (empresa[9] == None):
+        info = cont_emp.empresa_nacional(empresa[8])
     else: 
-        info = cont_emp.nombrePais(empresa[8])
+        info = cont_emp.nombrePais(empresa[9])
     return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,  usuario = session['usuario'], maestra="maestra_d_modulo1.html")
 
 @app.route("/actualizar_empresa", methods=["POST"])
@@ -1253,8 +1254,7 @@ def actualizar_empresa():
     telefono2 = request.form["telefono2"]
     correo = request.form["correo"]
     pais = request.form["pais"]
-    distrito = 0
-    if pais == '1':
+    if pais == '24':
         distrito = request.form["distrito"]
         cont_emp.actualizar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito,id)
     else: 
@@ -1299,7 +1299,7 @@ def guardar_iie():
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.insertar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
+        cont_iie.insertar_informe_inicial_empresa("G",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
     if 'btnEnviar' in request.form:
         cont_iie.insertar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
     return redirect("/detalle_practica/"+idPractica)
@@ -1310,13 +1310,17 @@ def editar_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_iie/<int:id>")
 def ver_iie(id):
@@ -1324,38 +1328,49 @@ def ver_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/actualizar_iie", methods=["POST"])
 def actualizar_iie():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
+    iie = cont_iie.buscar_informe_inicial_empresa_id(idPractica)
     urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlAcept)
+    if os.path.splitext(aceptacion.filename)[1] != '':
+        urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+        aceptacion.save(urlAcept)
+    else: urlAcept = iie[1]
 
     firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
-    firma.save(urlFirma)
+    if os.path.splitext(firma.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+        firma.save(urlFirma)
+    else: urlFirma = iie[4]
 
     sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
-    sello.save(urlSello)
+    if os.path.splitext(sello.filename)[1] != '':
+        urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+        sello.save(urlSello)
+    else: urlSello = iie[5]
 
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+        cont_iie.actualizar_informe_inicial_empresa("G",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
     if 'btnEnviar' in request.form:
         cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
     return redirect("/detalle_practica/"+idPractica)
@@ -1367,11 +1382,12 @@ def generar_iie(id):
     infoInforme = cont_iie.buscar_informe_inicial_empresa_id(id)
     labores = []
     labores = cont_iie.desconcat_labores(infoInforme[3])
-    
-    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores)
+    print(infoInforme)
+    img = [request.scheme +'://'+ request.host +'/'+infoInforme[1],request.scheme +'://'+ request.host +'/'+infoInforme[4],request.scheme +'://'+ request.host +'/'+infoInforme[5]]
+
+    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores, img = img)
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
-
 
 #################################################################################
 ##                                  REPORTE                                   ##
@@ -1664,7 +1680,7 @@ def JefeInmediatoID(id):
     usuarioJefe=controlador_jefe_inmediato.obtener_UsuarioJefe(idJefe)
     distritos=cont_localidad.obtener_Distrito()
     empresas=cont_emp.obtener_empresa()
-    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,idJefe=idJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ActualizarJefe", methods=["POST"])
 def ActualizarJefe():
@@ -1677,10 +1693,9 @@ def ActualizarJefe():
     cargo = request.form["cargo"]
     turno = request.form["turno"]
     empresa = request.form["empresa"]
-    usuario = request.form["usuario"]
-    contraseña = request.form["contraseña"]
     distrito = request.form["distrito"]
-    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+    id = request.form["id"]
+    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito,id)
 
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/JefeInmediato")

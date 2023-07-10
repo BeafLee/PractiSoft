@@ -135,8 +135,7 @@
                     <br>
                     <div class="row ">
                         <input type="file" class="form-control col mx-3" id="organigramaImg" name="organigramaImg"
-                            accept="image/jpeg, image/png" required
-                            placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg" {%if data[0]=="Ver"%}disabled{%endif%}>
+                            accept="image/jpeg, image/png" placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg" {%if data[0]=="Ver"%}disabled{%endif%}>
                         {%if data[0]!="Crear"%}
                         <a href="{{url_for('visualizar_ife', idPractica = data[1], filename = data[4][7])}}" class="btn btn-info col-2 me-3"  target="_blank"><i class="bi bi-eye-fill"
                                 style="color: black;"> Visualizar</i></a>
@@ -253,7 +252,7 @@
                     <br>
                     <div class="row ">
                         <input type="file" class="form-control col mx-3" id="anexosPdf" name="anexosPdf"
-                            accept="application/pdf" required {%if data[0]=="Ver"%}disabled{%endif%}>
+                            accept="application/pdf" {%if data[0]=="Ver"%}disabled{%endif%}>
                         {%if data[0]!="Crear"%}
                         <a href="{{url_for('visualizar_ife', idPractica = data[1], filename = data[4][13])}}" class="btn btn-info col-2 me-3" target="_blank"><i class="bi bi-eye-fill"
                                 style="color: black;"> Visualizar</i></a>
@@ -265,7 +264,7 @@
 
             <br>
             <div class="text-center pb-5">
-                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <a href="{{url_for('detalle_practica', id=data[1])}}" class="btn btn-danger">Cancelar</a>
                 {%if data[0]!="Ver"%}
                 <button type="submit" class="btn btn-success">Guardar</button>
                 <button type="submit" class="btn btn-outline-success">Guardar y Enviar</button>

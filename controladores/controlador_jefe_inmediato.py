@@ -13,7 +13,7 @@ def insertar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,t
     conexion = obtener_conexion()
 
     with conexion.cursor() as cursor:
-        cursor.execute("INSERT INTO USUARIO(nomUsuario,contraseña,idTipoU) values(%s,%s,5)",
+        cursor.execute("INSERT INTO USUARIO(nomUsuario,contraseña,idTipoU) values(%s,%s,4)",
                        (usuario,contraseña))
         idUsuario = cursor.lastrowid
         cursor.execute("INSERT INTO JEFE_INMEDIATO(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turnoHorario ,idEmpresa ,idUsuario,idDistrito)values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -30,11 +30,11 @@ def obtener_DetalleJefe(id):
     conexion.close()
     return jefe
 
-def actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito):
+def actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito,ID):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE JEFE_INMEDIATO SET nombre=%s ,apellidos=%s,telefono=%s,telefono2=%s,correo=%s ,correo2=%s ,cargo=%s ,turnoHorario=%s ,idEmpresa=%s ,idDistrito=%s",
-                       (nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito))
+        cursor.execute("UPDATE JEFE_INMEDIATO SET nombre=%s ,apellidos=%s,telefono=%s,telefono2=%s,correo=%s ,correo2=%s ,cargo=%s ,turnoHorario=%s ,idEmpresa=%s ,idDistrito=%s WHERE JEFE_INMEDIATO.idJefe=%s",
+                       (nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito,ID))
     conexion.commit()
     conexion.close()
 
