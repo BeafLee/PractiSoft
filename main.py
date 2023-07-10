@@ -9,6 +9,7 @@ from flask import Flask, flash, request, jsonify, render_template, redirect, ses
 import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
+import controladores.controlador_informe_estudiante as cont_infes
 import controladores.controlador_semestre as cont_sem
 import controladores.controlador_facultad as cont_fac
 import controladores.controlador_escuela as cont_esc
@@ -267,8 +268,14 @@ def guardar_practica():
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
     detalle = cont_dp.listar_detalle_practica(id)
+    informe = cont_infes.obtener_informe_iniciales(id)
+    informe1=cont_infes.obtener_informe_finales(id)
+    informe2=cont_infes.obtener_informe_inicial_em(id)
+    informe3=cont_infes.obtener_informe_final_em(id)
+    informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
-    return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+    tipou=cont_dp.obtener_tipoUsuario(usu[3])
+    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
