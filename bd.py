@@ -5,7 +5,7 @@ def obtener_conexion():
                                 port=3306,
                                 user='root',
                                 password='',
-                                db='proyecto_bytesquad2')
+                                db='proyecto_bytesquad')
 
 # def obtener_conexion():
 #     return pymysql.connect(host='aws.connect.psdb.cloud',
@@ -19,4 +19,3 @@ def obtener_conexion():
 #                                 user='bytesquad',
 #                                 password='bytesquad',
 #                                 db='practisoft_bd')
-

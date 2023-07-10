@@ -105,10 +105,8 @@ def obtener_plane(id):
     return informe
 def eliminar_plan(id):
     conexion = obtener_conexion()
-    informe = []
     with conexion.cursor() as cursor:
         cursor.execute("DELETE FROM plan_trabajo WHERE idInformeInicialEst=%s",(id))
-        informe = cursor.fetchall()
     conexion.commit()
     conexion.close()
 def obtener_informe_finales(id):
@@ -131,7 +129,7 @@ def obtener_informe_desemp(id):
     conexion = obtener_conexion()
     informe = []
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT fechaEntrega,estado from INFORME_DESEMPEÑO where idPractica=%s",(id))
+        cursor.execute("SELECT fechaEntrega,estado,idInformeDesempeño from INFORME_DESEMPEÑO where idPractica=%s",(id))
         informe = cursor.fetchone()
     conexion.close()
     return informe
@@ -153,7 +151,7 @@ def insertar_informe_inicial_estudiante(estado,urlFirmaE, urlFirmaJ, idPractica)
 def modificar_informe_inicial_estudiante(estado,urlFirmaE, urlFirmaJ, idPractica):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE INFORME_INICIAL_ESTUDIANTE set estado=%s, urlFirmaEstudiante=%s, urlFirmaResponsable=%s, where idPractica=%s",
+        cursor.execute("UPDATE INFORME_INICIAL_ESTUDIANTE set estado=%s, urlFirmaEstudiante=%s, urlFirmaResponsable=%s where idPractica=%s",
                        (estado, urlFirmaE,urlFirmaJ, idPractica))
     conexion.commit()
     conexion.close()
