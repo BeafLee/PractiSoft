@@ -199,6 +199,15 @@ def index_j():
     return render_template("/index/index_j.html", usuario = usu, maestra=session['maestra'])
 
 #################################################################################
+##                                  IMÁGENES                                   ##
+#################################################################################
+@app.route('/images/<path:filepath>')
+def get_image(filepath):
+    folder_path, filename = os.path.split(filepath)
+    return send_from_directory(folder_path, filename)
+
+
+#################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
 ###     GESTIONAR PRACTICA
