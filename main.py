@@ -108,28 +108,32 @@ def login():
     usuario = request.form["usuario"]
     contra = request.form["contra"]
 
-    usuario_log = list(cont_ini.verificarUsuario(usu=usuario, contra=contra))
+    usuario_log = cont_ini.verificarUsuario(usu=usuario, contra=contra)
 
     if usuario_log is None:
         return redirect(url_for("iniciarSesion", mostrar='mostrar') )
     elif usuario_log[3] == 1:
-        usuario_log[4] = 'Estudiante'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Estudiante'
+        session['usuario'] = usu
         session['maestra'] = "maestra_e.html"
         return redirect("/index_e")
     elif usuario_log[3] == 2:
-        usuario_log[4] = 'Administrador del sistema'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Administrador del sistema'
+        session['usuario'] = usu
         session['maestra'] = "maestra_a.html"
         return redirect("/index_a")
     elif usuario_log[3] == 3:
-        usuario_log[4] = 'Docente de apoyo'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Docente de apoyo'
+        session['usuario'] = usu
         session['maestra'] = "maestra_d.html"
         return redirect("/index_d")
     elif usuario_log[3] == 4:
-        usuario_log[4] = 'Responsable de la practica'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Responsable de la practica'
+        session['usuario'] = usu
         session['maestra'] = "maestra_j.html"
         return redirect("/index_j")
 
@@ -1115,8 +1119,8 @@ def distrito():
 ###     AGREGAR DISTRITO
 @app.route("/agregar_distrito")
 def agregar_distrito():
-    datos_paises = cont_ubi.datos_paises()
-    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'], paises = datos_paises)
+    #datos_paises = cont_ubi.datos_departamentos(24)
+    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/guardar_distrito", methods=["POST"])
 def guardar_distrito():
