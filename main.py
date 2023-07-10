@@ -45,7 +45,7 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'PractiSoft/static/files'
+UPLOAD_FOLDER = 'static/files/'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 # Get the uploaded files
@@ -303,7 +303,7 @@ def guardar_practica():
         cont_nprac.enviar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
 
-    return redirect("/practicas")
+    return redirect("/practicasE")
 
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
@@ -789,7 +789,7 @@ def generar_informeFinalEstudiante(idPractica):
 #################################################################################
 
 @app.route("/nuevo_ifem/<int:id>")
-def nuevo_iiem(id):
+def nuevo_ifem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
     return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
@@ -798,7 +798,7 @@ def nuevo_iiem(id):
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
 @app.route("/guardar_ifem", methods=["POST"])
-def guardar_iiem():
+def guardar_ifem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
 
@@ -830,7 +830,7 @@ def guardar_iiem():
 
 
 @app.route("/ver_ifem/<int:id>")
-def ver_iiem(id):
+def ver_ifem(id):
     data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
@@ -1393,11 +1393,12 @@ def generar_iie(id):
 ##                                  REPORTE                                   ##
 #################################################################################
 
-@app.route("/reporte1")
+@app.route("/reporte1aa")
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+
 
 #################################################################################
 ##                                DISTRITO                                    ##
