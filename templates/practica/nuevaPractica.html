@@ -1,6 +1,6 @@
 {% extends maestra %}
-{% block titulo %}AGREGAR PRÁCTICA {% endblock %}
-{% block subtitul %}AGREGAR PRÁCTICA {% endblock %}
+{% block titulo %}Agregar práctica{% endblock %}
+{% block subtitul %}Agregar práctica{% endblock %}
 {% block recursos %}
 <link rel="stylesheet" href="{{url_for('static',filename='styles/nuevaPractica.css') }}">
 <script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
@@ -192,12 +192,12 @@
       <button id="btnCancelar">
         <a href="{{url_for('practicas')}}">Cancelar</a>
       </button>
-      <button id="btnRegistrar" name="action" type="submit" value="Guardar">
+      <button id="btnRegistrar" name="action" type="submit" value="guardar">
 
         Guardar
 
       </button>
-      <button id="btnRegistrarEnviar" name="action" type="submit" value="Enviar">
+      <button id="btnRegistrarEnviar" name="action" type="submit" value="guardar_nviar">
 
         Guardar y Enviar
 
