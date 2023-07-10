@@ -618,8 +618,6 @@ def editarInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-    print(conclusiones)
-    print(recomendaciones)
 
     data = ["Editar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Editar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
@@ -672,20 +670,18 @@ def guardar_informeFinalEstudiante():
     anexosPdf.save(urlBase + "/" + urlAnexos)
 
     estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
     cont_inf_final_est.insertar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/actualizar_informeFinalEstudiante", methods=["POST"])
 def actualizar_informeFinalEstudiante():
-    
     idPractica = request.form["idPractica"]
+
+    infoData = cont_inf_final_est.buscar_id(idPractica)
     idInforme = request.form["idInforme"]
     introduccion = request.form["introduccion"]
     giro = request.form["giro"]
@@ -701,8 +697,11 @@ def actualizar_informeFinalEstudiante():
         os.makedirs(urlBase)
 
     organigramaImg = request.files["organigramaImg"]
-    urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
-    organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    urlOrganigrama = ''
+    if os.path.splitext(organigramaImg.filename)[1] != '':
+        urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
+        organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    else: urlOrganigrama = infoData[9]
 
     descAreaTrabajo = request.form["descAreaTrabajo"]
     descLabores = request.form["descLabores"]
@@ -711,20 +710,20 @@ def actualizar_informeFinalEstudiante():
     bibliografia = request.form["bibliografia"]
 
     anexosPdf = request.files["anexosPdf"]
-    urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
-    anexosPdf.save(urlBase + "/" + urlAnexos)
+    urlAnexos = ''
+    if os.path.splitext(anexosPdf.filename)[1] != '':
+        urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
+        anexosPdf.save(urlBase + "/" + urlAnexos)
+    else: urlAnexos = infoData[20]
 
     estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
 
     cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica, idInforme)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 
 @app.route("/visualizar_ife/<int:idPractica>/<string:filename>")
@@ -743,14 +742,6 @@ def descargar_pdf(filename, idPractica):
         return send_file(url, as_attachment=True)
     return None
 
-@app.route("/prueba")
-def prueba():
-    data = ["Carlos Chung", "Empresa 1", "Direccion 1", 1, "texto de la introduccion", "A", "20/10/2023", "texto de la infra fisica", "texto de la infra tecnologica", "organigrama.png", "descripcion del area relaciones", "descripcion de labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "bibliografia \nreferencia1 \nreferencia 2", "giro de la empresa", "representante legal de la empresa", 20, "vision", "mision", "anexos.pdf", 'observacion hecho por el docente', 1]
-
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-
-    return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
-
 @app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
@@ -765,7 +756,7 @@ def generar_informeFinalEstudiante(idPractica):
     data[13] = data[13].split(separadorText)
     
     urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
-    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/' + data[9]
     print(urlLogo)
     print(urlOrganigrama)
     
