@@ -205,10 +205,22 @@ def practicas():
     practica = cont_prac.obtener_practica()
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/actualizar_practica/<int:id>", methods=["POST"])
+def actualizar_practica(id):
+   # modalidad=request.form[""]
+    fechaI=request.form["feI"]
+    fechaF=request.form["feF"]
+    horas=request.form["hPrac"]
+    fechaL=request.form["feLim"]
+    cont_nprac.actualizar_practica(fechaI,fechaF,horas,fechaL,id)
+    return redirect("/practicas")
+
 @app.route("/practicasE")
 def practicasE():
     usu=session['usuario']
-    idE=usu[0]
+    idU=usu[0]
+    estudiante=cont_prac.obtener_EstudianteUs(idU)
+    idE=estudiante[0]
     practica = cont_prac.obtener_practicaE(idE)
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 ###     AGREGAR PRACTICA

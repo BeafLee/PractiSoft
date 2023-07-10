@@ -33,14 +33,11 @@
       <tr class="headTable">
         <th>Codigo Universitario</th>
         <th>Estudiante</th>
-        <th>Empresa</th>
-       
-        
+        <th>Empresa</th>       
         <th>Horas practicas</th>
-        <th>Estado</th>
-        
+        <th>Estado Practica</th>       
         <th>Modalidad</th>
-        
+        <th>Estado Envio</th>       
         <th>Ver Detalle</th>
         <th>Editar</th>
       </tr>
@@ -57,7 +54,7 @@
         <td>{{practica[7]}}</td>
        
         <td>{{practica[9]}}</td>
-        
+        <td>{{practica[12]}}</td>
         <td><a href="{{url_for('detalle_practica', id=practica[0])}}"><i class="bi bi-eye-fill"></i></a></td>
         <td class="editar">
           {% if practica[12] == 'G' %}
