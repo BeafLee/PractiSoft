@@ -317,7 +317,7 @@ def detalle_practica(id):
     informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
     tipou=cont_dp.obtener_tipoUsuario(usu[3])
-    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
+    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
