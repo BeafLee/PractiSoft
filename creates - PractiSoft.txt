@@ -21,7 +21,8 @@ CREATE TABLE PERSONAL (
   direccion  varchar(50) NOT NULL, 
   idEscuela  int(2) NOT NULL, 
   idUsuario  int(2) NOT NULL, 
-  idDistrito int(2) NOT NULL, 
+  idDistrito int(2), 
+  idPais     int(2), 
   PRIMARY KEY (idPersonal));
 CREATE TABLE ESCUELA (
   idEscuela   int(2) NOT NULL AUTO_INCREMENT, 
@@ -86,7 +87,8 @@ CREATE TABLE ESTUDIANTE (
   estado         char(1) NOT NULL, 
   idPlanEs       int(2) NOT NULL, 
   idUsuario      int(2) NOT NULL, 
-  idDistrito     int(2) NOT NULL, 
+  idDistrito     int(2), 
+  idPais         int(2), 
   PRIMARY KEY (idEstudiante));
 CREATE TABLE PLAN_ESTUDIO (
   idPlanEs  int(2) NOT NULL AUTO_INCREMENT, 
@@ -106,7 +108,8 @@ CREATE TABLE JEFE_INMEDIATO (
   turnoHorario varchar(255), 
   idEmpresa    int(2) NOT NULL, 
   idUsuario    int(2) NOT NULL, 
-  idDistrito   int(2) NOT NULL, 
+  idDistrito   int(2), 
+  idPais       int(2), 
   PRIMARY KEY (idJefe));
 CREATE TABLE EMPRESA (
   idEmpresa   int(2) NOT NULL AUTO_INCREMENT, 
@@ -117,7 +120,8 @@ CREATE TABLE EMPRESA (
   telefono2   varchar(20), 
   correo      varchar(50) NOT NULL, 
   estado      char(1) NOT NULL, 
-  idDistrito  int(2) NOT NULL, 
+  idDistrito  int(2), 
+  idPais      int(2), 
   PRIMARY KEY (idEmpresa));
 CREATE TABLE LINEA_DESARROLLO (
   idLinea     int(2) NOT NULL AUTO_INCREMENT, 
@@ -126,7 +130,7 @@ CREATE TABLE LINEA_DESARROLLO (
   PRIMARY KEY (idLinea));
 CREATE TABLE SEMESTRE (
   idSemestre int(2) NOT NULL AUTO_INCREMENT, 
-  nombreSe   varchar(9) NOT NULL, 
+  nombreSe   varchar(8) NOT NULL, 
   fechaI     date NOT NULL, 
   fechaF     date NOT NULL, 
   estado     char(1) NOT NULL, 
@@ -270,3 +274,7 @@ ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL178500 FOREIGN KEY (idDistrito) RE
 ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE570669 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
 ALTER TABLE EMPRESA ADD CONSTRAINT FKEMPRESA82584 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
 ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED599232 FOREIGN KEY (idDistrito) REFERENCES DISTRITO (idDistrito);
+ALTER TABLE JEFE_INMEDIATO ADD CONSTRAINT FKJEFE_INMED866755 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE PERSONAL ADD CONSTRAINT FKPERSONAL910976 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE EMPRESA ADD CONSTRAINT FKEMPRESA350107 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
+ALTER TABLE ESTUDIANTE ADD CONSTRAINT FKESTUDIANTE668444 FOREIGN KEY (idPais) REFERENCES PAIS (idPais);
