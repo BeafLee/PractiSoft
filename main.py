@@ -763,7 +763,7 @@ def daralta_estudiante(id):
 def empresas():
     empresas = cont_emp.obtener_empresa()
     usu = session['usuario']
-    return render_template("/empresa/listarEmpresa.html", usuario = usu, maestra=session['maestra'], empresas = empresas)
+    return render_template("/empresa/listarEmpresa.html", usuario = usu,maestra=session['maestra'], empresas = empresas)
 
 
 
@@ -772,7 +772,7 @@ def empresas():
 def empresas_nombre():
     razonSocial = request.form["razonSocial"]
     empresas = cont_emp.buscar_empresa(razonSocial)
-    return render_template("/empresa/ListaEmpresa.html", empresas = empresas, maestra=session['maestra'], editEmpresa = None)
+    return render_template("/empresa/ListaEmpresa.html", empresas = empresas, editEmpresa = None)
 
 
 ###     AGREGAR EMPRESA
@@ -780,7 +780,7 @@ def empresas_nombre():
 def agregar_empresa():
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
-    return render_template("/empresa/nuevaEmpresa.html", paises = paises, dep = dep,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/empresa/nuevaEmpresa.html", paises = paises, dep = dep,maestra=session['maestra'],  usuario = session['usuario'])
 
 @app.route("/buscar_prov_dep", methods=["GET"])
 def buscar_prov_dep():
@@ -806,7 +806,7 @@ def guardar_empresa():
     pais = request.form["pais"]
     distrito = request.form["distrito"]
 
-    if pais == '1':
+    if pais == '24':
         cont_emp.insertar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito)
     else: cont_emp.insertar_empresa_internacional(razonSocial,direccion,ruc,telefono,telefono2,correo,pais)
     return redirect("/empresas")
@@ -816,19 +816,21 @@ def guardar_empresa():
 @app.route("/editar_empresa/<int:id>")
 def editar_empresa(id):
     empresa = cont_emp.buscar_empresa_id(id)
+    print(empresa,'|||||||||||||||||||||||||||||||||||')
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
     if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+        info = cont_emp.empresa_nacional(empresa[9])
         prov = cont_emp.listar_provincia(info[1])
         dis = cont_emp.listar_distrito(info[2])
         bandera = True
         disable = ''
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,maestra=session['maestra'],  usuario = session['usuario'])
     else: 
         info = cont_emp.nombrePais(empresa[8])
         bandera = False
         disable = 'disabled'
-    return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,maestra=session['maestra'],  usuario = session['usuario'])
 
 @app.route("/ver_empresa/<int:id>")
 def ver_empresa(id):
@@ -836,10 +838,11 @@ def ver_empresa(id):
     paises = cont_emp.listar_pais()
     dep = cont_emp.listar_departamento()
     if (empresa[8] == None):
-        info = cont_emp.empresa_nacional(empresa[7])
+        print(empresa[9],'|||||||||||||||||||||||||4789131348279|||||||||||||||||||')
+        info = cont_emp.empresa_nacional(empresa[9])
     else: 
         info = cont_emp.nombrePais(empresa[8])
-    return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,maestra=session['maestra'],  usuario = session['usuario'])
 
 @app.route("/actualizar_empresa", methods=["POST"])
 def actualizar_empresa():
@@ -852,7 +855,7 @@ def actualizar_empresa():
     correo = request.form["correo"]
     pais = request.form["pais"]
     distrito = 0
-    if pais == '1':
+    if pais == '24':
         distrito = request.form["distrito"]
         cont_emp.actualizar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito,id)
     else: 
@@ -965,11 +968,15 @@ def generar_iie(id):
     infoInforme = cont_iie.buscar_informe_inicial_empresa_id(id)
     labores = []
     labores = cont_iie.desconcat_labores(infoInforme[3])
-    
-    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores)
+    img = ['http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/aceptacion.jpeg','http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/sello.jpeg','http://127.0.0.1:8000/images/practica/'+str(id)+'/informe/inicial_empresa/firma.jpeg']
+
+    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores, img = img)
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
+@app.route('/images/<filename>')
+def get_image(filename):
+    return send_from_directory('images', filename)
 
 #################################################################################
 ##                                  REPORTE                                   ##
