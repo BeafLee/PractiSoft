@@ -1,6 +1,6 @@
 {% extends maestra %}
-{% block titulo %}Gestionar Practica {% endblock %}
-{% block subtitul %}Gestionar Practica {% endblock %}
+{% block titulo %}Gestionar práctica{% endblock %}
+{% block subtitul %}Gestionar práctica{% endblock %}
 {% block recursos %}
 <link rel="stylesheet" href="{{url_for('static',filename='styles/icon-btn.css') }}">
 <link rel="stylesheet" href="{{url_for('static',filename='styles/listarPractica.css') }}">
@@ -33,14 +33,11 @@
       <tr class="headTable">
         <th>Codigo Universitario</th>
         <th>Estudiante</th>
-        <th>Empresa</th>
-       
-        
+        <th>Empresa</th>       
         <th>Horas practicas</th>
-        <th>Estado</th>
-        
+        <th>Estado Practica</th>       
         <th>Modalidad</th>
-        
+        <th>Estado Envio</th>       
         <th>Ver Detalle</th>
         <th>Editar</th>
       </tr>
@@ -57,9 +54,15 @@
         <td>{{practica[7]}}</td>
        
         <td>{{practica[9]}}</td>
-        
+        <td>{{practica[12]}}</td>
         <td><a href="{{url_for('detalle_practica', id=practica[0])}}"><i class="bi bi-eye-fill"></i></a></td>
-        <td class="editar"><a href="{{url_for('editar_Practica', id=practica[0])}}"><i class="bi bi-pencil-fill"></i></a></td>
+        <td class="editar">
+          {% if practica[12] == 'G' %}
+            <a href="{{url_for('editar_Practica', id=practica[0])}}"><i class="bi bi-pencil-fill"></i></a>
+          {% else %}
+            <a href="#"><i class="bi bi-x-circle-fill"></i></a>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </table>

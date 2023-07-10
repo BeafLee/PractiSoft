@@ -29,11 +29,7 @@
         <div class="mb-3 row">
           <label class="col-4 col-form-label">País</label>
           <div class="col-7">
-            <select id="select_pais" name="pais" class="form-select" aria-label="Default select example">
-              {% for pais in paises %}
-              <option value="{{pais[0]}}" {% if data[2]==pais[0] %}selected{% endif %}>{{pais[1]}}</option>
-              {% endfor %}
-            </select>
+            <input type="text" class="form-control" disabled name="pais" value="Perú">
           </div>
           <div class="col-1 m-0 p-0">
             <a href="{{url_for('pais')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill"
@@ -90,39 +86,13 @@
     var inputProvincia = $('#input_provincia');
     var botonRegistrar = $('#btnRegistrar');
 
-    // Manejar el cambio en el select de país
-    selectPais.change(function () {
-      var paisSeleccionado = $(this).val();
-
-      // Limpiar y desactivar los selects y el input de distrito
-      selectDepartamento.empty().prop('disabled', true);
-      inputProvincia.val('').prop('disabled', false);
-
-      // Habilitar el select de departamento si se seleccionó un país
-      if (paisSeleccionado) {
-        selectDepartamento.prop('disabled', false);
-      }
-
-      // Realizar la solicitud AJAX para obtener los departamentos según el país seleccionado
-      $.ajax({
-        url: '/obtener_departamentos',
-        type: 'GET',
-        data: { pais: paisSeleccionado },
-        success: function (response) {
-          // Actualizar las opciones del select de departamento con los datos recibidos
-          $.each(response.departamentos, function (index, departamento) {
-            selectDepartamento.append($('<option>').text(departamento[1]).val(departamento[0]));
-          });
-        }
-      });
-    });
 
     // Manejar el cambio en el select de departamento
     selectDepartamento.change(function () {
       var departamentoSeleccionado = $(this).val();
 
       // Limpiar y desactivar los selects y el input de distrito
-      inputProvincia.val('').prop('disabled', false);
+      inputProvincia.prop('disabled', false);
 
       // Habilitar el select de provincia si se seleccionó un departamento
       if (departamentoSeleccionado) {

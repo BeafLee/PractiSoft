@@ -1,10 +1,14 @@
-{% extends maestra %}
+{% extends "maestra.html" %}
 {% block titulo %}DETALLE PRÁCTICA {% endblock %}
 {% block subtitul %}DETALLE PRÁCTICA {% endblock %}
 {% block recursos %}
-<link rel="stylesheet" href="{{url_for('static',filename='styles/icon-btn.css') }}">
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarSemestre.css') }}">
 <link rel="stylesheet" href="{{url_for('static',filename='styles/listarDetallePractica.css') }}">
-
+<style>
+  .oculto {
+    display: none;
+  }
+</style>
 {% endblock %}
 {% block contenido %}
 
@@ -87,69 +91,182 @@
       <div class="table p-5">
         <table class="table table-light table-hover border" id="tabla">
           <thead>
-            <tr class="container text-center">
-              <th scope="col align-items-center">Informe</th>
-              <th scope="col align-items-center">Fecha Entrega</th>
-              <th scope="col align-items-center">Estado</th>
-              <th scope="col align-items-center">Editar</th>
-              <th scope="col align-items-center">Ver</th>
-              <th scope="col align-items-center" id="estado1">Descargar</th>
+
+            <tr class="container">
+              <th scope="col">Informe</th>
+              <th scope="col">Fecha Entrega</th>
+              <th scope="col">Estado</th>
+              <th colspan="3" scope="col">Operaciones</th>
             </tr>
           </thead>
           <tbody id="tabla">
-
-            <tr class="container text-center">
-
-              <td scope="row align-items-center" id="fecha1"></td>
-              <td scope="row align-items-center" id="fecha2"></td>
-              <td scope="row align-items-center" id="estado"></td>
-              <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img
-                    style="width: 30px; height: 30px;" src="{{url_for('static', filename='lapiz-rojo.png')}}"
-                    alt=""></button></td>
-              <td scope="row align-items-center">
-                <button style="border: none;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                  onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
-                    src="{{url_for('static', filename='icons8-documento-regular-30.png')}}" alt=""></button>
-
-              </td>
-              <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img
-                    style="width: 30px; height: 30px;" src="{{url_for('static', filename='descargar.png')}}"
-                    alt=""></button></td>
-
-              <td scope="row align-items-center">
-                <input type="hidden" name="id" value="1">
-
-              </td>
+            {% if informe %}
+            {% if informe[1]=="G"%}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Estudiante</td>
+              <td scope="row" id="fecha2">{{informe[0]}}</td>
+              <td scope="row" id="estado">{{informe[1]}}</td>
+              <td scope="row">{% if tipou[0]=="E" %}<a href="#"><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><i
+                    class="bi bi-arrow-down"></i></a></td>
             </tr>
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Estudiante</td>
+              <td scope="row" id="fecha2">{{informe[0]}}</td>
+              <td scope="row" id="estado">{{informe[1]}}</td>
+              <td scope="row"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><i
+                    class="bi bi-arrow-down"></i></a></td>
 
-            <tr class="container text-center">
-
-              <td scope="row align-items-center" id="fecha1"></td>
-              <td scope="row align-items-center" id="fecha2"></td>
-              <td scope="row align-items-center" id="estado"></td>
-              <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img
-                    style="width: 30px; height: 30px;" src="{{url_for('static', filename='lapiz-rojo.png')}}"
-                    alt=""></button></td>
-              <td scope="row align-items-center">
-                <button style="border: none;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                  onclick="enviar_modal('1')"><img style="width: 30px; height: 30px;"
-                    src="{{url_for('static', filename='icons8-documento-regular-30.png')}}" alt=""></button>
-
-              </td>
-              <td scope="row align-items-center"><button style="border: none;" type="button" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal1" type="button" onclick="enviar_modal('1')"><img
-                    style="width: 30px; height: 30px;" src="{{url_for('static', filename='descargar.png')}}"
-                    alt=""></button></td>
-
-              <td scope="row align-items-center">
-                <input type="hidden" name="id" value="1">
-
-              </td>
             </tr>
+            {% endif %}
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Estudiante</td>
+              <td scope="row" id="fecha2">-----</td>
+              <td scope="row" id="estado">-----</td>
+              <td colspan="3" scope="row">{% if tipou[0]=="E" %}<a
+                  href="{{url_for('agregarInformeInicialEstudiante', id=detalle[15])}}"><i
+                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
 
+            </tr>
+            {% endif %}
+            {% if informe1 %}
+            {% if informe1[1]=="G"%}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Estudiante</td>
+              <td scope="row" id="fecha2">{{informe1[0]}}</td>
+              <td scope="row" id="estado">{{informe1[1]}}</td>
+              <td scope="row">{% if tipou[0]=="E" %}<a href="#"><i class="bi bi-pencil-fill"><!-- Link Para editar final estudiante --></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver final estudiante --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar final estudiante --><i
+                    class="bi bi-arrow-down"></i></a></td>
+
+            </tr>
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Estudiante</td>
+              <td scope="row" id="fecha2">{{informe1[0]}}</td>
+              <td scope="row" id="estado">{{informe1[1]}}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver final estudiante --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar final estudiante --><i
+                    class="bi bi-arrow-down"></i></a></td>
+            </tr>
+            {% endif %}
+            
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Estudiante</td>
+              <td scope="row" id="fecha2">-----</td>
+              <td scope="row" id="estado">-----</td>
+              <td colspan="3" scope="row">{% if tipou[0]=="E" %}<a
+                  href="#"><!-- Link Para agregar final estudiante --><i
+                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
+
+            </tr>
+            {% endif %}
+            {% if informe2 %}
+            {% if informe2[1]=="G"%}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Empresa</td>
+              <td scope="row" id="fecha2">{{informe2[0]}}</td>
+              <td scope="row" id="estado">{{informe2[1]}}</td>
+              <td scope="row">{% if tipou[0]=="J" %}<a href="#"><!-- Link Para editar inicial empresa --><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver inicial empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar inicial empresa --><i
+                    class="bi bi-arrow-down"></i></a></td>
+
+            </tr>
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Empresa</td>
+              <td scope="row" id="fecha2">{{informe2[0]}}</td>
+              <td scope="row" id="estado">{{informe2[1]}}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver inicial empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar inicial empresa --><i
+                    class="bi bi-arrow-down"></i></a></td>
+            </tr>
+            {% endif %}
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Inicial Empresa</td>
+              <td scope="row" id="fecha2">-----</td>
+              <td scope="row" id="estado">-----</td>
+              <td colspan="3" scope="row">{% if tipou[0]=="J" %}<a
+                  href="#"><!-- Link Para agregar inicial empresa --><i
+                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
+
+            </tr>
+            {% endif %}
+            {% if informe3 %}
+            {% if informe3[1]=="G"%}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Empresa</td>
+              <td scope="row" id="fecha2">{{informe3[0]}}</td>
+              <td scope="row" id="estado">{{informe3[1]}}</td>
+              <td scope="row"><a href="#">{% if tipou[0]=="J" %}<i class="bi bi-pencil-fill"><!-- Link Para editar final empresa --></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descagar final empresa --><i
+                    class="bi bi-arrow-down"></i></a></td>
+
+            </tr>
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Empresa</td>
+              <td scope="row" id="fecha2">{{informe3[0]}}</td>
+              <td scope="row" id="estado">{{informe3[1]}}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver final empresa --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descagar final empresa --><i
+                    class="bi bi-arrow-down"></i></a></td>
+            </tr>
+            {% endif %}
+            
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Final Empresa</td>
+              <td scope="row" id="fecha2">-----</td>
+              <td scope="row" id="estado">-----</td>
+              <td colspan="3" scope="row">{% if tipou[0]=="J" %}<a
+                  href="#"><!-- Link Para agregar final empresa --><i
+                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
+
+            </tr>
+            {% endif %}
+            {% if informe4 %}
+            {% if informe4[1]=="G"%}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Desempeño</td>
+              <td scope="row" id="fecha2">{{informe4[0]}}</td>
+              <td scope="row" id="estado">{{informe4[1]}}</td>
+              <td scope="row">{% if tipou[0]=="J" %}<a href="#"><!-- Link Para editar desempeño --><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
+              <td scope="row"><a href="#"><!-- Link Para ver desempeño --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar desempeño --><i
+                    class="bi bi-arrow-down"></i></a></td>
+
+            </tr>
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Desempeño</td>
+              <td scope="row" id="fecha2">{{informe4[0]}}</td>
+              <td scope="row" id="estado">{{informe4[1]}}</td>
+              <td scope="row"><a href="#"><i class="bi bi-eye-fill"><!-- Link Para ver desempeño --></i></a></td>
+              <td scope="row"><a href="#"><!-- Link Para descargar desempeño --><i
+                    class="bi bi-arrow-down"></i></a></td>
+            </tr>
+            {% endif %}
+            {% else %}
+            <tr class="container">
+              <td scope="row" id="fecha1">Informe Desempeño</td>
+              <td scope="row" id="fecha2">-----</td>
+              <td scope="row" id="estado">-----</td>
+              <td colspan="3" scope="row">{% if tipou[0]=="J" %}<a
+                  href="#"><!-- Link Para agregar desempeño --><i         
+                    class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
+                    
+            </tr>
+            {% endif %}
           </tbody>
         </table>
       </div>

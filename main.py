@@ -9,6 +9,7 @@ from flask import Flask, flash, request, jsonify, render_template, redirect, ses
 import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
+import controladores.controlador_informe_estudiante as cont_infes
 import controladores.controlador_semestre as cont_sem
 import controladores.controlador_facultad as cont_fac
 import controladores.controlador_escuela as cont_esc
@@ -85,34 +86,54 @@ def graficoCajan():
         datos[nombre] = cantidad
     return render_template("/reportes/grafico.html",datos=datos,lineasPracticas=lineasPracticas,maestra=session['maestra'],usuario=session['usuario'])
 
+@app.route('/reporte1')
+def reporte1():   
+    practicasC=controladorGrafico.obtener_reporte1()
+    datos = {}
+    for nombre, cantidad in practicasC:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte1.html",datos=datos,practicasC=practicasC,maestra=session['maestra'],usuario=session['usuario'])
+
+@app.route('/reporte2')
+def reporte2():   
+    practicasA=controladorGrafico.obtener_reporte2()
+    datos = {}
+    for nombre, cantidad in practicasA:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte2.html",datos=datos,practicasA=practicasA,maestra=session['maestra'],usuario=session['usuario'])
+
 
 @app.route('/login', methods=["POST"])
 def login():
     usuario = request.form["usuario"]
     contra = request.form["contra"]
 
-    usuario_log = list(cont_ini.verificarUsuario(usu=usuario, contra=contra))
+    usuario_log = cont_ini.verificarUsuario(usu=usuario, contra=contra)
 
     if usuario_log is None:
         return redirect(url_for("iniciarSesion", mostrar='mostrar') )
     elif usuario_log[3] == 1:
-        usuario_log[4] = 'Estudiante'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Estudiante'
+        session['usuario'] = usu
         session['maestra'] = "maestra_e.html"
         return redirect("/index_e")
     elif usuario_log[3] == 2:
-        usuario_log[4] = 'Administrador del sistema'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Administrador del sistema'
+        session['usuario'] = usu
         session['maestra'] = "maestra_a.html"
         return redirect("/index_a")
     elif usuario_log[3] == 3:
-        usuario_log[4] = 'Docente de apoyo'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Docente de apoyo'
+        session['usuario'] = usu
         session['maestra'] = "maestra_d.html"
         return redirect("/index_d")
     elif usuario_log[3] == 4:
-        usuario_log[4] = 'Responsable de la practica'
-        session['usuario'] = usuario_log
+        usu = list(usuario_log)
+        usu[4] = 'Responsable de la practica'
+        session['usuario'] = usu
         session['maestra'] = "maestra_j.html"
         return redirect("/index_j")
 
@@ -199,6 +220,15 @@ def index_j():
     return render_template("/index/index_j.html", usuario = usu, maestra=session['maestra'])
 
 #################################################################################
+##                                  IMÁGENES                                   ##
+#################################################################################
+@app.route('/images/<path:filepath>')
+def get_image(filepath):
+    folder_path, filename = os.path.split(filepath)
+    return send_from_directory(folder_path, filename)
+
+
+#################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
 ###     GESTIONAR PRACTICA
@@ -207,10 +237,22 @@ def practicas():
     practica = cont_prac.obtener_practica()
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/actualizar_practica/<int:id>", methods=["POST"])
+def actualizar_practica(id):
+   # modalidad=request.form[""]
+    fechaI=request.form["feI"]
+    fechaF=request.form["feF"]
+    horas=request.form["hPrac"]
+    fechaL=request.form["feLim"]
+    cont_nprac.actualizar_practica(fechaI,fechaF,horas,fechaL,id)
+    return redirect("/practicas")
+
 @app.route("/practicasE")
 def practicasE():
     usu=session['usuario']
-    idE=usu[0]
+    idU=usu[0]
+    estudiante=cont_prac.obtener_EstudianteUs(idU)
+    idE=estudiante[0]
     practica = cont_prac.obtener_practicaE(idE)
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
 ###     AGREGAR PRACTICA
@@ -233,6 +275,7 @@ def buscar_empresa_datos():
 
 @app.route("/guardar_practica", methods=["POST"])
 def guardar_practica():
+    
     usu = session['usuario']
     feI = request.form["feI"]
     feF = request.form["feF"]
@@ -258,8 +301,14 @@ def guardar_practica():
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
     detalle = cont_dp.listar_detalle_practica(id)
+    informe = cont_infes.obtener_informe_iniciales(id)
+    informe1=cont_infes.obtener_informe_finales(id)
+    informe2=cont_infes.obtener_informe_inicial_em(id)
+    informe3=cont_infes.obtener_informe_final_em(id)
+    informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
-    return render_template("/practica/detalle_practica.html", usuario = usu, maestra=session['maestra'], detalle = detalle)
+    tipou=cont_dp.obtener_tipoUsuario(usu[3])
+    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -465,6 +514,7 @@ def prueba():
 
     return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
 
+@app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
     data = list(cont_inf_final_est.buscar_id(idPractica))
@@ -476,14 +526,19 @@ def generar_informeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     data[12] = data[12].split(separadorText)
     data[13] = data[13].split(separadorText)
-      
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': data[9],'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
+    
+    urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    print(urlLogo)
+    print(urlOrganigrama)
+    
+    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6], 'logo': urlLogo}
+    context_contenido = {'introduccion': data[4],'razon_social': data[1],'direccion': data[2],'giro_institucion': data[15],'representante_legal': data[16],'cantidad_trabajadores': data[17],'vision': data[18],'mision': data[19],'infra_fisica': data[7],'infra_tecno': data[8],'organigrama': urlOrganigrama,'desc_area': data[10],'desc_labores': data[11],'conclusiones': data[12],'recomendaciones': data[13],'bibliografia': data[14]}
 
     #Generamos la caratula para el informe
     output_text_caratula = render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
     output_pdf_caratula = 'static/practica/' + str(idPractica) + '/informe/final_estudiante/caratula.pdf'
-    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": ""})
+    pdfkit.from_string(output_text_caratula, output_pdf_caratula, configuration=config, options={"enable-local-file-access": "", 'encoding': 'UTF-8'})
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_estudiante/contenido.html", context = context_contenido)
@@ -682,13 +737,12 @@ def eliminar_semestre(id):
 
 @app.route("/facultades")
 def facultades():
-    facultades = cont_fac.obtener_facultad()
-    usu = session['usuario']
-    #print("Datos:",usu)
-    return render_template("/facultad/listarFacultad.html", usuario = usu, maestra="maestra_d_modulo2.html", facultades = facultades)
-
-
-
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        facultades = cont_fac.obtener_facultad()
+        usu = session['usuario']
+        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra=session['maestra'], facultades = facultades)
+    else:
+        return redirect('/index_supremo')
 
 
 ###     AGREGAR FACULTAD
@@ -743,8 +797,12 @@ def daralta_facultad(id):
 ###     ELIMINAR FACULTAD
 @app.route("/eliminar_facultad/<int:id>")
 def eliminar_facultad(id):
-    cont_fac.eliminar_facultad(id)
-    return redirect("/facultades")
+    try:
+        cont_fac.eliminar_facultad(id)
+        return redirect("/facultades")
+    except Exception as e:
+        
+        return render_template('error2.html', error_message=str(e))
 
 
 
@@ -755,10 +813,13 @@ def eliminar_facultad(id):
 
 @app.route("/escuelas")
 def escuelas():
-    escuelas = cont_esc.obtener_escuela()
-    usu = session['usuario']
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        escuelas = cont_esc.obtener_escuela()
+        usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/escuela/listarEscuela.html", usuario = usu, maestra="maestra_d_modulo2.html", escuelas = escuelas)
+        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra=session['maestra'], escuelas = escuelas)
+    else:
+        return redirect('/index_supremo')
 
 
 
@@ -827,8 +888,12 @@ def daralta_escuela(id):
 ###     ELIMINAR ESCUELA
 @app.route("/eliminar_escuela/<int:id>")
 def eliminar_escuela(id):
-    cont_esc.eliminar_escuela(id)
-    return redirect("/escuelas")
+    try:
+        cont_esc.eliminar_escuela(id)
+        return redirect("/escuelas")
+    except Exception as e:
+        
+        return render_template('error.html', error_message=str(e))
 
 
 #################################################################################
@@ -838,20 +903,22 @@ def eliminar_escuela(id):
 ###     MOSTRAR ESTUDIANTES
 @app.route("/estudiantes")
 def estudiantes():
-    estudiantes = cont_est.obtener_estudiante()
-    usu = session['usuario']
+    if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
+        estudiantes = cont_est.obtener_estudiante()
+        usu = session['usuario']
     #print("Datos:",usu)
-    return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra="maestra_d_modulo2.html", estudiantes = estudiantes,error_statement="")
+        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
+    else:
+        return redirect('/index_supremo')
 
 
-
-###     DAR DE BAJA ESCUELA
+###     DAR DE BAJA ESTUDIANTE
 @app.route("/darbaja_estudiante/<int:id>")
 def darbaja_estudiante(id):
     cont_est.dar_baja(id)
     return redirect("/estudiantes")
 
-###     DAR DE ALTA ESCUELA
+###     DAR DE ALTA ESTUDIANTE
 @app.route("/daralta_estudiante/<int:id>")
 def daralta_estudiante(id):
     cont_est.dar_alta(id)
@@ -1097,14 +1164,14 @@ def distrito():
         ubicaciones = cont_ubi.listar_distritos()
         return render_template("/ubicacion/distrito/listarDistritos.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", ubicaciones = ubicaciones)
     else:
-        return redirect('/')
+        return redirect('/index_supremo')
 
 
 ###     AGREGAR DISTRITO
 @app.route("/agregar_distrito")
 def agregar_distrito():
-    datos_paises = cont_ubi.datos_paises()
-    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html", paises = datos_paises)
+    #datos_paises = cont_ubi.datos_departamentos(24)
+    return render_template("/ubicacion/distrito/nuevoDistrito.html", usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/guardar_distrito", methods=["POST"])
 def guardar_distrito():
@@ -1360,7 +1427,33 @@ def guardarJefe():
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/JefeInmediato")
 
+@app.route("/JefeInmediatoID/<int:id>")
+def JefeInmediatoID(id):
+    jefes = controlador_jefe_inmediato.obtener_DetalleJefeID(id)
+    idJefe=jefes[0][10]
+    usuarioJefe=controlador_jefe_inmediato.obtener_UsuarioJefe(idJefe)
+    distritos=cont_localidad.obtener_Distrito()
+    empresas=cont_emp.obtener_empresa()
+    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/ActualizarJefe", methods=["POST"])
+def ActualizarJefe():
+    nombre = request.form["nombre"]
+    apellidos = request.form["apellidos"]
+    telefono = request.form["telefono"]
+    telefono2 = request.form["telefono2"]
+    correo = request.form["correo"]
+    correo2 = request.form["correo2"]
+    cargo = request.form["cargo"]
+    turno = request.form["turno"]
+    empresa = request.form["empresa"]
+    usuario = request.form["usuario"]
+    contraseña = request.form["contraseña"]
+    distrito = request.form["distrito"]
+    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+
+    # De cualquier modo, y si todo fue bien, redireccionar
+    return redirect("/JefeInmediato")
 # Iniciar el servidor
 if __name__ == "__main__":
     #app.secret_key = 'ByteSquad S.A.C. - PRACTISOFT'

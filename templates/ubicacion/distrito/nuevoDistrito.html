@@ -28,28 +28,26 @@
         <div class="mb-3 row">
           <label class="col-4 col-form-label">País</label>
           <div class="col-7">
-            <select id="select_pais" name="pais" class="form-select" aria-label="Default select example">
-              <option>Seleccione un país</option>
-              {% for pais in paises %}
-              <option value="{{pais[0]}}">{{pais[1]}}</option>
-              {% endfor %}
-            </select>
+            <input type="text" class="form-control" disabled name="pais" value="Perú">
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="{{url_for('pais')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
+            <a href="{{url_for('pais')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill"
+                style="color: white;"></i></a>
           </div>
         </div>
 
         <div class="mb-3 row">
           <label class="col-4 col-form-label">Departamento</label>
           <div class="col-7">
-            <select id="select_departamento" name="departamento" class="form-select" aria-label="Default select example">
+            <select id="select_departamento" name="departamento" class="form-select"
+              aria-label="Default select example">
               <option id="lableDepartamento">Seleccione un departamento</option>
-              
+
             </select>
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="{{url_for('departamento')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
+            <a href="{{url_for('departamento')}}" class="btn btn-info btn-sm"><i
+                class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
           </div>
 
         </div>
@@ -59,11 +57,12 @@
           <div class="col-7">
             <select id="select_provincia" name="provincia" class="form-select" aria-label="Default select example">
               <option disabled selected>Seleccione un provincia</option>
-              
+
             </select>
           </div>
           <div class="col-1 m-0 p-0">
-            <a href="{{url_for('provincia')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill" style="color: white;"></i></a>
+            <a href="{{url_for('provincia')}}" class="btn btn-info btn-sm"><i class="bi bi-arrow-up-right-circle-fill"
+                style="color: white;"></i></a>
           </div>
         </div>
 
@@ -90,88 +89,79 @@
 {%block scripts %}
 
 <script>
-  $(document).ready(function() {
-      // Obtener referencias a los selects y el input de distrito
-      var selectPais = $('#select_pais');
-      var selectDepartamento = $('#select_departamento');
-      var selectProvincia = $('#select_provincia');
-      var inputDistrito = $('#input_distrito');
-      var botonRegistrar = $('#btnRegistrar');
+  $(document).ready(function () {
+    // Obtener referencias a los selects y el input de distrito
+    var selectDepartamento = $('#select_departamento');
+    var selectProvincia = $('#select_provincia');
+    var inputDistrito = $('#input_distrito');
+    var botonRegistrar = $('#btnRegistrar');
 
-      // Manejar el cambio en el select de país
-      selectPais.change(function() {
-        var paisSeleccionado = $(this).val();
 
-        // Limpiar y desactivar los selects y el input de distrito
-        selectDepartamento.empty().prop('disabled', true);
-        selectProvincia.empty().prop('disabled', true);
-        inputDistrito.val('').prop('disabled', true);
+    // Limpiar y desactivar los selects y el input de distrito
+    selectDepartamento.empty().prop('disabled', false);
+    selectProvincia.empty().prop('disabled', true);
+    inputDistrito.val('').prop('disabled', true);
 
-        // Habilitar el select de departamento si se seleccionó un país
-        if (paisSeleccionado) {
-          selectDepartamento.prop('disabled', false);
-        }
-
-        // Realizar la solicitud AJAX para obtener los departamentos según el país seleccionado
-        $.ajax({
-          url: '/obtener_departamentos',
-          type: 'GET',
-          data: { pais: paisSeleccionado },
-          success: function(response) {
-            // Actualizar las opciones del select de departamento con los datos recibidos
-            $.each(response.departamentos, function(index, departamento) {
-              selectDepartamento.append($('<option>').text(departamento[1]).val(departamento[0]));
-            });
-          }
+    // Realizar la solicitud AJAX para obtener los departamentos según el país seleccionado
+    $.ajax({
+      url: '/obtener_departamentos',
+      type: 'GET',
+      data: { pais: 24 },
+      success: function (response) {
+        // Actualizar las opciones del select de departamento con los datos recibidos
+        $.each(response.departamentos, function (index, departamento) {
+          selectDepartamento.append($('<option>').text(departamento[1]).val(departamento[0]));
         });
-      });
+      }
+    });
 
-      // Manejar el cambio en el select de departamento
-      selectDepartamento.change(function() {
-        var departamentoSeleccionado = $(this).val();
 
-        // Limpiar y desactivar los selects y el input de distrito
-        selectProvincia.empty().prop('disabled', true);
-        inputDistrito.val('').prop('disabled', false);
+    // Manejar el cambio en el select de departamento
+    selectDepartamento.change(function () {
+      var departamentoSeleccionado = $(this).val();
 
-        // Habilitar el select de provincia si se seleccionó un departamento
-        if (departamentoSeleccionado) {
-          selectProvincia.prop('disabled', false);
+      // Limpiar y desactivar los selects y el input de distrito
+      selectProvincia.empty().prop('disabled', true);
+      inputDistrito.val('').prop('disabled', false);
+
+      // Habilitar el select de provincia si se seleccionó un departamento
+      if (departamentoSeleccionado) {
+        selectProvincia.prop('disabled', false);
+      }
+
+      // Realizar la solicitud AJAX para obtener las provincias según el departamento seleccionado
+      $.ajax({
+        url: '/obtener_provincias',
+        type: 'GET',
+        data: { departamento: departamentoSeleccionado },
+        success: function (response) {
+          // Actualizar las opciones del select de provincia con los datos recibidos
+          $.each(response.provincias, function (index, provincia) {
+            selectProvincia.append($('<option>').text(provincia[1]).val(provincia[0]));
+          });
         }
-
-        // Realizar la solicitud AJAX para obtener las provincias según el departamento seleccionado
-        $.ajax({
-          url: '/obtener_provincias',
-          type: 'GET',
-          data: { departamento: departamentoSeleccionado },
-          success: function(response) {
-            // Actualizar las opciones del select de provincia con los datos recibidos
-            $.each(response.provincias, function(index, provincia) {
-              selectProvincia.append($('<option>').text(provincia[1]).val(provincia[0]));
-            });
-          }
-        });
-      });
-
-      // Manejar el cambio en el select de provincia
-      selectProvincia.change(function() {
-        var provinciaSeleccionada = $(this).val();
-
-        // Limpiar y desactivar el input de distrito
-        inputDistrito.val('').prop('disabled', true);
-
-        // Habilitar el input de distrito si se seleccionó una provincia
-        if (provinciaSeleccionada) {
-          inputDistrito.prop('disabled', false);
-        }
-      });
-
-      // Manejar el cambio en el input de distrito
-      inputDistrito.on('input', function() {
-        // Habilitar el botón de registrar si se ingresó un distrito
-        botonRegistrar.prop('disabled', !$(this).val());
       });
     });
+
+    // Manejar el cambio en el select de provincia
+    selectProvincia.change(function () {
+      var provinciaSeleccionada = $(this).val();
+
+      // Limpiar y desactivar el input de distrito
+      inputDistrito.val('').prop('disabled', true);
+
+      // Habilitar el input de distrito si se seleccionó una provincia
+      if (provinciaSeleccionada) {
+        inputDistrito.prop('disabled', false);
+      }
+    });
+
+    // Manejar el cambio en el input de distrito
+    inputDistrito.on('input', function () {
+      // Habilitar el botón de registrar si se ingresó un distrito
+      botonRegistrar.prop('disabled', !$(this).val());
+    });
+  });
 
 </script>
 
