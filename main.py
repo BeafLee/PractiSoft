@@ -257,6 +257,12 @@ def practicasE():
     idE=estudiante[0]
     practica = cont_prac.obtener_practicaE(idE)
     return render_template("/practica/listarPractica.html", practica=practica, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/EnviarPractica",methods=["POST"])
+def EnviarPractica():
+    id=request.form["id"]
+    cont_prac.EnviarPractica(id)
+    return redirect("practicasE")
 ###     AGREGAR PRACTICA
 
 @app.route("/agregar_practica")
