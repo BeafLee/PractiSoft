@@ -142,7 +142,7 @@
             <input type="number" name="idPractica" value="{{datos[8]}}" hidden>
             <br>
             <div class="text-center pb-5">
-                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <a href="{{url_for('detalle_practica', id=datos[8])}}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-success" name="submit_button" value="G">Guardar</button>
                 <button type="submit" class="btn btn-outline-success" name="submit_button" value="E">Guardar y
                     Enviar</button>
