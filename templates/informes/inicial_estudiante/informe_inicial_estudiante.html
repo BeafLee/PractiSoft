@@ -1,0 +1,171 @@
+<!-- ####### HEY, I AM THE SOURCE EDITOR! #########-->
+<html>
+
+<head>
+  .
+</head>
+
+<body class="my-div">
+  <!-- ####### HEY, I AM THE SOURCE EDITOR! #########-->
+  <div>
+    <h2 style="text-align: center;"><strong>INFORME INICIAL SOBRE PR&Aacute;CTICAS PRE PROFESIONALES</strong></h2>
+  </div>
+  <div>
+    <div>&nbsp;</div>
+    <ol>
+      <li style="list-style-type: none;">
+        <ol>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Nombres y apellidos del estudiante</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[0]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div style="padding-left: 40px;"><strong>C&oacute;digo del estudiante</strong></div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+            <div style="padding-left: 40px;">{{datos[1]}}</div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Semestre acad&eacute;mico</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[2]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Empresa/instituci&oacute;n donde se realizar&aacute; la
+                  pr&aacute;ctica</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[3]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Persona de la Empresa/Instituci&oacute;n responsable de la
+                  pr&aacute;ctica</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[4]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Cargo que ocupa</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[5]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Objetivos de la pr&aacute;ctica</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              {% for objetivo in objetivos %}
+              <div style="padding-left: 40px;">-{{objetivo[0]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              {% endfor %}
+            </div>
+          </li>
+          <li>
+            <div style="padding-left: 40px;"><strong>Fecha de inicio de la pr&aacute;ctica</strong></div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+            <div style="padding-left: 40px;">{{datos[6]}}</div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+          </li>
+          <li>
+            <div>
+              <div style="padding-left: 40px;"><strong>Fecha de t&eacute;rmino de la pr&aacute;ctica</strong></div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">{{datos[7]}}</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <li>
+            <div style="padding-left: 40px;"><strong>Plan de Trabajo</strong></div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+            <div style="padding-left: 40px; padding-right: 40px;">
+              <table style="border-collapse: collapse; width: 100%;" border="1">
+                <tbody>
+                  <tr style="height: 10px;">
+                    <td style="width: 19.702%; height: 10px; text-align: center;"><strong>N&deg; de semana</strong></td>
+                    <td style="width: 19.2053%; height: 10px; text-align: center;"><strong>Fechas</strong></td>
+                    <td style="width: 36.0927%; height: 10px; text-align: center;"><strong>Actividades a
+                        realizar</strong></td>
+                    <td style="width: 25%; height: 10px; text-align: center;"><strong>N&deg; de horas</strong></td>
+                  </tr>
+                  {% for plan in planes %}
+                  <tr style="height: 18px;">
+                    <td style="width: 19.702%; height: 18px;">{{plan[0]}}</td>
+                    <td style="width: 19.2053%; height: 18px;">{{plan[1]}}</td>
+                    <td style="width: 36.0927%; height: 18px;">{{plan[2]}}</td>
+                    <td style="width: 25%; height: 18px;">{{plan[3]}}</td>
+                  </tr>
+                  {% endfor %}
+                  <tr style="height: 18px;">
+                    <td colspan="3" style=" width: 19.702%; height: 18px;  text-align: center;"><strong>Total de
+                        horas</strong></td>
+                    <td style="width: 25%; height: 18px;">{{totales[0]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="padding-left: 40px;">&nbsp;</div>
+              <div style="padding-left: 40px;">&nbsp;</div>
+            </div>
+          </li>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <li>
+            <div style="padding-left: 40px;"><strong>Fecha y firma del estudiante y del responsable de la
+                Empresa/Instituci&oacute;n</strong></div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+            <div style="padding-left: 40px;">{{datos[9]}}</div>
+            <div style="padding-left: 40px;">&nbsp;</div>
+            
+          </li>
+
+          <div style="float: left; justify-content: center; align-items: center; ">
+            <img src="{{firmas[0]}}" alt="Mi imagen" width="300" height="200">
+            <div style="padding-left: 80px;display: block;">
+            {{datos[0]}}</div>
+            <div style="padding-left: 80px;display: block;" ><strong>Estudiante&nbsp;&nbsp;</strong></div>
+            
+          </div>
+          <div style="float: right; justify-content: center; align-items: center; padding-right: 35px; ">
+            <img src="{{firmas[1]}}" alt="Mi imagen" width="300" height="200">
+            <div style="padding-left: 80px;display: block;">
+            {{datos[4]}}</div>
+            <div><strong>Cargo del representante de la empresa&nbsp;&nbsp;</strong></div>
+          </div>
+          
+      </li>
+    </ol>
+    </li>
+    </ol>
+    <br>
+    <br>
+    <br>
+   
+  </div>
+</body>
+
+</html>

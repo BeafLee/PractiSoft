@@ -1,0 +1,225 @@
+{% extends "maestra.html" %}
+{% block titulo %}Registrar informe inicial - estudiante{% endblock %}
+{% block subtitul %}Registrar informe inicial - estudiante{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/nuevoSemestre.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+    <div class="container mt-2">
+        <h2 style="text-align: center; margin-top: 5%;">INFORME INICIAL SOBRE PRÁCTICAS PRE PROFESIONALES <br>
+            (ELABORADO POR EL ESTUDIANTE)
+        </h2>
+
+        <form action="{{url_for('guardar_iies')}}" method="post" enctype="multipart/form-data">
+            <div class="my-1">
+                <br>
+                <div class="row">
+                    <div class="">
+                        <label for="razonSocial">Nombres y apellidos del estudiante:</label>
+                        <input type="text" class="form-control" id="razonSocial" name="razonSocial" value="{{datos[0]}}"
+                            disabled>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="codigoestudiante">Código del estudiante:</label>
+                        <input type="text" class="form-control" id="codigoestudiante" name="codigoestudiante"
+                            value="{{datos[1]}}" disabled>
+                    </div>
+                    <div class="form-group col">
+                        <label for="semestre">Semestre académico:</label>
+                        <input type="text" class="form-control" id="semestre" name="semestre" value="{{datos[2]}}"
+                            disabled>
+                    </div>
+                    <div class="form-group col">
+                        <label for="empresaprac">Empresa/Institución donde se realizará la práctica:</label>
+                        <input type="text" class="form-control" id="empresaprac" name="empresaprac" value="{{datos[3]}}"
+                            disabled>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="form-group col">
+                        <label for="personaempresa">Persona de la Empresa/Institución responsable de la
+                            práctica:</label>
+                        <input type="text" class="form-control" id="personaempresa" name="personaempresa"
+                            value="{{datos[4]}}" disabled>
+
+                    </div>
+                    <div class="form-group col">
+                        <label for="cargo">Cargo que ocupa:</label>
+                        <input type="text" class="form-control" id="cargo" name="cargo" value="{{datos[5]}}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="fechainicio">Fecha de inicio de la práctica:</label>
+                        <input type="date" class="form-control" id="fechainicio" name="fechainicio" value="{{datos[6]}}"
+                            disabled>
+                    </div>
+
+                    <div class="form-group col">
+                        <label for="fechatermino">Fecha de término de la práctica:</label>
+                        <input type="date" class="form-control" id="fechatermino" name="fechatermino"
+                            value="{{datos[7]}}" disabled>
+                    </div>
+                    <div class="row">
+
+                    </div>
+
+                    <div class="my-1">
+                        <div class="form-group" id="objetivos">
+                            <label>
+                                <h3>Objetivos de la práctica:</h3>
+                            </label>
+                        </div>
+                        <div class="mt-2">
+                            <input type="text" id="nfilas" name="nfilas" hidden>
+                            <button class="btn btn-primary" type="button" id="add-conclucion">Agregar</button>
+                            <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group col">
+                <h3>Plan de Trabajo:</h3>
+                <table id="tbplan" class="table table-bordered" style="border: 1px solid black;">
+                    <thead class="thead-dark" id="plan-trabajo">
+                        <tr>
+                            <th style="width: 10%; text-align: center;">N° de semana</th>
+                            <th style="text-align: center;">Fecha Inicio</th>
+                            <th style="text-align: center;">Fecha Fin</th>
+                            <th style="text-align: center;">Actividades a realizar</th>
+                            <th style="width: 10%; text-align: center;">N° de horas</th>
+                            <th style="width: 10%; text-align: center;">Operación</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="mt-2">
+                    <input type="text" id="nfilas1" name="nfilas1" hidden>
+                    <button class="btn btn-primary" type="button" id="add-recomendacion">Agregar</button>
+                    <!-- <button class="btn btn-success" type="submit">Guardar</button> -->
+                </div>
+            </div>
+            <div class="form-group col">
+                <label for="fechafirma">Firma del estudiante</label>
+                <input type="file" class="form-control" id="organigramaImg" name="firmaImg"
+                    accept="image/jpeg, image/png" required
+                    placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+
+            </div>
+            <br>
+            <div class="form-group col">
+                <label for="fechafirma">Firma del responsable de la empresa</label>
+                <input type="file" class="form-control" id="organigramaImg" name="firmaImg1"
+                    accept="image/jpeg, image/png" required
+                    placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+            </div>
+            <input type="number" name="idPractica" value="{{datos[8]}}" hidden>
+            <br>
+            <div class="text-center pb-5">
+                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-success" name="submit_button" value="G">Guardar</button>
+                <button type="submit" class="btn btn-outline-success" name="submit_button" value="E">Guardar y
+                    Enviar</button>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}
+
+{%block scripts %}
+<script>
+    var idn = 0
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-conclucion').click(function () {
+            var inputGroup = '<div class="input-group mt-1">' +
+                '<input type="text" class="form-control" name="objetivo' + (idn + 1) + '" required>' +
+                '<div class="input-group-append">' +
+                '<button class="btn btn-outline-danger remove-input" type="button">Eliminar</button>' +
+                '</div>' +
+                '</div>';
+
+            $('#objetivos').append(inputGroup);
+            idn = idn+1;
+            contarFilas();
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.input-group').remove();
+            idn = idn - 1;
+        });
+    });
+
+    function contarFilas() {
+        var div = document.getElementById('objetivos');
+
+        // Obtener todos los inputs dentro del div
+        var inputs = div.getElementsByTagName('input');
+
+        // Contar los inputs
+        var cantidadInputs = inputs.length;
+        document.getElementById("nfilas").value = cantidadInputs;
+    }
+</script>
+
+<script>
+    var idn1=0;
+    var n = 0;
+    $(document).ready(function () {
+        // Agregar input dinámicamente
+        $('#add-recomendacion').click(function () {
+            var inputGroup = '<tr >' +
+                '<th> <input style="border: none; width: 100%;" type="text"  value="' + (n + 1) + '" readonly name="nsemana' + (idn1 + 1) + '">'+ '</th>' +
+                '<th><input style="border: none; width: 100%;" type="date" name="fechai' + (idn1 + 1) + '" required>' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="date" name="fechaf' + (idn1 + 1) + '" required>' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="text" name="actividad' + (idn1 + 1) + '" required>' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="number" name="nhoras' + (idn1 + 1) + '" required>' +'</th>' +
+                '<th><button class="btn btn-outline-danger remove-input" type="button">Eliminar</button></th>'+
+            '</tr>';
+
+            $('#plan-trabajo').append(inputGroup);
+            idn1=idn1+1;
+            n = n + 1;
+            contarFilas1();
+        });
+
+        // Eliminar input dinámicamente
+        $(document).on('click', '.remove-input', function () {
+            $(this).closest('.plan-trabajo').remove();
+            n = n - 1;
+            idn1=idn1-1;
+            
+        });
+    });
+    function contarFilas1() {
+      var tabla = document.getElementById('tbplan');
+      var filas = tabla.getElementsByTagName('tr').length;
+      document.getElementById("nfilas1").value = filas-1;
+    }
+</script>
+<script>
+    // Obtener la fecha actual
+    var fecha = new Date();
+
+    // Obtener los componentes de la fecha
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+    var año = fecha.getFullYear();
+
+    // Formatear la fecha como "dd/mm/aaaa"
+    var fechaFormateada = dia + '/' + mes + '/' + año;
+
+    // Mostrar la fecha en el elemento con id "fechaActual"
+    document.getElementById('fechaActual').textContent = fechaFormateada;
+</script>
+{% endblock %}

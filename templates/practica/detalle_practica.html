@@ -106,9 +106,9 @@
               <td scope="row align-items-center" id="fecha1">Informe Inicial Estudiante</td>
               <td scope="row align-items-center" id="fecha2">{{informe[0]}}</td>
               <td scope="row align-items-center" id="estado">{{informe[1]}}</td>
-              <td scope="row align-items-center">{% if tipou[0]=="E" %}<a href="#"><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
-              <td scope="row align-items-center"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row align-items-center"><a href="#"><i
+              <td scope="row align-items-center">{% if tipou[0]=="E" %}<a href="{{url_for('editarInformeInicialEstudiante', id=detalle[15],id1=informe[2])}}"><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
+              <td scope="row align-items-center"><a href="{{url_for('verInformeInicialEstudiante', id=detalle[15],id1=informe[2])}}"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_ies', id=informe[2],id1=detalle[15])}}"><i
                     class="bi bi-arrow-down"></i></a></td>
             </tr>
             {% else %}
@@ -116,8 +116,8 @@
               <td scope="row align-items-center" id="fecha1">Informe Inicial Estudiante</td>
               <td scope="row align-items-center" id="fecha2">{{informe[0]}}</td>
               <td scope="row align-items-center" id="estado">{{informe[1]}}</td>
-              <td scope="row align-items-center"><a href="#"><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row align-items-center"><a href="#"><i
+              <td scope="row align-items-center"><a href="{{url_for('verInformeInicialEstudiante', id=detalle[15],id1=informe[2])}}"><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_ies', id=informe[2],id1=detalle[15])}}"><i
                     class="bi bi-arrow-down"></i></a></td>
 
             </tr>
@@ -240,9 +240,9 @@
               <td scope="row align-items-center" id="fecha1">Informe Desempeño</td>
               <td scope="row align-items-center" id="fecha2">{{informe4[0]}}</td>
               <td scope="row align-items-center" id="estado">{{informe4[1]}}</td>
-              <td scope="row align-items-center">{% if tipou[0]=="J" %}<a href="#"><!-- Link Para editar desempeño --><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
-              <td scope="row align-items-center"><a href="#"><!-- Link Para ver desempeño --><i class="bi bi-eye-fill"></i></a></td>
-              <td scope="row align-items-center"><a href="#"><!-- Link Para descargar desempeño --><i
+              <td scope="row align-items-center">{% if tipou[0]=="J" %}<a href="{{url_for('editarInformeDesempeño', id1=detalle[15],id=informe4[2])}}"><!-- Link Para editar desempeño --><i class="bi bi-pencil-fill"></i></a>{% else %}{% endif %}</td>
+              <td scope="row align-items-center"><a href="{{url_for('verInformeDesempenio', id=detalle[15],id1=informe4[2])}}"><!-- Link Para ver desempeño --><i class="bi bi-eye-fill"></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_ide', id=informe4[2],id1=detalle[15])}}"><!-- Link Para descargar desempeño --><i
                     class="bi bi-arrow-down"></i></a></td>
 
             </tr>
@@ -251,8 +251,8 @@
               <td scope="row align-items-center" id="fecha1">Informe Desempeño</td>
               <td scope="row align-items-center" id="fecha2">{{informe4[0]}}</td>
               <td scope="row align-items-center" id="estado">{{informe4[1]}}</td>
-              <td scope="row align-items-center"><a href="#"><i class="bi bi-eye-fill"><!-- Link Para ver desempeño --></i></a></td>
-              <td scope="row align-items-center"><a href="#"><!-- Link Para descargar desempeño --><i
+              <td scope="row align-items-center"><a href="{{url_for('verInformeDesempenio', id=detalle[15],id1=informe4[2])}}"><i class="bi bi-eye-fill"><!-- Link Para ver desempeño --></i></a></td>
+              <td scope="row align-items-center"><a href="{{url_for('generar_ide', id=informe4[2],id1=detalle[15])}}"><!-- Link Para descargar desempeño --><i
                     class="bi bi-arrow-down"></i></a></td>
             </tr>
             {% endif %}
@@ -262,7 +262,7 @@
               <td scope="row align-items-center" id="fecha2">-----</td>
               <td scope="row align-items-center" id="estado">-----</td>
               <td colspan="3" scope="row align-items-center">{% if tipou[0]=="J" %}<a
-                  href="#"><!-- Link Para agregar desempeño --><i         
+                  href="{{url_for('agregarInformeDesempenio', id=detalle[15])}}"><!-- Link Para agregar desempeño --><i         
                     class="bi bi-plus-circle-fill"></i></a>{% else %}{% endif %}</td>
                     
             </tr>
