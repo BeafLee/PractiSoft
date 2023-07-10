@@ -1,6 +1,6 @@
 {% extends maestra %}
-{% block titulo %}Gestionar Seguimiento Practicas {% endblock %}
-{% block subtitul %}Gestionar Seguimiento Practicas {% endblock %}
+{% block titulo %}Gestionar seguimiento práctica{% endblock %}
+{% block subtitul %}Gestionar Seguimiento práctica{% endblock %}
 {% block recursos %}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <link rel="stylesheet" href="{{url_for('static',filename='styles/listarseguimiento.css') }}">
@@ -13,7 +13,9 @@
     </label>
     <!-- SE TIENE QUE MODIFICAR -->
     <label class="btnOp">
+      {% if not (usuario[3] != 3) %}
       <a href="{{url_for('agregar_seguimiento_practica', idSeguimiento=idPractica[0])}}">Nuevo</a>
+      {% endif %}
     </label>
   </div>
   <div class="tabla" id="contenido-dinamico">
