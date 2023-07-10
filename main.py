@@ -19,6 +19,7 @@ import controladores.controlador_practica as cont_prac
 import controladores.controlador_reporte as cont_rep
 import controladores.controlador_seguimiento_practica as cont_seg
 import controladores.controlador_informe_final_estudiante as cont_inf_final_est
+import controladores.controlador_informe_final_empresa as cont_inf_final_emp
 import controladores.controlador_informe_inicial_empresa as cont_iie
 import controladores.controlador_estudiante as cont_est
 import controladores.controlador_usuario as cont_usu
