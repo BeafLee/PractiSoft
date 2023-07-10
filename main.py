@@ -1669,7 +1669,7 @@ def JefeInmediatoID(id):
     usuarioJefe=controlador_jefe_inmediato.obtener_UsuarioJefe(idJefe)
     distritos=cont_localidad.obtener_Distrito()
     empresas=cont_emp.obtener_empresa()
-    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,idJefe=idJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ActualizarJefe", methods=["POST"])
 def ActualizarJefe():
@@ -1682,10 +1682,9 @@ def ActualizarJefe():
     cargo = request.form["cargo"]
     turno = request.form["turno"]
     empresa = request.form["empresa"]
-    usuario = request.form["usuario"]
-    contraseña = request.form["contraseña"]
     distrito = request.form["distrito"]
-    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+    id = request.form["id"]
+    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito,id)
 
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/JefeInmediato")
