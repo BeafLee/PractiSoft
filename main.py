@@ -86,6 +86,22 @@ def graficoCajan():
         datos[nombre] = cantidad
     return render_template("/reportes/grafico.html",datos=datos,lineasPracticas=lineasPracticas,maestra=session['maestra'],usuario=session['usuario'])
 
+@app.route('/reporte1')
+def reporte1():   
+    practicasC=controladorGrafico.obtener_reporte1()
+    datos = {}
+    for nombre, cantidad in practicasC:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte1.html",datos=datos,practicasC=practicasC,maestra=session['maestra'],usuario=session['usuario'])
+
+@app.route('/reporte2')
+def reporte2():   
+    practicasA=controladorGrafico.obtener_reporte2()
+    datos = {}
+    for nombre, cantidad in practicasA:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte2.html",datos=datos,practicasA=practicasA,maestra=session['maestra'],usuario=session['usuario'])
+
 
 @app.route('/login', methods=["POST"])
 def login():
