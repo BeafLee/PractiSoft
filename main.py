@@ -896,7 +896,7 @@ def daralta_estudiante(id):
 def empresas():
     empresas = cont_emp.obtener_empresa()
     usu = session['usuario']
-    return render_template("/empresa/listarEmpresa.html", usuario = session['usuario'], maestra=session['maestra'], empresas = empresas)
+    return render_template("/empresa/listarEmpresa.html", usuario = usu, maestra="maestra_d_modulo1.html", empresas = empresas)
 
 
 
@@ -905,7 +905,7 @@ def empresas():
 def empresas_nombre():
     razonSocial = request.form["razonSocial"]
     empresas = cont_emp.buscar_empresa(razonSocial)
-    return render_template("/empresa/ListaEmpresa.html", empresas = empresas, editEmpresa = None)
+    return render_template("/empresa/ListaEmpresa.html", empresas = empresas,maestra="maestra_d_modulo1.html", editEmpresa = None)
 
 
 ###     AGREGAR EMPRESA
@@ -973,7 +973,7 @@ def ver_empresa(id):
         info = cont_emp.empresa_nacional(empresa[8])
     else: 
         info = cont_emp.nombrePais(empresa[9])
-    return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/empresa/verEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info ,usuario = session['usuario'],maestra="maestra_d_modulo1.html")
 
 @app.route("/actualizar_empresa", methods=["POST"])
 def actualizar_empresa():
