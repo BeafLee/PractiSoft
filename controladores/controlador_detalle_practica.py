@@ -9,3 +9,11 @@ def listar_detalle_practica(id):
     conexion.close()
     return facultad
 
+def obtener_tipoUsuario(id):
+    conexion = obtener_conexion()
+    tipoUsuario=None
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT nombPerfil from TIPO_USUARIO where idTipoU=%s", (id,))
+        tipoUsuario = cursor.fetchone()
+    conexion.close()
+    return tipoUsuario
