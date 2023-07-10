@@ -6,6 +6,7 @@ import mysql.connector #instalar
 from os.path import join, dirname, realpath
 from PyPDF2 import PdfMerger , PdfReader 
 from flask import Flask, flash, request, jsonify, render_template, redirect, session, url_for, send_file, send_from_directory
+import datetime
 from werkzeug.utils import secure_filename
 import controladores.controlador_inicioSesion as cont_ini
 import controladores.controlador_semestre as cont_sem
@@ -499,6 +500,71 @@ def generar_informeFinalEstudiante(idPractica):
     return send_file('static/practica/'+ str(idPractica) + '/informe/final_estudiante/informe_final_estudiante.pdf', as_attachment=True)
     # return redirect("/agregarInformeFinalEstudiante")
 
+#################################################################################
+##                          INFORME FINAL - EMPRESA                            ##
+#################################################################################
+
+@app.route("/nuevo_iiem/<int:id>")
+def nuevo_iiem(id):
+    data = cont_inf_final_emp.infoPlantilla(id)
+    print(data)
+    return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
+
+
+###     MOSTRAR FORMULARIO DE INFORME FINAL
+
+@app.route("/guardar_iiem", methods=["POST"])
+def guardar_iiem():
+    idPractica = request.form["idPractica"]
+    fechaEntrega = datetime.date.today()
+    urlFirmaResponsable = "firma.png"
+    urlSelloEmpresa = "sello.png"
+    observacion = ""
+    
+    valoraciones = request.form.getlist('valoraciones')
+    
+    if 'btnGuardar' in request.form:
+        cont_inf_final_emp.insertar_informe_final_empresa(idPractica,"G",fechaEntrega,urlFirmaResponsable,urlSelloEmpresa,observacion,idPractica)
+    if 'btnEnviar' in request.form:
+        cont_inf_final_emp.insertar_informe_final_empresa(idPractica,"E",fechaEntrega,urlFirmaResponsable,urlSelloEmpresa,observacion,idPractica)
+
+    for valoracion in valoraciones:
+        cont_inf_final_emp.insertar_valoracion(valoracion,idPractica)
+    
+    return redirect("/detalle_practica/"+idPractica)
+
+
+@app.route("/ver_iiem/<int:id>")
+def ver_iiem(id):
+    data = cont_inf_final_emp.buscar_id(id)
+    val = cont_inf_final_emp.buscar_valoracion(id)
+    valoracion = [item[0] for item in val]
+    print(valoracion)
+    #data2 = cont_inf_final_emp.buscar_valoracion(iiem)
+
+    return render_template("/informes/final_empresa/verInforme.html",valoracion=valoracion, data = data,  usuario = session['usuario'], maestra=session['maestra'])
+
+
+
+@app.route("/generar_informeFinalEmpresa/<int:id>")
+def generar_informeFinalEmpresa(id):
+    #controlador obtener
+    data = cont_inf_final_emp.buscar_id(id)
+    data2 = cont_inf_final_emp.buscar_valoracion(id)
+    lista_resultante = [item[0] for item in data2]
+    idPractica = data[14]
+    context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
+                         "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
+
+    #Generamos el contenido para el informe
+    output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido)
+    output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
+    if not os.path.exists(output_pdf_contenido):
+        os.makedirs(output_pdf_contenido)
+    output_pdf_contenido += "/informe_final_empresa.pdf"
+    pdfkit.from_string(output_text_contenido, output_pdf_contenido, configuration=config, options={"enable-local-file-access": ""})
+
+    return send_file('static/practica/'+ str(idPractica) + '/informe/final_empresa/informe_final_empresa.pdf', as_attachment=True)
 
 #################################################################################
 ##                                  SEMESTRE                                   ##
