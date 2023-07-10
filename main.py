@@ -317,7 +317,7 @@ def detalle_practica(id):
     informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
     tipou=cont_dp.obtener_tipoUsuario(usu[3])
-    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou)
+    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -1291,8 +1291,8 @@ def guardar_iie():
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = "aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlBase + "/" + urlAcept)
+    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+    aceptacion.save(urlAcept)
 
     firma = request.files["firma"]
     urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
@@ -1305,7 +1305,7 @@ def guardar_iie():
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.insertar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
+        cont_iie.insertar_informe_inicial_empresa("G",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
     if 'btnEnviar' in request.form:
         cont_iie.insertar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idPractica)
     return redirect("/detalle_practica/"+idPractica)
@@ -1361,7 +1361,7 @@ def actualizar_iie():
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+        cont_iie.actualizar_informe_inicial_empresa("G",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
     if 'btnEnviar' in request.form:
         cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
     return redirect("/detalle_practica/"+idPractica)
@@ -1373,8 +1373,10 @@ def generar_iie(id):
     infoInforme = cont_iie.buscar_informe_inicial_empresa_id(id)
     labores = []
     labores = cont_iie.desconcat_labores(infoInforme[3])
-    
-    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores)
+    print(infoInforme)
+    img = [request.scheme +'://'+ request.host +'/'+infoInforme[1],request.scheme +'://'+ request.host +'/'+infoInforme[4],request.scheme +'://'+ request.host +'/'+infoInforme[5]]
+
+    html = render_template('/informe_inicial_empresa/plantilla.html', infoP = infoPlantilla, infoI = infoInforme, lab = labores, img = img)
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
@@ -1670,7 +1672,7 @@ def JefeInmediatoID(id):
     usuarioJefe=controlador_jefe_inmediato.obtener_UsuarioJefe(idJefe)
     distritos=cont_localidad.obtener_Distrito()
     empresas=cont_emp.obtener_empresa()
-    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/Jefe_Inmediato/editarJefe.html", jefes=jefes,UsuarioJefe=usuarioJefe,idJefe=idJefe,distritos=distritos,empresas=empresas, usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ActualizarJefe", methods=["POST"])
 def ActualizarJefe():
@@ -1683,10 +1685,9 @@ def ActualizarJefe():
     cargo = request.form["cargo"]
     turno = request.form["turno"]
     empresa = request.form["empresa"]
-    usuario = request.form["usuario"]
-    contraseña = request.form["contraseña"]
     distrito = request.form["distrito"]
-    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito)
+    id = request.form["id"]
+    controlador_jefe_inmediato.actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito,id)
 
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/JefeInmediato")
