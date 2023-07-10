@@ -29,3 +29,31 @@ def obtener_DetalleJefe(id):
         jefe = cursor.fetchall()
     conexion.close()
     return jefe
+
+def actualizar_JEFE(nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,usuario,contraseña,distrito):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE JEFE_INMEDIATO SET nombre=%s ,apellidos=%s,telefono=%s,telefono2=%s,correo=%s ,correo2=%s ,cargo=%s ,turnoHorario=%s ,idEmpresa=%s ,idDistrito=%s",
+                       (nombre ,apellidos,telefono,telefono2,correo ,correo2 ,cargo ,turno ,empresa ,distrito))
+    conexion.commit()
+    conexion.close()
+
+def obtener_DetalleJefeID(id):
+    conexion = obtener_conexion()
+    jefe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT  jf.apellidos, jf.nombre,jf.telefono,jf.correo,jf.cargo,em.razonSocial,jf.idJefe,jf.telefono2,jf.correo2,ds.nombre,jf.idUsuario FROM JEFE_INMEDIATO jf INNER JOIN EMPRESA em ON jf.idEmpresa=em.idEmpresa left JOIN distrito ds on ds.idDistrito=jf.idDistrito WHERE jf.idJefe=%s",(id))
+        jefe = cursor.fetchall()
+    conexion.close()
+    return jefe
+
+def obtener_UsuarioJefe(id):
+    conexion = obtener_conexion()
+    jefe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT nomUsuario,contraseña FROM USUARIO WHERE idUsuario=%s",(id))
+        jefe = cursor.fetchall()
+    conexion.close()
+    return jefe
+
+
