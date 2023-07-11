@@ -1515,6 +1515,38 @@ def actualizar_iie():
         cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
     return redirect("/detalle_practica/"+idPractica)
 
+@app.route("/observariie/<int:id>")
+def observariie(id):
+    info = cont_iie.infoPlantilla(id)
+    iie = cont_iie.buscar_informe_inicial_empresa_id(id)
+    acep = iie[1]
+    labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
+    print(iie[1])
+    if len(labores) == 1:
+        labores[0] = iie[3]
+        bandera = False
+    else: 
+        bandera = True
+    return render_template("/informe_inicial_empresa/observarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/corregir_iie", methods=["POST"])
+def corregir_iie():
+    idPractica = request.form["idPractica"]
+    idInforme = request.form["idInforme"]
+
+    estado = request.form["btn"]
+
+    if estado == "A":
+        cont_iie.aceptar_informe(idInforme)
+    else:
+        observacion = request.form["observacion"]
+        cont_iie.observar_informe(observacion,idInforme)
+    return redirect("/detalle_practica/"+idPractica)
+
 @app.route("/generar_iie/<int:id>")
 def generar_iie(id):
 

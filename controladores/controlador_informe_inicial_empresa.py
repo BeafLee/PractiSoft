@@ -37,7 +37,7 @@ def buscar_informe_inicial_empresa_id(idInformeInicialEmpresa):
     conexion = obtener_conexion()
     informe_inicial_empresa = []
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT idInformeInicialEmpresa,urlAceptacionCompromiso,fechaEntrega,labores,urlFirmaResponsable,urlSelloEmpresa,idPractica FROM INFORME_INICIAL_EMPRESA WHERE idInformeInicialEmpresa = %s;", (idInformeInicialEmpresa))
+        cursor.execute("SELECT idInformeInicialEmpresa,urlAceptacionCompromiso,fechaEntrega,labores,urlFirmaResponsable,urlSelloEmpresa,idPractica,observacion FROM INFORME_INICIAL_EMPRESA WHERE idInformeInicialEmpresa = %s;", (idInformeInicialEmpresa))
         informe_inicial_empresa = cursor.fetchone()
     conexion.close()
     return informe_inicial_empresa
@@ -102,3 +102,19 @@ def desconcat_labores(labores):
       labor.append('')
       cond2 = '|'
   return labor
+
+def observar_informe(observacion,idInforme):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE INFORME_INICIAL_EMPRESA SET estado='O', observacion = %s WHERE idInformeInicialEmpresa = %s",
+                       (observacion,idInforme))
+    conexion.commit()
+    conexion.close()
+
+def aceptar_informe(idInforme):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE INFORME_INICAL_EMPRESA SET estado='A', observacion = '' WHERE idInformeInicialEmpresa = %s",
+                       (idInforme))
+    conexion.commit()
+    conexion.close()
