@@ -1,0 +1,203 @@
+/* GENERALES */
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'K2D', sans-serif;
+  }
+  body{
+    height: 100vh;
+  
+  }
+  .navSec{
+    display: flex;
+  }
+  
+  /* HEADER */
+  
+  header{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    display: flex;
+    justify-content: space-between;
+  }
+  #logo{
+    max-height: 100px;
+  }
+  .titulo{
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+  
+  }
+  #iconoUsuario{
+    height: 50px;
+    border-radius: 50%;
+  }
+  .usuario{
+    padding: 10px;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nomUsuario{
+    color: white;
+    background-color: red;
+    padding: 8px;
+    border-radius: 10px;
+  }
+  
+  /* NAV */
+  
+  nav{
+    border-right: 2px solid rgb(198, 198, 198);
+    width: 300px;
+    height: calc(100vh - 106px);
+  }
+  .barraOp{
+    height: 35px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+    background-color: red;
+    font-size: 25px;
+  }
+  .opGestion{
+    display: flex;
+    align-items: center;
+    justify-content: space-around !important;
+  }
+  #iconoGestion{
+    height: 30px;
+  }
+  .contGestion{
+    border-bottom: 2px solid rgb(198, 198, 198);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: 16px;
+  }
+  .contGestion > li{
+    display: flex;
+    justify-content: end;
+    text-decoration: none !important;
+  }
+  li{
+    padding: 3px;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  
+  /* SECTION */
+  
+  section{
+    background-image: url("../fondo.jpg");
+    height: calc(100vh - 106px);
+    width: 100%;
+  }
+  
+    /* BARRA GESTIÓN */
+  
+  .barraGest{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 53px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+    border-bottom: 2px solid rgb(198, 198, 198);
+  }
+  .btnOp a{
+    color: rgb(199, 199, 199);
+  }
+  .btnOp{
+    margin-left: 150px;
+  }
+  .btnOp a:hover{
+    color: black;
+    border-bottom: 4px solid red;
+  }
+  
+  /* FORMULARIO */
+  
+  .nuevaPractica{
+    background-color: rgb(201, 201, 201);
+    border-radius: 20px;
+    width: 80%;
+    margin: auto;
+    margin-top: 70px;
+    padding: 30px;
+    padding-top: 20px;
+    font-size: 20px;
+  }
+  
+  
+  
+  
+  
+  input{
+    /*height: 28px;*/
+    height:80%;
+    width: 95%;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 5px;
+    margin-right: 20px;
+  }
+  
+  .dropdown{
+    height: 40px;
+    width: 95%;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 5px;
+  
+  
+  }
+  
+  .wrapper {
+    display: grid;
+    grid-template-columns:  1fr 2fr 1fr 2fr;
+  }
+  
+  .wrapper2 {
+    display: grid;
+    grid-template-columns:  2fr 9fr 1fr;
+  }
+  
+  
+.contentlineaD{width: 900px;
+height: 900px;
+margin-left: 20%;}
+.contentlineaD input{width: 400px;
+margin-left: 120px;
+margin-bottom: 20px;}
+.contentlineaD h2{margin-left: 140px;
+margin-bottom: 40px;}
+  
+  /* BOTONES */
+  
+  .btnsNuevaPractica{
+    display: flex;
+    justify-content: center;
+  }
+  .btnsNuevaPractica button{
+    height: 60px;
+    width: 150px;
+    font-size: 20px;
+    color: white;
+    border-radius: 10px;
+  }
+  #btnCancelar{
+    background-color: red;
+  }
+  #btnRegistrar{
+    background-color: green;
+    margin-left: 50px;
+  }

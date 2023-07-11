@@ -1,0 +1,76 @@
+{% extends maestra %}
+{% block titulo %}Gestionar Linea Desarrollo{% endblock %}
+{% block subtitul %}Gestionar Linea Desarrollo{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/icon-btn.css') }}">
+<link rel="stylesheet" href="{{url_for('static',filename='styles/listarPractica.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+{% endblock %}
+{% block contenido %}
+
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('lineaDesarrollo')}}">Listar</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('NuevalineaDesarrollo')}}">Nuevo</a>
+    </label>
+  </div>
+
+  <div class="tabla" id="contenido-dinamico">
+    <table id="tabla" class="display">
+      <thead>
+      <tr class="headTable">
+        <th>Linea Desarrollo</th>
+        <th>Estado</th>
+        <th>Editar</th>
+        <th>Dar de baja</th> 
+        <th>Eliminar</th>    
+      </tr>
+    </thead>
+
+      {% for linea in lineas %}
+      <tr>
+        <td style="text-align: center;">{{linea[1]}}</td> <!-- el centrado modificarlo y ponerlo en el css -->
+        <td>{{linea[2]}}</td>
+        <td class="editar">        
+            <a href="{{url_for('Modificar_LINEA',id=linea[0])}}"><i class="bi bi-pencil-fill"></i></a>
+        </td>
+        <td>
+            <form action="{{url_for('DARBAJA_LINEA')}}" method="post"> 
+                <input style="display: none;" type="number" value="{{linea[0]}}" name="id">
+                <button type="submit">Si</button>
+            </form>
+        </td>
+        <td>
+            <form action="{{url_for('Eliminar_LINEA')}}" method="post">
+                <input style="display: none;" type="number" value="{{linea[0]}}" name="id">
+                <button type="submit"><img src="{{url_for('static',filename='basura-rojo.png') }}" alt=""></button>
+            </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+{% endblock %}
+
+
+{%block scripts %}
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/paginacion.js') }}"></script>
+
+
+{% endblock %}
