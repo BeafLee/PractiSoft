@@ -426,17 +426,20 @@ def actualizar_desempenio():
     idp= request.form['idPractica']
     n1 = request.form.getlist('resultado1')
     n2 = request.form.getlist('opcionn')
-    print(n1)
-    print(n2)
-    print(no1)
+    
     urlBase = "static/practica/"+str(idp)+"/informe/desempenio"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     firmaImg = request.files["firmaImg"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
-    firmaImg.save(urlFirma)
+    datos = cont_des.listar_todo_desempenio(idp)
+    print(datos[11])
+    if os.path.splitext(firmaImg.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+        firmaImg.save(urlFirma)
+    else: urlFirma = datos[10]
     
+
     cont_des.modificar_desempenio(est, re, pro, com, tra, comp, org, pun, con, urlFirma, idp)
     cont_des.eliminar_resultados(no1)
 

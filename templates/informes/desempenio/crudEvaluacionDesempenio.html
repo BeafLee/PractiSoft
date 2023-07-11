@@ -261,8 +261,9 @@
 
 
                 <h5 style="text-align: center;"> <strong>Firma del Representante de la Institución</strong></h5>
-                <input type="file" class="form-control" id="anexosImg" name="firmaImg" id="firmaImg" required
+                <input type="file" class="form-control" id="anexosImg" name="firmaImg" id="firmaImg"    
                     accept="image/jpeg, image/png">
+                    <label style="padding-bottom: 20px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
                 <br>
                 <h5> <strong>Fecha:</strong>
                     <input type="text" id="fechaActual"  name="fechae" readonly>
@@ -386,10 +387,10 @@
            
             var inputGroup = '<tr id="input-group">' +
                 '<td><input name="tablita'+(idn+1)+'" style="border: none; width: 100%;" type="text"></td>' +
-                ' <td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="D" required></td>' +
-                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="R" required></td>' +
-                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="B" required></td>' +
-                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M" required></td>'+
+                ' <td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="D" ></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="R" ></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="B" ></td>' +
+                '<td><input type="checkbox" onclick="validar'+(idn+1)+'(this)" name="opcionn'+(idn+1)+'" value="M" ></td>'+
                 '<td><button class="btn btn-outline-danger remove-input" type="button">Eliminar</button></td>'+
                 '</tr>';
 
