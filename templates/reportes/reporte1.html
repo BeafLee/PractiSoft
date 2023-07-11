@@ -1,6 +1,6 @@
 {% extends "maestra_d_modulo1.html" %}
-{% block titulo %}Reportes graficos{% endblock %}
-{% block subtitul %}Reportes graficos{% endblock %}
+{% block titulo %}%Estudiante por estado práctica{% endblock %}
+{% block subtitul %}%Estudiante por estado práctica{% endblock %}
 {% block recursos %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/graficos.css') }}">
 {% endblock %}
@@ -49,7 +49,7 @@
             responsive: true
         };
     
-        // Crea el gráfico circular
+        // Crea el gráfico barra
         var ctx = document.getElementById('grafico1').getContext('2d');
         new Chart(ctx, {
             type: 'pie',
