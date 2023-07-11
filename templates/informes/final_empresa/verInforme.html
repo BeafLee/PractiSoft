@@ -114,6 +114,19 @@ Informe final - empresa
                 </div>
 
             </div>
+
+            {% if data[9] == "O" %}
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="Observación">
+                        <h3>Observación</h3>
+                    </label>
+                    <textarea class="form-control" id="observacion" name="observacion" disabled>{{data[13]}}</textarea>
+                </div>
+            </div>
+            {%endif%}
+
             <br>
             <div class="text-center pb-5">
                 <button type="submit" name="btnGuardar" class="btn btn-success">Actualizar</button>

@@ -14,8 +14,8 @@ Editar informe final - empresa
     <div class="container mt-2">
         <br>
         <h1 style="text-align: center;">Informe Final Empresa</h1>
-        
-        
+
+
         <form action="{{url_for('guardar_iiem')}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="idPractica" id="idPractica" value="{{data[6]}}">
             <div class="my-1">
@@ -25,14 +25,16 @@ Editar informe final - empresa
                 <div class="row">
                     <div class="form-group col">
                         <label for="razonSocial">Razón Social:</label>
-                        <input disabled type="text" class="form-control" id="razonSocial" name="razonSocial" value="{{data[0]}}">
+                        <input disabled type="text" class="form-control" id="razonSocial" name="razonSocial"
+                            value="{{data[0]}}">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col">
                         <label for="responsable">Persona responsable de la practica:</label>
-                        <input type="text" disabled class="form-control" id="responsable" name="responsable" value="{{data[1]}}">
+                        <input type="text" disabled class="form-control" id="responsable" name="responsable"
+                            value="{{data[1]}}">
                     </div>
                     <div class="form-group col-3">
                         <label for="cargo">Cargo:</label>
@@ -45,17 +47,21 @@ Editar informe final - empresa
                 <div class="row">
                     <div class="form-group col-3">
                         <label for="responsable">Fecha inicio de la practica:</label>
-                        <input type="text" disabled class="form-control" id="fechaInicio" name="fechaInicio" value="{{data[4]}}" />
+                        <input type="text" disabled class="form-control" id="fechaInicio" name="fechaInicio"
+                            value="{{data[4]}}" />
                     </div>
                     <div class="form-group col-3">
                         <label for="cargo">Fecha fin de la practica:</label>
-                        <input type="text" disabled class="form-control" id="fechaFin" name="fechaFin" value="{{data[5]}}">
+                        <input type="text" disabled class="form-control" id="fechaFin" name="fechaFin"
+                            value="{{data[5]}}">
                     </div>
                 </div>
                 <hr>
                 <div class="my-1">
                     <div class="form-group" id="valoraciones-inputs">
-                        <label for="valoraciones"><h3>Valoración: </h3></label>
+                        <label for="valoraciones">
+                            <h3>Valoración: </h3>
+                        </label>
                         <div class="input-group mb-1">
                             <input type="text" class="form-control" name="valoraciones" value="{{valoraciones}}">
                             <div class="input-group-append">
@@ -76,7 +82,8 @@ Editar informe final - empresa
                         </label>
                         <br>
                         <div class="row ">
-                            <label style="padding-bottom: 3px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
+                            <label style="padding-bottom: 3px;" for="customFile">(Debe seleccionar un archivo .png o
+                                .jpg)</label>
                             <input type="file" class="form-control col mx-3" id="selloEmpImg" name="selloEmpImg"
                                 accept="image/jpeg, image/png" required
                                 placeholder="Subir la imagen del sello de la empresa en formato jpn, png o jpeg">
@@ -91,7 +98,8 @@ Editar informe final - empresa
                         </label>
                         <br>
                         <div class="row ">
-                            <label style="padding-bottom: 3px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
+                            <label style="padding-bottom: 3px;" for="customFile">(Debe seleccionar un archivo .png o
+                                .jpg)</label>
                             <input type="file" class="form-control col mx-3" id="firmaResImg" name="firmaResImg"
                                 accept="image/jpeg, image/png" required
                                 placeholder="Subir la imagen de la firma del responsable en formato jpn, png o jpeg">
@@ -100,6 +108,19 @@ Editar informe final - empresa
                 </div>
 
             </div>
+
+            {% if data[9] == "O" %}
+            <hr>
+            <div class="my-1">
+                <div class="form-group">
+                    <label for="Observación">
+                        <h3>Observación</h3>
+                    </label>
+                    <textarea class="form-control" id="observacion" name="observacion" disabled>data[13]</textarea>
+                </div>
+            </div>
+            {%endif%}
+
             <br>
             <div class="text-center pb-5">
                 <button type="submit" name="btnGuardar" class="btn btn-success">Guardar</button>
