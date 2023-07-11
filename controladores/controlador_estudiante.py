@@ -1,16 +1,8 @@
-from math import isnan
-from sre_compile import isstring
 from bd import obtener_conexion
 import pymysql
 import mysql.connector
 import numpy as np
 import pandas as pd 
-import tkinter
-from tkinter import messagebox
-
-# This code is to hide the main tkinter window
-root = tkinter.Tk()
-root.withdraw()
 
 mydb= mysql.connector.connect(
     host="127.0.0.1",
