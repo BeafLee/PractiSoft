@@ -272,6 +272,12 @@ def DARBAJA_LINEA():
     id=request.form["id"]
     controlador_lineaDesarrollo.DarBaja(id)
     return redirect("/lineaDesarrollo")
+
+@app.route("/DesacerBAJA_LINEA", methods=["POST"])
+def DesacerBAJA_LINEA():  
+    id=request.form["id"]
+    controlador_lineaDesarrollo.DesacerDarBaja(id)
+    return redirect("/lineaDesarrollo")
 #################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
