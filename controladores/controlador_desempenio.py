@@ -64,3 +64,19 @@ def obtener_resultado(id):
 
     conexion.close()
     return resultado
+
+def observar_informe(observacion, idPractica, idInformeDesempeño):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE INFORME_DESEMPEÑO SET estado='O', observacion = %s WHERE idPractica = %s and idInformeDesempeño = %s",
+                       (observacion, idPractica, idInformeDesempeño))
+    conexion.commit()
+    conexion.close()
+
+def aceptar_informe(idPractica, idInformeDesempeño):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE INFORME_DESEMPEÑO SET estado='A', observacion = '' WHERE idPractica = %s and idInformeDesempeño = %s",
+                       (idPractica, idInformeDesempeño))
+    conexion.commit()
+    conexion.close()

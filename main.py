@@ -433,7 +433,7 @@ def actualizar_desempenio():
 
     firmaImg = request.files["firmaImg"]
     datos = cont_des.listar_todo_desempenio(idp)
-    print(datos[11])
+    
     if os.path.splitext(firmaImg.filename)[1] != '':
         urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
         firmaImg.save(urlFirma)
@@ -547,11 +547,21 @@ def actualizar_iies():
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
     firmaImg = request.files["firmaImg"]
-    urlFirmaE = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
-    firmaImg.save(urlFirmaE)
     firmaImg1 = request.files["firmaImg1"]
-    urlFirmaJ = urlBase + "/firma" + os.path.splitext(firmaImg1.filename)[1]
-    firmaImg1.save(urlFirmaJ)
+
+    datos = cont_infes.obtener_firmas(no)
+    
+    if os.path.splitext(firmaImg.filename)[1] != '':
+        urlFirmaE = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+        firmaImg.save(urlFirmaE)
+    else: urlFirmaE = datos[0]
+
+    if os.path.splitext(firmaImg1.filename)[1] != '':
+    
+        urlFirmaJ = urlBase + "/firma" + os.path.splitext(firmaImg1.filename)[1]
+        firmaImg1.save(urlFirmaJ)
+    else: urlFirmaJ = datos[1]
+
     cont_infes.eliminar_plan(no)
     cont_infes.eliminar_objetivos(no)
     for i in range(len(objetivos)):
