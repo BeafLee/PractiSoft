@@ -51,3 +51,28 @@ def obtener_ultimo_ifem():
         idIFEM = cursor.fetchone()
     conexion.close()
     return idIFEM
+
+
+def actualizar_informe_final_empresa(estado,urlFirmaResponsable,urlSelloEmpresa,idInformeFinalEmpresa):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE informe_final_empresa SET estado=%s,urlFirmaResponsable = %s,urlSelloEmpresa = %s WHERE idInformeFinalEmpresa = %s",
+                       (estado,urlFirmaResponsable,urlSelloEmpresa,idInformeFinalEmpresa))
+    conexion.commit()
+    conexion.close()
+
+def actualizar_valoracion(aspectoValoracion,idInformeFinalEmpresa):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE valoracion SET aspectoValoracion = %s WHERE idInformeFinalEmpresa = %s",
+                       (aspectoValoracion,idInformeFinalEmpresa))
+    conexion.commit()
+    conexion.close()  
+
+def eliminar_valoracion(idInformeFinalEmpresa):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("DELETE FROM valoracion WHERE idInformeFinalEmpresa = %s",
+                       (idInformeFinalEmpresa))
+    conexion.commit()
+    conexion.close()   

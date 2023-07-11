@@ -45,7 +45,7 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'PractiSoft/static/files'
+UPLOAD_FOLDER = 'static/files/'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 # Get the uploaded files
@@ -303,11 +303,12 @@ def guardar_practica():
         cont_nprac.enviar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
 
-    return redirect("/practicas")
+    return redirect("/practicasE")
 
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
+    estadoP = cont_prac.obtener_estado(id)
     detalle = cont_dp.listar_detalle_practica(id)
     informe = cont_infes.obtener_informe_iniciales(id)
     informe1=cont_infes.obtener_informe_finales(id)
@@ -316,7 +317,7 @@ def detalle_practica(id):
     informe4=cont_infes.obtener_informe_desemp(id)
     usu = session['usuario']
     tipou=cont_dp.obtener_tipoUsuario(usu[3])
-    return render_template("/practica/detalle_practica.html", usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id = id)
+    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -813,8 +814,8 @@ def generar_informeFinalEstudiante(idPractica):
 ##                          INFORME FINAL - EMPRESA                            ##
 #################################################################################
 
-@app.route("/nuevo_iiem/<int:id>")
-def nuevo_iiem(id):
+@app.route("/nuevo_ifem/<int:id>")
+def nuevo_ifem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
     return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
@@ -822,8 +823,8 @@ def nuevo_iiem(id):
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
-@app.route("/guardar_iiem", methods=["POST"])
-def guardar_iiem():
+@app.route("/guardar_ifem", methods=["POST"])
+def guardar_ifem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
 
@@ -854,42 +855,43 @@ def guardar_iiem():
     return redirect("/detalle_practica/"+idPractica)
 
 
-@app.route("/ver_iiem/<int:id>")
-def ver_iiem(id):
-    data = cont_inf_final_emp.buscar_id(id)
+@app.route("/ver_ifem/<int:id>")
+def ver_ifem(id):
+    data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
-    print(valoraciones)
-    
-
+    data[6]=request.scheme + '://'+ request.host +'/'+ data[6]
+    data[7]=request.scheme + '://'+ request.host +'/'+ data[7]
     return render_template("/informes/final_empresa/verInforme.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
 
-@app.route("/actualizar_iiem", methods=["POST"])
-def actualizar_iiem():
+
+
+@app.route("/actualizar_ifem", methods=["POST"])
+def actualizar_ifem():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
-    urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
+
+    urlBase = "static/practica/"+str(idPractica)+"/informe/final_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
-    aceptacion = request.files["aceptArch"]
-    urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlAcept)
+    
+    selloImg = request.files["selloEmpImg"]
+    urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(selloImg.filename)[1]
+    selloImg.save(urlSelloEmpresa)
+    
+    firmaImg = request.files["firmaResImg"]
+    urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+    firmaImg.save(urlFirmaResponsable)
 
-    firma = request.files["firma"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
-    firma.save(urlFirma)
+    print(idInforme)
+    print(urlSelloEmpresa)
+    print(urlFirmaResponsable)
 
-    sello = request.files["sello"]
-    urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
-    sello.save(urlSello)
-
-    fechaEntrega = request.form["fechaE"]
-    labores = cont_iie.concat_labores(request.form.getlist("labor"))
     if 'btnGuardar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("P",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
-    if 'btnEnviar' in request.form:
-        cont_iie.actualizar_informe_inicial_empresa("E",urlAcept,fechaEntrega,labores,urlFirma,urlSello,idInforme)
+        cont_inf_final_emp.actualizar_informe_final_empresa("G",urlFirmaResponsable,urlSelloEmpresa,idInforme)
+    if 'btnActualizarEnviar' in request.form:
+        cont_inf_final_emp.actualizar_informe_final_empresa("E",urlFirmaResponsable,urlSelloEmpresa,idInforme)
     return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/generar_informeFinalEmpresa/<int:id>")
@@ -900,11 +902,13 @@ def generar_informeFinalEmpresa(id):
     lista_resultante = [item[0] for item in data2]
     idPractica = data[14]
     firmas = [request.scheme +'://'+ request.host +'/'+data[6],request.scheme +'://'+ request.host +'/'+data[7]]
+
     context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
                          "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
 
     #Generamos el contenido para el informe
     output_text_contenido = render_template("/informes/final_empresa/contenido.html", context = context_contenido,firmas=firmas)
+
     output_pdf_contenido = 'static/practica/' + str(idPractica) + '/informe/final_empresa'
     if not os.path.exists(output_pdf_contenido):
         os.makedirs(output_pdf_contenido)
@@ -1332,13 +1336,17 @@ def editar_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_iie/<int:id>")
 def ver_iie(id):
@@ -1346,33 +1354,44 @@ def ver_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/actualizar_iie", methods=["POST"])
 def actualizar_iie():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
+    iie = cont_iie.buscar_informe_inicial_empresa_id(idPractica)
     urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = "aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlAcept)
+    if os.path.splitext(aceptacion.filename)[1] != '':
+        urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+        aceptacion.save(urlAcept)
+    else: urlAcept = iie[1]
 
     firma = request.files["firma"]
-    urlFirma = "firma" + os.path.splitext(firma.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlFirma)
+    if os.path.splitext(firma.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+        firma.save(urlFirma)
+    else: urlFirma = iie[4]
 
     sello = request.files["sello"]
-    urlSello = "sello" + os.path.splitext(sello.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlSello)
+    if os.path.splitext(sello.filename)[1] != '':
+        urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+        sello.save(urlSello)
+    else: urlSello = iie[5]
 
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
@@ -1396,16 +1415,16 @@ def generar_iie(id):
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
-
 #################################################################################
 ##                                  REPORTE                                   ##
 #################################################################################
 
-@app.route("/reporte1")
+@app.route("/reporte1aa")
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+
 
 #################################################################################
 ##                                DISTRITO                                    ##
