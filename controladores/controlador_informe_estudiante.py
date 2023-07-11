@@ -41,6 +41,14 @@ def obtener_informe_iniciales(id):
         informe = cursor.fetchone()
     conexion.close()
     return informe
+def obtener_informe_iniciales1(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,CASE WHEN estado = 'G' THEN 'Guardado' WHEN estado = 'O' THEN 'Observado' WHEN estado = 'E' THEN 'Enviado' WHEN estado = 'A' THEN 'Aceptado' END AS estado,idInformeInicialEst from INFORME_INICIAL_ESTUDIANTE where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
 def obtener_totalh(id):
     conexion = obtener_conexion()
     informe = []
@@ -117,11 +125,27 @@ def obtener_informe_finales(id):
         informe = cursor.fetchone()
     conexion.close()
     return informe
+def obtener_informe_finales1(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,CASE WHEN estado = 'G' THEN 'Guardado' WHEN estado = 'O' THEN 'Observado' WHEN estado = 'E' THEN 'Enviado' WHEN estado = 'A' THEN 'Aceptado' END AS estado from INFORME_FINAL_ESTUDIANTE where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
 def obtener_informe_final_em(id):
     conexion = obtener_conexion()
     informe = []
     with conexion.cursor() as cursor:
         cursor.execute("SELECT fechaEntrega,estado from INFORME_FINAL_EMPRESA where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
+def obtener_informe_final_em1(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,CASE WHEN estado = 'G' THEN 'Guardado' WHEN estado = 'O' THEN 'Observado' WHEN estado = 'E' THEN 'Enviado' WHEN estado = 'A' THEN 'Aceptado' END AS estado from INFORME_FINAL_EMPRESA where idPractica=%s",(id))
         informe = cursor.fetchone()
     conexion.close()
     return informe
@@ -133,11 +157,27 @@ def obtener_informe_desemp(id):
         informe = cursor.fetchone()
     conexion.close()
     return informe
+def obtener_informe_desemp1(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,CASE WHEN estado = 'G' THEN 'Guardado' WHEN estado = 'O' THEN 'Observado' WHEN estado = 'E' THEN 'Enviado' WHEN estado = 'A' THEN 'Aceptado' END AS estado,idInformeDesempeño from INFORME_DESEMPEÑO where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
 def obtener_informe_inicial_em(id):
     conexion = obtener_conexion()
     informe = []
     with conexion.cursor() as cursor:
         cursor.execute("SELECT fechaEntrega,estado from INFORME_INICIAL_EMPRESA where idPractica=%s",(id))
+        informe = cursor.fetchone()
+    conexion.close()
+    return informe
+def obtener_informe_inicial_em1(id):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT fechaEntrega,CASE WHEN estado = 'G' THEN 'Guardado' WHEN estado = 'O' THEN 'Observado' WHEN estado = 'E' THEN 'Enviado' WHEN estado = 'A' THEN 'Aceptado' END AS estado from INFORME_INICIAL_EMPRESA where idPractica=%s",(id))
         informe = cursor.fetchone()
     conexion.close()
     return informe

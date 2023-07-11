@@ -335,19 +335,23 @@ def guardar_practica():
 
     return redirect("/practicasE")
 
-###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
 def detalle_practica(id):
     estadoP = cont_prac.obtener_estado(id)
-    detalle = cont_dp.listar_detalle_practica(id)
+    detalle = cont_dp.listar_detalle_practica1(id)
     informe = cont_infes.obtener_informe_iniciales(id)
     informe1=cont_infes.obtener_informe_finales(id)
     informe2=cont_infes.obtener_informe_inicial_em(id)
     informe3=cont_infes.obtener_informe_final_em(id)
     informe4=cont_infes.obtener_informe_desemp(id)
+    informe10 = cont_infes.obtener_informe_iniciales1(id)
+    informe11=cont_infes.obtener_informe_finales1(id)
+    informe12=cont_infes.obtener_informe_inicial_em1(id)
+    informe13=cont_infes.obtener_informe_final_em1(id)
+    informe14=cont_infes.obtener_informe_desemp1(id)
     usu = session['usuario']
     tipou=cont_dp.obtener_tipoUsuario(usu[3])
-    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
+    return render_template("/practica/detalle_practica.html", estadoP=estadoP, usuario = usu, detalle = detalle,informe=informe,informe1=informe1,informe2=informe2,informe3=informe3,informe4=informe4,informe10=informe10,informe11=informe11,informe12=informe12,informe13=informe13,informe14=informe14,mostrar_boton=True,mostrar_boton1=True,tipou=tipou, id=id)
 
 @app.route("/editar_Practica/<int:id>")
 def editar_Practica(id):
@@ -510,6 +514,27 @@ def guardar_desempenio():
         es = request.form.get(escala)
         cont_des.insertar_resultado(no, es,idd)
     return redirect("/detalle_practica/"+idp)
+
+@app.route("/revisarInformeDesempenio/<int:id>/<int:id1>")
+def revisarInformeDesempenio(id1,id):
+    datos = cont_des.listar_desempenio(id)
+    resultados = cont_des.obtener_resultado(id1)
+    todos = cont_des.listar_todo_desempenio(id)
+    return render_template("/informes/desempenio/revisiondesempenio.html", usuario = session['usuario'],datos=datos,resultados=resultados,todos=todos,informe=id1)
+
+
+@app.route("/corregir_informeDesempenio", methods=["POST"])
+def corregir_informeDesempenio():
+    no1=request.form['idInforme']
+    idp= request.form['idPractica']
+    estado = request.form["btn"]
+    if estado == "A":
+        cont_des.aceptar_informe(no1, idp)
+    else:
+        observacion = request.form["observacion"]
+        cont_des.observar_informe(observacion, no1, idp)
+    return redirect("/detalle_practica/"+idp)
+
 
 #################################################################################
 ##                        INFORME INICIAL ESTUDIANTE                           ##
@@ -1302,9 +1327,10 @@ def guardar_empresa():
     telefono2 = request.form["telefono2"]
     correo = request.form["correo"]
     pais = request.form["pais"]
-    distrito = request.form["distrito"]
+    
 
     if pais == '24':
+        distrito = request.form["distrito"]
         cont_emp.insertar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito)
     else: cont_emp.insertar_empresa_internacional(razonSocial,direccion,ruc,telefono,telefono2,correo,pais)
     return redirect("/empresas")

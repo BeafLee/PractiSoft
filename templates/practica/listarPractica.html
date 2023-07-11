@@ -1,4 +1,8 @@
-{% extends maestra %}
+{% if usuario[5]=="D" %}
+{% extends "maestra_d_modulo1.html" %}
+{% else %}
+{% extends "maestra_e.html" %}
+{% endif %}
 {% block titulo %}Gestionar práctica{% endblock %}
 {% block subtitul %}Gestionar práctica{% endblock %}
 {% block recursos %}
