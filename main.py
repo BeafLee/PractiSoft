@@ -46,7 +46,7 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'static/files/'
+UPLOAD_FOLDER = 'PractiSoft/static/files/'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 # Get the uploaded files
