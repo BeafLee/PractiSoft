@@ -45,7 +45,7 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'PractiSoft/static/files'
+UPLOAD_FOLDER = 'static/files/'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 # Get the uploaded files
@@ -303,7 +303,7 @@ def guardar_practica():
         cont_nprac.enviar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
 
-    return redirect("/practicas")
+    return redirect("/practicasE")
 
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
@@ -606,14 +606,13 @@ def guardar_iies():
 separadorText = '/%/'
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
-@app.route("/afe/<int:idPractica>")
 @app.route("/agregarInformeFinalEstudiante/<int:idPractica>")
 def agregarInformeFinalEstudiante(idPractica):
     extraData = cont_inf_final_est.buscarOtraData_idPractica(idPractica)
     data = ["Crear", 1, extraData[0], extraData[1]]
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    estado = "-"
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
-@app.route("/efe/<int:idPractica>")
 @app.route("/editarInformeFinalEstudiante/<int:idPractica>")
 def editarInformeFinalEstudiante(idPractica):
     infoData = cont_inf_final_est.buscar_id(idPractica)
@@ -621,13 +620,12 @@ def editarInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-
+    estado = infoData #se usa para saber el estado y el texto de observacion
     data = ["Editar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Editar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
 
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
-@app.route("/vfe/<int:idPractica>")
 @app.route("/InformeFinalEstudiante/<int:idPractica>")
 def verInformeFinalEstudiante(idPractica):
     infoData = cont_inf_final_est.buscar_id(idPractica)
@@ -635,11 +633,38 @@ def verInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-    
+    estado = infoData #se usa para saber el estado y el texto de observacion
     data = ["Ver", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Ver", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
+@app.route("/revisarInformeFinalEstudiante/<int:idPractica>")
+def revisarInformeFinalEstudiante(idPractica):
+    infoData = cont_inf_final_est.buscar_id(idPractica)
+    
+    #Separar las conclusiones y recomendaciones en listas
+    conclusiones = infoData[12].split(separadorText)
+    recomendaciones = infoData[13].split(separadorText)
+    
+    estado = infoData#se usa para saber el estado y el texto de observacion 
+    data = ["Revisar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
+    #data = ["Revisar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
+
+@app.route("/corregir_informeFinalEstudiante", methods=["POST"])
+def corregir_informeFinalEstudiante():
+    idPractica = request.form["idPractica"]
+    idInforme = request.form["idInforme"]
+
+    estado = request.form["btn"]
+
+    if estado == "A":
+        cont_inf_final_est.aceptar_informe(idPractica, idInforme)
+    else:
+        observacion = request.form["observacion"]
+        cont_inf_final_est.observar_informe(observacion, idPractica, idInforme)
+
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/guardar_informeFinalEstudiante", methods=["POST"])
 def guardar_informeFinalEstudiante():
@@ -672,7 +697,7 @@ def guardar_informeFinalEstudiante():
     urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
     anexosPdf.save(urlBase + "/" + urlAnexos)
 
-    estado = "G" #Guardado
+    estado = request.form["btn"]
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
@@ -719,8 +744,9 @@ def actualizar_informeFinalEstudiante():
         anexosPdf.save(urlBase + "/" + urlAnexos)
     else: urlAnexos = infoData[20]
 
-    estado = "G" #Guardado
-
+    estado = request.form["btn"]
+    # if "E" in request.form:
+    #     estado = "E"
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
@@ -792,7 +818,7 @@ def generar_informeFinalEstudiante(idPractica):
 #################################################################################
 
 @app.route("/nuevo_ifem/<int:id>")
-def nuevo_iiem(id):
+def nuevo_ifem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
     return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
@@ -801,7 +827,7 @@ def nuevo_iiem(id):
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
 @app.route("/guardar_ifem", methods=["POST"])
-def guardar_iiem():
+def guardar_ifem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
 
@@ -833,7 +859,7 @@ def guardar_iiem():
 
 
 @app.route("/ver_ifem/<int:id>")
-def ver_iiem(id):
+def ver_ifem(id):
     data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
@@ -1396,11 +1422,12 @@ def generar_iie(id):
 ##                                  REPORTE                                   ##
 #################################################################################
 
-@app.route("/reporte1")
+@app.route("/reporte1aa")
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+
 
 #################################################################################
 ##                                DISTRITO                                    ##
