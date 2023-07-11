@@ -219,7 +219,7 @@
               <td scope="row" id="estado">{{informe2[1]}}</td>
               <td>
                 {% if tipou[0]=="D" %}
-                <a href=""><!-- Link Para que el docente revise el final estudiante --><i
+                <a href="{{url_for('observariie', id=id)}}"><!-- Link Para que el docente revise el final estudiante --><i
                     class="bi bi-book-half"></i></a>
                 {% endif %}
               </td>

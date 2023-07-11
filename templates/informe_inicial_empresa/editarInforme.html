@@ -102,6 +102,16 @@
           </div>
         </div>
       </div>
+      {% if iie[7] != None %}
+      <div class="my-1">
+        <div class="form-group">
+            <label for="Observación">
+                <h3>Observación</h3>
+            </label>
+            <textarea class="form-control" id="observacion" name="observacion" disabled>{{iie[7]}}</textarea>
+        </div>
+      </div>
+      {% endif %}
       <div class="d-flex justify-content-end">
         <div class="text-center py-5">
           <a href="{{url_for('detalle_practica',id=info[6])}}" class="btn btn-danger">Cancelar</a>
