@@ -200,7 +200,6 @@ def importData (filePath):
                 mydb.commit()
                 
             else:
-                print(isstring(row['correo2']),isstring(row['telefono2']==False))
                 sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, correo2, telefono1, telefono2, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
                 value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],int(row['dni']),row['correo1'],row['correo2'],int(row['telefono1']),int(row['telefono2']),row['direccion'],plEst,idU[0],dis[0],pais[0])
                 mycursormydb.execute(sql2, value2)

@@ -106,7 +106,7 @@ def insertar_practica(fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad 
     conexion = obtener_conexion()
 
     with conexion.cursor() as cursor:
-        cursor.execute("INSERT INTO PRACTICA(idPractica ,fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi,estado,esConvalidado,estadoPractica,estadoEnvio ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'N','N','N','G')",
+        cursor.execute("INSERT INTO PRACTICA(idPractica ,fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi,estado,esConvalidado,estadoPractica,estadoEnvio ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'P','N','I','G')",
                        (obtener_ultimoidPractica(),fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi))
     conexion.commit()
     conexion.close()
@@ -115,7 +115,7 @@ def enviar_practica(fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,i
     conexion = obtener_conexion()
 
     with conexion.cursor() as cursor:
-        cursor.execute("INSERT INTO PRACTICA(idPractica ,fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi,estado,esConvalidado,estadoPractica,estadoEnvio ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'N','N','N','E')",
+        cursor.execute("INSERT INTO PRACTICA(idPractica ,fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi,estado,esConvalidado,estadoPractica,estadoEnvio ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'P','N','I','E')",
                        (obtener_ultimoidPractica(),fechaInicio ,fechaFin,horasPractica,fechaLimite,modalidad ,idEstudiante ,idJefe ,idPersonal ,idLinea ,idSemestreIn,idSemestreFi))
     conexion.commit()
     conexion.close()

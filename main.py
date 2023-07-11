@@ -46,7 +46,7 @@ config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkht
 ##                              IMPORTE EXCEL                                  ##
 #################################################################################
 # Upload folder
-UPLOAD_FOLDER = 'PractiSoft/static/files'
+UPLOAD_FOLDER = 'static/files/'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 # Get the uploaded files
@@ -80,31 +80,6 @@ def uploadFiles():
 @app.route('/<mostrar>')
 def iniciarSesion(mostrar='no mostrar'):
     return render_template("/login.html", mostrarModal = mostrar)
-
-@app.route('/graficoCajan')
-def graficoCajan():   
-    lineasPracticas=controladorGrafico.obtener_cantidadPracticasLineaD()
-    datos = {}
-    for nombre, cantidad in lineasPracticas:
-        datos[nombre] = cantidad
-    return render_template("/reportes/grafico.html",datos=datos,lineasPracticas=lineasPracticas,maestra=session['maestra'],usuario=session['usuario'])
-
-@app.route('/reporte1')
-def reporte1():   
-    practicasC=controladorGrafico.obtener_reporte1()
-    datos = {}
-    for nombre, cantidad in practicasC:
-        datos[nombre] = cantidad
-    return render_template("/reportes/reporte1.html",datos=datos,practicasC=practicasC,maestra=session['maestra'],usuario=session['usuario'])
-
-@app.route('/reporte2')
-def reporte2():   
-    practicasA=controladorGrafico.obtener_reporte2()
-    datos = {}
-    for nombre, cantidad in practicasA:
-        datos[nombre] = cantidad
-    return render_template("/reportes/reporte2.html",datos=datos,practicasA=practicasA,maestra=session['maestra'],usuario=session['usuario'])
-
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -311,6 +286,13 @@ def EnviarPractica():
     id=request.form["id"]
     cont_prac.EnviarPractica(id)
     return redirect("practicasE")
+
+@app.route("/EnProcesoPractica",methods=["POST"])
+def EnProcesoPractica():
+    id=request.form["id"]
+    cont_prac.EnProceso(id)
+    return redirect("practicas")
+###     AGREGAR PRACTICA
 ###     AGREGAR PRACTICA
 
 @app.route("/agregar_practica")
@@ -1511,7 +1493,31 @@ def generar_iie(id):
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html",reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra="maestra_d_modulo1.html",reportes1 = reportes1,reportes2 = reportes2)
+
+@app.route('/graficoCajan')
+def graficoCajan():   
+    lineasPracticas=controladorGrafico.obtener_cantidadPracticasLineaD()
+    datos = {}
+    for nombre, cantidad in lineasPracticas:
+        datos[nombre] = cantidad
+    return render_template("/reportes/grafico.html",datos=datos,lineasPracticas=lineasPracticas,maestra=session['maestra'],usuario=session['usuario'])
+
+@app.route('/reporte1')
+def reporte1():   
+    practicasC=controladorGrafico.obtener_reporte1()
+    datos = {}
+    for nombre, cantidad in practicasC:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte1.html",datos=datos,practicasC=practicasC,maestra=session['maestra'],usuario=session['usuario'])
+
+@app.route('/reporte2')
+def reporte2():   
+    practicasA=controladorGrafico.obtener_reporte2()
+    datos = {}
+    for nombre, cantidad in practicasA:
+        datos[nombre] = cantidad
+    return render_template("/reportes/reporte2.html",datos=datos,practicasA=practicasA,maestra=session['maestra'],usuario=session['usuario'])
 
 
 #################################################################################
