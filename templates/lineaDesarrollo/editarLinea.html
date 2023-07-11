@@ -1,0 +1,51 @@
+{% extends maestra %}
+{% block titulo %}Agregar práctica{% endblock %}
+{% block subtitul %}Agregar práctica{% endblock %}
+{% block recursos %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/linea.css') }}">
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/semestre.js') }}"></script>
+{% endblock %}
+{% block contenido %}
+
+
+<section>
+  <div class="barraGest">
+    <!--Le ponen el class "gestSelect" cuando quieran que se vea seleccionado-->
+    <label class="btnOp">
+      <a href="{{url_for('index_s')}}">Inicio</a>
+    </label>
+    <label class="btnOp">
+      <a href="{{url_for('lineaDesarrollo')}}">Listar</a>
+    </label>
+    <label class="btnOp gestSelect">
+      <a href="#" class="gestSelect">Nuevo</a>
+    </label>
+  </div>
+
+
+  <div class="contentlineaD">
+    <form action="{{url_for('Actualizar_LINEA')}}" method="post" class="nuevaPractica">
+
+        <h2>LINEA DESARROLLO</h2>
+        {% for linea in linea %}
+        <input type="text" name="linea" value="{{linea[1]}}">
+        <br>
+        <input type="text" name="id" style="display: none;" value="{{linea[0]}}">
+        {% endfor %}
+        <div class="btnsNuevaPractica" style="margin-top: 20px;">
+          <button id="btnCancelar">
+            <a href="{{url_for('lineaDesarrollo')}}">Cancelar</a>
+          </button>
+          <button id="btnRegistrar" name="action" type="submit" value="Guardar">
+            Guardar
+          </button>
+        </div>
+    
+      </form>
+  </div>
+
+</section>
+{% endblock %}
+{%block scripts %}
+<script type="text/javascript" src="{{url_for('static',filename='assets/js/practica.js') }}"></script>
+{% endblock %}

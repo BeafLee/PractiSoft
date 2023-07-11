@@ -30,6 +30,7 @@ import controladores.controlador_jefe_inmediato as controlador_jefe_inmediato
 import controladores.localidad as cont_localidad
 import controladores.controlador_informe_estudiante as cont_infes
 import controladores.controlador_desempenio as cont_des
+import controladores.controlador_lineaDesarrollo as controlador_lineaDesarrollo
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -229,7 +230,48 @@ def get_image(filepath):
     folder_path, filename = os.path.split(filepath)
     return send_from_directory(folder_path, filename)
 
+#################################################################################
+##                                  Linea Desarrollo                                   ##
+#################################################################################
+###     GESTIONAR LINEA
+@app.route("/lineaDesarrollo")
+def lineaDesarrollo():
+    lineas = controlador_lineaDesarrollo.obtener_Lineas()
+    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/NuevalineaDesarrollo")
+def NuevalineaDesarrollo():
+    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/guardar_LINEA", methods=["POST"])
+def guardar_LINEA():  
+    linea = request.form["linea"]
+    controlador_lineaDesarrollo.insertar_linea(linea)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/Modificar_LINEA/<int:id>")
+def Modificar_LINEA(id):  
+    linea=controlador_lineaDesarrollo.obtener_LineaID(id)
+    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/Actualizar_LINEA", methods=["POST"])
+def Actualizar_LINEA():  
+    linea = request.form["linea"]
+    id=request.form["id"]
+    controlador_lineaDesarrollo.actualizar_Linea(linea,id)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/Eliminar_LINEA", methods=["POST"])
+def Eliminar_LINEA():  
+    id=request.form["id"]
+    controlador_lineaDesarrollo.eliminar_Linea(id)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/DARBAJA_LINEA", methods=["POST"])
+def DARBAJA_LINEA():  
+    id=request.form["id"]
+    controlador_lineaDesarrollo.DarBaja(id)
+    return redirect("/lineaDesarrollo")
 #################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
