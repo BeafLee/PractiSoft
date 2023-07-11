@@ -237,11 +237,11 @@ def get_image(filepath):
 @app.route("/lineaDesarrollo")
 def lineaDesarrollo():
     lineas = controlador_lineaDesarrollo.obtener_Lineas()
-    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/NuevalineaDesarrollo")
 def NuevalineaDesarrollo():
-    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/guardar_LINEA", methods=["POST"])
 def guardar_LINEA():  
@@ -252,7 +252,7 @@ def guardar_LINEA():
 @app.route("/Modificar_LINEA/<int:id>")
 def Modificar_LINEA(id):  
     linea=controlador_lineaDesarrollo.obtener_LineaID(id)
-    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/Actualizar_LINEA", methods=["POST"])
 def Actualizar_LINEA():  
@@ -920,6 +920,26 @@ def ver_ifem(id):
     return render_template("/informes/final_empresa/verInforme.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
 
 
+@app.route("/ver_ifem_obs/<int:id>")
+def ver_ifem_obs(id):
+    data = list(cont_inf_final_emp.buscar_id(id))
+    val = cont_inf_final_emp.buscar_valoracion(id)
+    valoraciones = [item[0] for item in val]
+    data[6]=request.scheme + '://'+ request.host +'/'+ data[6]
+    data[7]=request.scheme + '://'+ request.host +'/'+ data[7]
+    return render_template("/informes/final_empresa/observar.html",valoraciones=valoraciones, data = data,  usuario = session['usuario'], maestra=session['maestra'])
+
+
+@app.route("/observar_ifem", methods=["POST"])
+def observar_ifem():
+    idInforme = request.form["idInforme"]
+    idPractica = request.form["idPractica"]
+    obs = request.form["observacion"]
+    if 'btnObservar' in request.form:
+        cont_inf_final_emp.actualizar_obs_informe_final_empresa("O",obs,idInforme)
+    if 'btnAceptar' in request.form:
+        cont_inf_final_emp.actualizar_obs_informe_final_empresa("A",obs,idInforme)
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/actualizar_ifem", methods=["POST"])
 def actualizar_ifem():
@@ -929,15 +949,19 @@ def actualizar_ifem():
     urlBase = "static/practica/"+str(idPractica)+"/informe/final_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
+    
 
-    
-    selloImg = request.files["selloEmpImg"]
-    urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(selloImg.filename)[1]
-    selloImg.save(urlSelloEmpresa)
-    
-    firmaImg = request.files["firmaResImg"]
-    urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
-    firmaImg.save(urlFirmaResponsable)
+    firma = request.files["firmaResImg"]
+    if os.path.splitext(firma.filename)[1] != '':
+        urlFirmaResponsable = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+        firma.save(urlFirmaResponsable)
+    else: urlFirmaResponsable = cont_inf_final_emp.buscar_firma(idInforme)
+
+    sello = request.files["firmaResImg"]
+    if os.path.splitext(firma.filename)[1] != '':
+        urlSelloEmpresa = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+        sello.save(urlSelloEmpresa)
+    else: urlSelloEmpresa = cont_inf_final_emp.buscar_sello(idInforme)    
 
     print(idInforme)
     print(urlSelloEmpresa)
@@ -949,6 +973,7 @@ def actualizar_ifem():
         cont_inf_final_emp.actualizar_informe_final_empresa("E",urlFirmaResponsable,urlSelloEmpresa,idInforme)
     return redirect("/detalle_practica/"+idPractica)
 
+@app.route("/gifem/<int:id>")
 @app.route("/generar_informeFinalEmpresa/<int:id>")
 def generar_informeFinalEmpresa(id):
     #controlador obtener
@@ -957,7 +982,9 @@ def generar_informeFinalEmpresa(id):
     lista_resultante = [item[0] for item in data2]
     idPractica = data[14]
     firmas = [request.scheme +'://'+ request.host +'/'+data[6],request.scheme +'://'+ request.host +'/'+data[7]]
-
+    print(firmas)
+    print(data[6])
+    print(data[7])
     context_contenido = {'nombreEmpresa': data[0],'responsable': data[1],'cargo': data[2],'estudiante': data[3],'fechaInicio': data[4],'fechaFin': data[5],
                          "valoraciones": lista_resultante,'urlFirma': data[6],'urlSello': data[7]}
 
@@ -1052,7 +1079,7 @@ def facultades():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         facultades = cont_fac.obtener_facultad()
         usu = session['usuario']
-        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra=session['maestra'], facultades = facultades)
+        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra="maestra_d_modulo2.html", facultades = facultades)
     else:
         return redirect('/index_supremo')
 
@@ -1129,7 +1156,7 @@ def escuelas():
         escuelas = cont_esc.obtener_escuela()
         usu = session['usuario']
     #print("Datos:",usu)
-        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra=session['maestra'], escuelas = escuelas)
+        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra="maestra_d_modulo2.html", escuelas = escuelas)
     else:
         return redirect('/index_supremo')
 
@@ -1219,7 +1246,7 @@ def estudiantes():
         estudiantes = cont_est.obtener_estudiante()
         usu = session['usuario']
     #print("Datos:",usu)
-        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
+        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra="maestra_d_modulo2.html", estudiantes = estudiantes,error_statement="")
     else:
         return redirect('/index_supremo')
 
@@ -1307,12 +1334,12 @@ def editar_empresa(id):
         dis = cont_emp.listar_distrito(info[2])
         bandera = True
         disable = ''
-        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, prov = prov, dis = dis, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra="maestra_d_modulo1.html")
     else: 
         info = cont_emp.nombrePais(empresa[9])
         bandera = False
         disable = 'disabled'
-        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra=session['maestra'])
+        return render_template("/empresa/editarEmpresa.html", empresa=empresa, paises=paises, dep = dep, info = info, bandera = bandera, disable = disable ,  usuario = session['usuario'], maestra="maestra_d_modulo1.html")
 
 @app.route("/ver_empresa/<int:id>")
 def ver_empresa(id):
@@ -1478,7 +1505,7 @@ def generar_iie(id):
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html",reportes1 = reportes1,reportes2 = reportes2)
 
 
 #################################################################################
@@ -1720,12 +1747,12 @@ def obtener_provincias():
 @app.route("/JefeInmediato")
 def JefeInmediato():
     jefes = controlador_jefe_inmediato.obtener_Jefe()
-    return render_template("/Jefe_Inmediato/jefe.html", jefes=jefes, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/Jefe_Inmediato/jefe.html", jefes=jefes, usuario = session['usuario'], maestra="maestra_d_modulo1.html")
 
 @app.route("/DetalleJefeInmediato/<int:id>")
 def DetalleJefeInmediato(id):
     jefes = controlador_jefe_inmediato.obtener_DetalleJefe(id)
-    return render_template("/Jefe_Inmediato/detalle_jefe.html", jefes=jefes, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/Jefe_Inmediato/detalle_jefe.html", jefes=jefes, usuario = session['usuario'], maestra="maestra_d_modulo1.html")
 
 @app.route("/AgregarJefeInmediato")
 def AgregarJefeInmediato():

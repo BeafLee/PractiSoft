@@ -1,35 +1,35 @@
-<h3 style="text-align: center; margin-top: 5%;">INFORME FINAL SOBRE LAS PRACTICAS PRE PROFESIONALES</h3>
-<h3 style="text-align: center; margin-top: 0%;">(ELABORADO POR LA EMPRESA/INSTITUCI&Oacute;N)</h3>
+<h3 style="text-align: center; margin-top: 5%; font-family:  Calibri;">INFORME FINAL SOBRE LAS PRACTICAS PRE PROFESIONALES</h3>
+<h3 style="text-align: center; margin-top: 0%; font-family:  Calibri;">(ELABORADO POR LA EMPRESA/INSTITUCI&Oacute;N)</h3>
 <ol style="margin-left: 10%; margin-top: 3%;">
-    <li><strong>Nombre de la Empresa/Instituci&oacute;n</strong> <br />{{context.nombreEmpresa}}</li>
+    <li style="font-family:  Calibri;"><strong>Nombre de la Empresa/Instituci&oacute;n</strong> <br />{{context.nombreEmpresa}}</li>
     <br />
-    <li><strong>Persona de la Empresa/Intituci&ograve;n responsable de la practica</strong>
+    <li style="font-family:  Calibri;"><strong>Persona de la Empresa/Intituci&ograve;n responsable de la practica</strong>
         <br />{{context.responsable}}
     </li>
     <br />
-    <li><strong>Cargo</strong> <br />{{context.cargo}}</li>
+    <li style="font-family:  Calibri;"><strong>Cargo</strong> <br />{{context.cargo}}</li>
     <br />
-    <li><strong>Nombre y apellidos del estudiante</strong> <br />{{context.estudiante}}</li>
+    <li style="font-family:  Calibri;"><strong>Nombre y apellidos del estudiante</strong> <br />{{context.estudiante}}</li>
     <br />
-    <li><strong>Fecha de inicio de la practica</strong> <br />{{context.fechaInicio}}</li>
+    <li style="font-family:  Calibri;"><strong>Fecha de inicio de la practica</strong> <br />{{context.fechaInicio}}</li>
     <br />
-    <li><strong>Fecha de t&eacute;rmino de la practica</strong> <br />{{context.fechaFin}}</li>
+    <li style="font-family:  Calibri;"><strong>Fecha de t&eacute;rmino de la practica</strong> <br />{{context.fechaFin}}</li>
     <br />
-    <li><strong>Valoraci&oacute;n sobre el trabajo realizado por el estudiante</strong>
-        <ul style="list-style-type: disc;">
+    <li style="font-family:  Calibri;"><strong>Valoraci&oacute;n sobre el trabajo realizado por el estudiante</strong>
+        <ul style="list-style-type: disc; font-family:  Calibri;">
             {% for valoracion in context.valoraciones %}
             <li>{{valoracion}}</li>
             {% endfor %}
         </ul>
     </li> 
     <br /><br />
-    <li style="margin-top: 5%;"><strong>Fecha, firma del responsable y sello de la
+    <li style="margin-top: 5%; font-family:  Calibri;"><strong>Fecha, firma del responsable y sello de la
             Empresa/Instituci&oacute;n</strong><br /><br />
             <img src="{{firmas[0]}}" alt="firma" width="650" height="200" /> 
             <img src="{{firmas[1]}}" alt="sello" width="650" height="200" />
     </li>
 </ol>
-<h4 style="text-align: center; margin-bottom: 0%;">
+<h4 style="text-align: center; margin-bottom: 0%; font-family:  Calibri;">
     <strong>{{context.responsable}}</strong>
 </h4>
-<h4 style="text-align: center; margin-top: 0%;"><strong>{{context.cargo}}</strong></h4>
+<h4 style="text-align: center; margin-top: 0%; font-family:  Calibri;"><strong>{{context.cargo}}</strong></h4>
