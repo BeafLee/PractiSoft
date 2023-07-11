@@ -980,7 +980,7 @@ def facultades():
     if 'usuario' in session and session['usuario'][4] == 'Docente de apoyo':
         facultades = cont_fac.obtener_facultad()
         usu = session['usuario']
-        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra=session['maestra'], facultades = facultades)
+        return render_template("/facultad/listarFacultad.html", usuario = usu, maestra="maestra_d_modulo2.html", facultades = facultades)
     else:
         return redirect('/index_supremo')
 
@@ -1057,7 +1057,7 @@ def escuelas():
         escuelas = cont_esc.obtener_escuela()
         usu = session['usuario']
     #print("Datos:",usu)
-        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra=session['maestra'], escuelas = escuelas)
+        return render_template("/escuela/listarEscuela.html", usuario = usu, maestra="maestra_d_modulo2.html", escuelas = escuelas)
     else:
         return redirect('/index_supremo')
 
@@ -1147,7 +1147,7 @@ def estudiantes():
         estudiantes = cont_est.obtener_estudiante()
         usu = session['usuario']
     #print("Datos:",usu)
-        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra=session['maestra'], estudiantes = estudiantes,error_statement="")
+        return render_template("/estudiante/listarEstudiante.html", usuario = usu, maestra="maestra_d_modulo2.html", estudiantes = estudiantes,error_statement="")
     else:
         return redirect('/index_supremo')
 
