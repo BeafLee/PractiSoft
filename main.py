@@ -237,11 +237,11 @@ def get_image(filepath):
 @app.route("/lineaDesarrollo")
 def lineaDesarrollo():
     lineas = controlador_lineaDesarrollo.obtener_Lineas()
-    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/NuevalineaDesarrollo")
 def NuevalineaDesarrollo():
-    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/guardar_LINEA", methods=["POST"])
 def guardar_LINEA():  
@@ -252,7 +252,7 @@ def guardar_LINEA():
 @app.route("/Modificar_LINEA/<int:id>")
 def Modificar_LINEA(id):  
     linea=controlador_lineaDesarrollo.obtener_LineaID(id)
-    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra="maestra_d_modulo2.html")
 
 @app.route("/Actualizar_LINEA", methods=["POST"])
 def Actualizar_LINEA():  
