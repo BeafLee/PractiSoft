@@ -1320,9 +1320,10 @@ def guardar_empresa():
     telefono2 = request.form["telefono2"]
     correo = request.form["correo"]
     pais = request.form["pais"]
-    distrito = request.form["distrito"]
+    
 
     if pais == '24':
+        distrito = request.form["distrito"]
         cont_emp.insertar_empresa_nacional(razonSocial,direccion,ruc,telefono,telefono2,correo,distrito)
     else: cont_emp.insertar_empresa_internacional(razonSocial,direccion,ruc,telefono,telefono2,correo,pais)
     return redirect("/empresas")
