@@ -1,4 +1,8 @@
-{% extends maestra %}
+{% if usuario[5]=="D" %}
+{% extends "maestra_d_modulo1.html" %}
+{% else %}
+{% extends "maestra_e.html" %}
+{% endif %}
 {% block titulo %}Gestionar práctica{% endblock %}
 {% block subtitul %}Gestionar práctica{% endblock %}
 {% block recursos %}
@@ -22,9 +26,11 @@
     <label class="btnOp">
       <a href="">Listar</a>
     </label>
+    {% if usuario[5] == "E" %}
     <label class="btnOp">
       <a href="{{url_for('agregar_practica')}}">Nuevo</a>
     </label>
+    {%endif%}
   </div>
 
   <div class="tabla" id="contenido-dinamico">
