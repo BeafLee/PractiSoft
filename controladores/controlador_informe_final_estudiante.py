@@ -37,7 +37,7 @@ def actualizar(estado, introduccion, infraFisica, infraTecnologica, urlOrganigra
 def observar_informe(observacion, idPractica, idInformeFinalEst):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE INFORME_FINAL_ESTUDIANTE SET estado='O', set observacion = %s WHERE idPractica = %s and idInformeFinalEst = %s",
+        cursor.execute("UPDATE INFORME_FINAL_ESTUDIANTE SET estado='O', observacion = %s WHERE idPractica = %s and idInformeFinalEst = %s",
                        (observacion, idPractica, idInformeFinalEst))
     conexion.commit()
     conexion.close()
@@ -45,7 +45,7 @@ def observar_informe(observacion, idPractica, idInformeFinalEst):
 def aceptar_informe(idPractica, idInformeFinalEst):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE INFORME_FINAL_ESTUDIANTE SET estado='A', set observacion = '' WHERE idPractica = %s and idInformeFinalEst = %s",
+        cursor.execute("UPDATE INFORME_FINAL_ESTUDIANTE SET estado='A', observacion = '' WHERE idPractica = %s and idInformeFinalEst = %s",
                        (idPractica, idInformeFinalEst))
     conexion.commit()
     conexion.close()

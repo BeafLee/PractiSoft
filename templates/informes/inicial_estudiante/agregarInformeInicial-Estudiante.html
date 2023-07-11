@@ -112,6 +112,8 @@
                 <input type="file" class="form-control" id="organigramaImg" name="firmaImg"
                     accept="image/jpeg, image/png" required
                     placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+                   
+                    <label style="padding-bottom: 20px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
 
             </div>
             <br>
@@ -120,11 +122,12 @@
                 <input type="file" class="form-control" id="organigramaImg" name="firmaImg1"
                     accept="image/jpeg, image/png" required
                     placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+                    <label style="padding-bottom: 20px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
             </div>
             <input type="number" name="idPractica" value="{{datos[8]}}" hidden>
             <br>
             <div class="text-center pb-5">
-                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <a href="{{url_for('detalle_practica', id=datos[8])}}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-success" name="submit_button" value="G">Guardar</button>
                 <button type="submit" class="btn btn-outline-success" name="submit_button" value="E">Guardar y
                     Enviar</button>
@@ -180,10 +183,10 @@
         $('#add-recomendacion').click(function () {
             var inputGroup = '<tr >' +
                 '<th> <input style="border: none; width: 100%;" type="text"  value="' + (n + 1) + '" readonly name="nsemana' + (idn1 + 1) + '">'+ '</th>' +
-                '<th><input style="border: none; width: 100%;" type="date" name="fechai' + (idn1 + 1) + '" required>' +'</th>' +
-                '<th><input style="border: none; width: 100%;" type="date" name="fechaf' + (idn1 + 1) + '" required>' +'</th>' +
-                '<th><input style="border: none; width: 100%;" type="text" name="actividad' + (idn1 + 1) + '" required>' +'</th>' +
-                '<th><input style="border: none; width: 100%;" type="number" name="nhoras' + (idn1 + 1) + '" required>' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="date" name="fechai' + (idn1 + 1) + '" >' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="date" name="fechaf' + (idn1 + 1) + '" >' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="text" name="actividad' + (idn1 + 1) + '" >' +'</th>' +
+                '<th><input style="border: none; width: 100%;" type="number" name="nhoras' + (idn1 + 1) + '" >' +'</th>' +
                 '<th><button class="btn btn-outline-danger remove-input" type="button">Eliminar</button></th>'+
             '</tr>';
 

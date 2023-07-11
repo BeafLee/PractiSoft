@@ -30,6 +30,7 @@ import controladores.controlador_jefe_inmediato as controlador_jefe_inmediato
 import controladores.localidad as cont_localidad
 import controladores.controlador_informe_estudiante as cont_infes
 import controladores.controlador_desempenio as cont_des
+import controladores.controlador_lineaDesarrollo as controlador_lineaDesarrollo
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -229,7 +230,48 @@ def get_image(filepath):
     folder_path, filename = os.path.split(filepath)
     return send_from_directory(folder_path, filename)
 
+#################################################################################
+##                                  Linea Desarrollo                                   ##
+#################################################################################
+###     GESTIONAR LINEA
+@app.route("/lineaDesarrollo")
+def lineaDesarrollo():
+    lineas = controlador_lineaDesarrollo.obtener_Lineas()
+    return render_template("/lineaDesarrollo/lineaD.html", lineas=lineas, usuario = session['usuario'], maestra=session['maestra'])
 
+@app.route("/NuevalineaDesarrollo")
+def NuevalineaDesarrollo():
+    return render_template("/lineaDesarrollo/nuevaLinea.html", usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/guardar_LINEA", methods=["POST"])
+def guardar_LINEA():  
+    linea = request.form["linea"]
+    controlador_lineaDesarrollo.insertar_linea(linea)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/Modificar_LINEA/<int:id>")
+def Modificar_LINEA(id):  
+    linea=controlador_lineaDesarrollo.obtener_LineaID(id)
+    return render_template("/lineaDesarrollo/editarLinea.html",linea=linea, usuario = session['usuario'], maestra=session['maestra'])
+
+@app.route("/Actualizar_LINEA", methods=["POST"])
+def Actualizar_LINEA():  
+    linea = request.form["linea"]
+    id=request.form["id"]
+    controlador_lineaDesarrollo.actualizar_Linea(linea,id)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/Eliminar_LINEA", methods=["POST"])
+def Eliminar_LINEA():  
+    id=request.form["id"]
+    controlador_lineaDesarrollo.eliminar_Linea(id)
+    return redirect("/lineaDesarrollo")
+
+@app.route("/DARBAJA_LINEA", methods=["POST"])
+def DARBAJA_LINEA():  
+    id=request.form["id"]
+    controlador_lineaDesarrollo.DarBaja(id)
+    return redirect("/lineaDesarrollo")
 #################################################################################
 ##                                  PRACTICA                                   ##
 #################################################################################
@@ -303,7 +345,7 @@ def guardar_practica():
         cont_nprac.enviar_practica(feI,feF,hPrac,feLim,mod,estudiante[0],cont_nprac.buscar_id_jefe(jefe,ruc),cont_nprac.obtener_id_personal(),cont_nprac.obtener_id_linea(linDes),cont_nprac.obtener_id_semestre(semI),cont_nprac.obtener_id_semestre(semF))
 
 
-    return redirect("/practicas")
+    return redirect("/practicasE")
 
 ###     MOSTRAR DETALLE DE PRACTICA
 @app.route("/detalle_practica/<int:id>")
@@ -426,17 +468,20 @@ def actualizar_desempenio():
     idp= request.form['idPractica']
     n1 = request.form.getlist('resultado1')
     n2 = request.form.getlist('opcionn')
-    print(n1)
-    print(n2)
-    print(no1)
+    
     urlBase = "static/practica/"+str(idp)+"/informe/desempenio"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     firmaImg = request.files["firmaImg"]
-    urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
-    firmaImg.save(urlFirma)
+    datos = cont_des.listar_todo_desempenio(idp)
+    print(datos[11])
+    if os.path.splitext(firmaImg.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firmaImg.filename)[1]
+        firmaImg.save(urlFirma)
+    else: urlFirma = datos[10]
     
+
     cont_des.modificar_desempenio(est, re, pro, com, tra, comp, org, pun, con, urlFirma, idp)
     cont_des.eliminar_resultados(no1)
 
@@ -603,14 +648,13 @@ def guardar_iies():
 separadorText = '/%/'
 
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
-@app.route("/afe/<int:idPractica>")
 @app.route("/agregarInformeFinalEstudiante/<int:idPractica>")
 def agregarInformeFinalEstudiante(idPractica):
     extraData = cont_inf_final_est.buscarOtraData_idPractica(idPractica)
     data = ["Crear", 1, extraData[0], extraData[1]]
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    estado = "-"
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
-@app.route("/efe/<int:idPractica>")
 @app.route("/editarInformeFinalEstudiante/<int:idPractica>")
 def editarInformeFinalEstudiante(idPractica):
     infoData = cont_inf_final_est.buscar_id(idPractica)
@@ -618,15 +662,12 @@ def editarInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-    print(conclusiones)
-    print(recomendaciones)
-
+    estado = infoData #se usa para saber el estado y el texto de observacion
     data = ["Editar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Editar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
 
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
-@app.route("/vfe/<int:idPractica>")
 @app.route("/InformeFinalEstudiante/<int:idPractica>")
 def verInformeFinalEstudiante(idPractica):
     infoData = cont_inf_final_est.buscar_id(idPractica)
@@ -634,11 +675,38 @@ def verInformeFinalEstudiante(idPractica):
     #Separar las conclusiones y recomendaciones en listas
     conclusiones = infoData[12].split(separadorText)
     recomendaciones = infoData[13].split(separadorText)
-    
+    estado = infoData #se usa para saber el estado y el texto de observacion
     data = ["Ver", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
     #data = ["Ver", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
-    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data)
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
 
+@app.route("/revisarInformeFinalEstudiante/<int:idPractica>")
+def revisarInformeFinalEstudiante(idPractica):
+    infoData = cont_inf_final_est.buscar_id(idPractica)
+    
+    #Separar las conclusiones y recomendaciones en listas
+    conclusiones = infoData[12].split(separadorText)
+    recomendaciones = infoData[13].split(separadorText)
+    
+    estado = infoData#se usa para saber el estado y el texto de observacion 
+    data = ["Revisar", infoData[22], infoData[1], infoData[2], [infoData[15], infoData[16], infoData[17], infoData[18], infoData[19], infoData[7], infoData[8], infoData[9], infoData[10], infoData[11], conclusiones, recomendaciones, infoData[14], infoData[20], infoData[4]], infoData[3]]
+    #data = ["Revisar", idParactica, "RAZON 1", "DIREC 1", ["giro 1", "repre 1", cantTrabajadoer, "vision", "mision", "infra fisica", "infra tecno", "organigrama.png", "desc area de trabajo", "desc labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "biblio", "anexos.pdf", "introduccion text"]]
+    return render_template("/informes/final_estudiante/crudInformeFinal-Estudiante.html", usuario = session['usuario'], maestra=session['maestra'], data = data, estado = estado)
+
+@app.route("/corregir_informeFinalEstudiante", methods=["POST"])
+def corregir_informeFinalEstudiante():
+    idPractica = request.form["idPractica"]
+    idInforme = request.form["idInforme"]
+
+    estado = request.form["btn"]
+
+    if estado == "A":
+        cont_inf_final_est.aceptar_informe(idPractica, idInforme)
+    else:
+        observacion = request.form["observacion"]
+        cont_inf_final_est.observar_informe(observacion, idPractica, idInforme)
+
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/guardar_informeFinalEstudiante", methods=["POST"])
 def guardar_informeFinalEstudiante():
@@ -671,21 +739,19 @@ def guardar_informeFinalEstudiante():
     urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
     anexosPdf.save(urlBase + "/" + urlAnexos)
 
-    estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
+    estado = request.form["btn"]
 
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
     cont_inf_final_est.insertar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 @app.route("/actualizar_informeFinalEstudiante", methods=["POST"])
 def actualizar_informeFinalEstudiante():
-    
     idPractica = request.form["idPractica"]
+
+    infoData = cont_inf_final_est.buscar_id(idPractica)
     idInforme = request.form["idInforme"]
     introduccion = request.form["introduccion"]
     giro = request.form["giro"]
@@ -701,8 +767,11 @@ def actualizar_informeFinalEstudiante():
         os.makedirs(urlBase)
 
     organigramaImg = request.files["organigramaImg"]
-    urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
-    organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    urlOrganigrama = ''
+    if os.path.splitext(organigramaImg.filename)[1] != '':
+        urlOrganigrama =  "organigrama" + os.path.splitext(organigramaImg.filename)[1]
+        organigramaImg.save(urlBase + "/" + urlOrganigrama)
+    else: urlOrganigrama = infoData[9]
 
     descAreaTrabajo = request.form["descAreaTrabajo"]
     descLabores = request.form["descLabores"]
@@ -711,20 +780,21 @@ def actualizar_informeFinalEstudiante():
     bibliografia = request.form["bibliografia"]
 
     anexosPdf = request.files["anexosPdf"]
-    urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
-    anexosPdf.save(urlBase + "/" + urlAnexos)
+    urlAnexos = ''
+    if os.path.splitext(anexosPdf.filename)[1] != '':
+        urlAnexos = "anexos" + os.path.splitext(anexosPdf.filename)[1]
+        anexosPdf.save(urlBase + "/" + urlAnexos)
+    else: urlAnexos = infoData[20]
 
-    estado = "G" #Guardado
-    print(conclusiones, recomendaciones)
-
+    estado = request.form["btn"]
+    # if "E" in request.form:
+    #     estado = "E"
     #Unir las conclusiones y recomendaciones en un string
     conclusiones = separadorText.join(conclusiones)
     recomendaciones = separadorText.join(recomendaciones)
-    print(conclusiones)
-    print(recomendaciones)
 
     cont_inf_final_est.actualizar(estado, introduccion, infraFisica, infraTecno, urlOrganigrama, descAreaTrabajo, descLabores, conclusiones, recomendaciones, bibliografia, giro, representante, cantTrabajadores, vision, mision, urlAnexos, idPractica, idInforme)
-    return redirect("/agregarInformeFinalEstudiante")
+    return redirect("/detalle_practica/"+idPractica)
 
 
 @app.route("/visualizar_ife/<int:idPractica>/<string:filename>")
@@ -743,14 +813,6 @@ def descargar_pdf(filename, idPractica):
         return send_file(url, as_attachment=True)
     return None
 
-@app.route("/prueba")
-def prueba():
-    data = ["Carlos Chung", "Empresa 1", "Direccion 1", 1, "texto de la introduccion", "A", "20/10/2023", "texto de la infra fisica", "texto de la infra tecnologica", "organigrama.png", "descripcion del area relaciones", "descripcion de labores", ["conclu 1", "conclu 2", "conclu 3"], ["reco 1", "reco 2", "recomen 34"], "bibliografia \nreferencia1 \nreferencia 2", "giro de la empresa", "representante legal de la empresa", 20, "vision", "mision", "anexos.pdf", 'observacion hecho por el docente', 1]
-
-    context_caratula = {'nombre_apellido_estudiante': data[0], 'centro_practica': data[1], 'fecha_entrega': data[6]}
-
-    return render_template("/informes/final_estudiante/caratula.html", context = context_caratula)
-
 @app.route("/gife/<int:idPractica>")
 @app.route("/generar_informeFinalEstudiante/<int:idPractica>")
 def generar_informeFinalEstudiante(idPractica):
@@ -765,7 +827,7 @@ def generar_informeFinalEstudiante(idPractica):
     data[13] = data[13].split(separadorText)
     
     urlLogo = request.scheme + '://'+ request.host +'/static/Logo_USAT.png'
-    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/organigrama.jpg' #data[8]
+    urlOrganigrama = request.scheme + '://'+ request.host +'/static/practica/1/informe/final_estudiante/' + data[9]
     print(urlLogo)
     print(urlOrganigrama)
     
@@ -798,7 +860,7 @@ def generar_informeFinalEstudiante(idPractica):
 #################################################################################
 
 @app.route("/nuevo_ifem/<int:id>")
-def nuevo_iiem(id):
+def nuevo_ifem(id):
     data = cont_inf_final_emp.infoPlantilla(id)
     print(data)
     return render_template("/informes/final_empresa/crudInformeFinal-Empresa.html",data=data,usuario = session['usuario'], maestra=session['maestra'])
@@ -807,7 +869,7 @@ def nuevo_iiem(id):
 ###     MOSTRAR FORMULARIO DE INFORME FINAL
 
 @app.route("/guardar_ifem", methods=["POST"])
-def guardar_iiem():
+def guardar_ifem():
     idPractica = request.form["idPractica"]
     fechaEntrega = datetime.date.today()
 
@@ -839,7 +901,7 @@ def guardar_iiem():
 
 
 @app.route("/ver_ifem/<int:id>")
-def ver_iiem(id):
+def ver_ifem(id):
     data = list(cont_inf_final_emp.buscar_id(id))
     val = cont_inf_final_emp.buscar_valoracion(id)
     valoraciones = [item[0] for item in val]
@@ -1319,13 +1381,17 @@ def editar_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/editarInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/ver_iie/<int:id>")
 def ver_iie(id):
@@ -1333,33 +1399,44 @@ def ver_iie(id):
     iie = cont_iie.buscar_informe_inicial_empresa_id(id)
     acep = iie[1]
     labores = cont_iie.desconcat_labores(iie[3])
+    img = ['']
+    img[0]=request.scheme + '://'+ request.host +'/'+ iie[1]
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[4])
+    img.append(request.scheme + '://'+ request.host +'/'+ iie[5])
     print(iie[1])
     if len(labores) == 1:
         labores[0] = iie[3]
         bandera = False
     else: 
         bandera = True
-    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,  usuario = session['usuario'], maestra=session['maestra'])
+    return render_template("/informe_inicial_empresa/verInforme.html", iie=iie, labores=labores, acep = acep,info = info, bandera = bandera,img = img,  usuario = session['usuario'], maestra=session['maestra'])
 
 @app.route("/actualizar_iie", methods=["POST"])
 def actualizar_iie():
     idInforme = request.form["idInforme"]
     idPractica = request.form["idPractica"]
+    iie = cont_iie.buscar_informe_inicial_empresa_id(idPractica)
     urlBase = "static/practica/" + idPractica + "/informe/inicial_empresa"
     if not os.path.exists(urlBase):
         os.makedirs(urlBase)
 
     aceptacion = request.files["aceptArch"]
-    urlAcept = "aceptacion" + os.path.splitext(aceptacion.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlAcept)
+    if os.path.splitext(aceptacion.filename)[1] != '':
+        urlAcept = urlBase + "/aceptacion" + os.path.splitext(aceptacion.filename)[1]
+        aceptacion.save(urlAcept)
+    else: urlAcept = iie[1]
 
     firma = request.files["firma"]
-    urlFirma = "firma" + os.path.splitext(firma.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlFirma)
+    if os.path.splitext(firma.filename)[1] != '':
+        urlFirma = urlBase + "/firma" + os.path.splitext(firma.filename)[1]
+        firma.save(urlFirma)
+    else: urlFirma = iie[4]
 
     sello = request.files["sello"]
-    urlSello = "sello" + os.path.splitext(sello.filename)[1]
-    aceptacion.save(urlBase +'/'+ urlSello)
+    if os.path.splitext(sello.filename)[1] != '':
+        urlSello = urlBase + "/sello" + os.path.splitext(sello.filename)[1]
+        sello.save(urlSello)
+    else: urlSello = iie[5]
 
     fechaEntrega = request.form["fechaE"]
     labores = cont_iie.concat_labores(request.form.getlist("labor"))
@@ -1383,16 +1460,16 @@ def generar_iie(id):
     pdfkit.from_string(html, 'static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', configuration=config)
     return send_file('static/practica/'+str(id)+'/informe/inicial_empresa/informe_inicial_empresa.pdf', as_attachment=True)
 
-
 #################################################################################
 ##                                  REPORTE                                   ##
 #################################################################################
 
-@app.route("/reporte1")
+@app.route("/reporte1aa")
 def reportes1():
     reportes1 = cont_rep.obtener_reporte_1()
     reportes2 = cont_rep.obtener_reporte_2()
-    return render_template("/reportes/listarReporte1.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+    return render_template("/reportes/abc.html", usuario = session['usuario'], maestra=session['maestra'],reportes1 = reportes1,reportes2 = reportes2)
+
 
 #################################################################################
 ##                                DISTRITO                                    ##

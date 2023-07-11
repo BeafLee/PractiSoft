@@ -128,21 +128,23 @@
             <div class="form-group col">
                 <label for="fechafirma">Firma del estudiante</label>
                 <input type="file" class="form-control" id="organigramaImg" name="firmaImg"
-                    accept="image/jpeg, image/png" required
+                    accept="image/jpeg, image/png"
                     placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+                    <label style="padding-bottom: 20px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
 
             </div>
             <br>
             <div class="form-group col">
                 <label for="fechafirma">Firma del responsable de la empresa</label>
                 <input type="file" class="form-control" id="organigramaImg" name="firmaImg1"
-                    accept="image/jpeg, image/png" required
+                    accept="image/jpeg, image/png"
                     placeholder="Subir la imagen del organigrama en formato jpn, png o jpeg">
+                    <label style="padding-bottom: 20px;" for="customFile">(Debe seleccionar un archivo .png o .jpg)</label>
             </div>
             <input type="number" name="idPractica" value="{{datos[8]}}" hidden>
             <br>
             <div class="text-center pb-5">
-                <a href="{{url_for('semestres')}}" class="btn btn-danger">Cancelar</a>
+                <a href="{{url_for('detalle_practica', id=datos[8])}}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-success" name="submit_button" value="G">Guardar</button>
                 <button type="submit" class="btn btn-outline-success" name="submit_button" value="E">Guardar y
                     Enviar</button>

@@ -1,15 +1,8 @@
-from math import isnan
 from bd import obtener_conexion
 import pymysql
 import mysql.connector
 import numpy as np
 import pandas as pd 
-import tkinter
-from tkinter import messagebox
-
-# This code is to hide the main tkinter window
-root = tkinter.Tk()
-root.withdraw()
 
 mydb= mysql.connector.connect(
     host="127.0.0.1",
@@ -148,20 +141,24 @@ def buscar_usuario(CodESt):
 
 
 def parseCSV(filePath):
+    x=1
       # CVS Column Names
-    col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
-      # Use Pandas to parse the CSV file
-    excelData = pd.read_excel(filePath,names=col_names,index_col=None)
-    x=1        
+    try:
+        col_names = ['codigo_estudiante','nombres','apellidos', 'ciclo_Actual', 'semestre_Inicio', 'dni' , 'correo1', 'correo2', 'telefono1', 'telefono2', 'direccion', 'Plan_de_Estudio','Distrito','Pais']
+        # Use Pandas to parse the CSV file
+        excelData = pd.read_excel(filePath,names=col_names,index_col=None)
+           
       # Loop through the Rows
-    for i,row in excelData.iterrows():
-        
-        if obtener_plan(str(row['Plan_de_Estudio'])) == None or obtener_distrito(row['Distrito']) == None or obtener_pais(row['Pais']) == None:   
-            x=-1
-        elif obtener_plan(str(row['Plan_de_Estudio'])) == -1 or obtener_distrito(row['Distrito']) == -1 or obtener_pais(row['Pais']) == -1:   
+        for i,row in excelData.iterrows():
             
-            x=-2
-        
+            if obtener_plan(str(row['Plan_de_Estudio'])) == None or obtener_distrito(row['Distrito']) == None or obtener_pais(row['Pais']) == None:   
+                x=-1
+            elif obtener_plan(str(row['Plan_de_Estudio'])) == -1 or obtener_distrito(row['Distrito']) == -1 or obtener_pais(row['Pais']) == -1:   
+                
+                x=-2
+    except:
+        x=-1 
+            
     return x
         
         
@@ -175,17 +172,38 @@ def importData (filePath):
       # Loop through the Rows
     for i,row in excelData.iterrows():
         if (buscar_estudiante(str(row['codigo_estudiante'])) == None):
-                    idU=obtener_ultimoidUsuario()
-                    sql1 = "INSERT INTO USUARIO (idUsuario, nomUsuario, contraseña, idTipoU) VALUES (%s, %s, %s, 1)"
-                    value1 = (idU[0],row['codigo_estudiante'],str(row['dni']))
-                    mycursormydb.execute(sql1, value1)
-                    mydb.commit()
-                    idE=obtener_ultimoidEstudiante()
-                    plEst=obtener_plan(str(row['Plan_de_Estudio']))[0]
-                    dis=obtener_distrito(row['Distrito'])
-                    pais=obtener_pais(row['Pais'])
+            idU=obtener_ultimoidUsuario()
+            sql1 = "INSERT INTO USUARIO (idUsuario, nomUsuario, contraseña, idTipoU) VALUES (%s, %s, %s, 1)"
+            value1 = (idU[0],row['codigo_estudiante'],str(row['dni']))
+            mycursormydb.execute(sql1, value1)
+            mydb.commit()
+            idE=obtener_ultimoidEstudiante()
+            plEst=obtener_plan(str(row['Plan_de_Estudio']))[0]
+            dis=obtener_distrito(row['Distrito'])
+            pais=obtener_pais(row['Pais'])
+
+            if  str(row['correo2']) == 'nan' and str(row['telefono2']) == 'nan':
+                sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, telefono1, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
+                value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],int(row['dni']),row['correo1'],int(row['telefono1']),row['direccion'],plEst,idU[0],dis[0],pais[0])
+                mycursormydb.execute(sql2, value2)
+                mydb.commit()
+            elif str(row['correo2']) == 'nan' and str(row['telefono2']) != 'nan':
+                sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, telefono1, telefono2, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
+                value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],int(row['dni']),row['correo1'],int(row['telefono1']),int(row['telefono2']),row['direccion'],plEst,idU[0],dis[0],pais[0])
+                mycursormydb.execute(sql2, value2)
+                mydb.commit() 
+                  
+            elif str(row['correo2']) != 'nan' and str(row['telefono2']) == 'nan':
+                sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, correo2, telefono1, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
+                value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],int(row['dni']),row['correo1'],row['correo2'],int(row['telefono1']),row['direccion'],plEst,idU[0],dis[0],pais[0])
+                mycursormydb.execute(sql2, value2)
+                mydb.commit()
+                
+            else:
+                print(isstring(row['correo2']),isstring(row['telefono2']==False))
+                sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, correo2, telefono1, telefono2, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
+                value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],int(row['dni']),row['correo1'],row['correo2'],int(row['telefono1']),int(row['telefono2']),row['direccion'],plEst,idU[0],dis[0],pais[0])
+                mycursormydb.execute(sql2, value2)
+                mydb.commit()
                     
-                    sql2 = "INSERT INTO ESTUDIANTE (idEstudiante, codigo, nombres, apellidos, cicloActual, semestreInicio, dni, correo1, correo2, telefono1, telefono2, direccion, estado, idPlanEs, idUsuario, idDistrito, idPais) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'V', %s, %s, %s, %s)"
-                    value2 = (idE[0],row['codigo_estudiante'],row['nombres'],row['apellidos'],row['ciclo_Actual'],row['semestre_Inicio'],str(row['dni']),row['correo1'],row['correo2'],str(row['telefono1']),str(row['telefono2']),row['direccion'],plEst,idU[0],dis[0],pais[0])
-                    mycursormydb.execute(sql2, value2)
-                    mydb.commit()
+                            
