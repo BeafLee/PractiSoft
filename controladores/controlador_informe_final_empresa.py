@@ -75,4 +75,30 @@ def eliminar_valoracion(idInformeFinalEmpresa):
         cursor.execute("DELETE FROM valoracion WHERE idInformeFinalEmpresa = %s",
                        (idInformeFinalEmpresa))
     conexion.commit()
-    conexion.close()   
+    conexion.close()  
+
+def buscar_sello(idInformeFinalEmp):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT urlSelloEmpresa FROM informe_final_empresa where idInformeFinalEmpresa=%s", (idInformeFinalEmp,))
+        informe = cursor.fetchall()
+    conexion.close()
+    return informe
+
+def buscar_firma(idInformeFinalEmp):
+    conexion = obtener_conexion()
+    informe = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT urlFirmaResponsable FROM informe_final_empresa where idInformeFinalEmpresa=%s", (idInformeFinalEmp,))
+        informe = cursor.fetchall()
+    conexion.close()
+    return informe  
+
+def actualizar_obs_informe_final_empresa(estado,obs,idInformeFinalEmp):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE informe_final_empresa SET estado=%s,observacion = %s WHERE idInformeFinalEmpresa = %s",
+                       (estado,obs,idInformeFinalEmp))
+    conexion.commit()
+    conexion.close()
