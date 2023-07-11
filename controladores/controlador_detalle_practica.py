@@ -8,7 +8,14 @@ def listar_detalle_practica(id):
         facultad = cursor.fetchone()
     conexion.close()
     return facultad
-
+def listar_detalle_practica1(id):
+    conexion = obtener_conexion()
+    facultad = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT P.fechaInicio,P.fechaFin,P.horasPractica, CASE WHEN P.estado = 'V' THEN 'Vigente' WHEN P.estado = 'N' THEN 'No vigente' END AS estado,CASE WHEN P.modalidad = 'V' THEN 'Virtual' WHEN P.modalidad = 'P' THEN 'Presencial' END AS modalidad,SE.nombreSe,SE.nombreSe,E.codigo,E.apellidos,E.nombres,E.dni,PE.nombre,EM.razonSocial,EM.ruc,CONCAT(JI.nombre,' ',JI.apellidos) as jefe, P.idPractica FROM PRACTICA P INNER JOIN ESTUDIANTE E ON P.idEstudiante=E.idEstudiante INNER JOIN JEFE_INMEDIATO JI ON JI.idJefe=P.idJefe INNER JOIN EMPRESA EM ON EM.idEmpresa=JI.idEmpresa INNER JOIN SEMESTRE SE on SE.idSemestre=P.idSemestreIn INNER JOIN PLAN_ESTUDIO PE ON PE.idPlanes=E.idPlanes WHERE P.idPractica = %s", (id,))
+        facultad = cursor.fetchone()
+    conexion.close()
+    return facultad
 def obtener_tipoUsuario(id):
     conexion = obtener_conexion()
     tipoUsuario=None
